@@ -352,7 +352,8 @@ public class HomeController {
 
         System.out.println("lcode value: " + lcode);
         logger.info("Entering myEndpoint method:/savefundstart/" + lcode);
-            
+        logger.info("F13 locale value" + fundstart.getF13Locale());
+        logger.info("F13 District value" + fundstart.getF13District());
         // Check if a record with the same lcode and dcode already exists
         FundStart existingFundstart = fundstartRepository.findByLcodeAndDcode(lcode, fundstart.getDcode());
   
