@@ -81,8 +81,8 @@ function handleButtonClick2(event) {
         const tableRow = $(event.target).closest("tr");
         const wkno = tableRow.find('td:eq(2) input').val();
         const lingap = tableRow.find('td:eq(3) input').val();
-        const f13locale = tableRow.find('td:eq(4) input').val();
-        const f13district = tableRow.find('td:eq(5) input').val();
+        const f13Locale = tableRow.find('td:eq(4) input').val();
+        const f13District = tableRow.find('td:eq(5) input').val();
         const f9 = tableRow.find('td:eq(6) input').val();
         const bank = tableRow.find('td:eq(7) input').val();
         const usmo = tableRow.find('td:eq(8) input').val();
@@ -123,8 +123,8 @@ function handleButtonClick2(event) {
         xhr.send(JSON.stringify({
             wkno: wkno,
             lingap: lingap,
-            f13locale: f13locale,
-            f13district: f13district,
+            f13Locale: f13Locale,
+            f13District: f13District,
             f9: f9,
             bank: bank,
             usmo: usmo,

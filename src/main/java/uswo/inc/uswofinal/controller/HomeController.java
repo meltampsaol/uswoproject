@@ -347,47 +347,47 @@ public class HomeController {
     }
 
     @PostMapping("/savefundstart/{lcode}")
-public String saveFundstart(@PathVariable Integer lcode, @RequestBody FundStart fundstart,
-        Model model) {
+    public String saveFundstart(@PathVariable Integer lcode, @RequestBody FundStart fundstart,
+            Model model) {
 
-            System.out.println("lcode value: " + lcode);
-            logger.info("Entering myEndpoint method:/savefundstart/" + lcode);
+        System.out.println("lcode value: " + lcode);
+        logger.info("Entering myEndpoint method:/savefundstart/" + lcode);
             
-            // Check if a record with the same lcode and dcode already exists
-            FundStart existingFundstart = fundstartRepository.findByLcodeAndDcode(lcode, fundstart.getDcode());
-            
-            if (existingFundstart != null) {
-                // Update the existing record
-                existingFundstart.setLingap(fundstart.getLingap());
-                existingFundstart.setF13Locale(fundstart.getF13Locale());
-                existingFundstart.setF13District(fundstart.getF13District());
-                existingFundstart.setF9(fundstart.getF9());
-                existingFundstart.setWkno(fundstart.getWkno());
-                existingFundstart.setUsmo(fundstart.getUsmo());
-                existingFundstart.setCfo(fundstart.getCfo());
-                existingFundstart.setBank(fundstart.getBank());
-            
-                // set other fields here
-            
-                // Save the updated Fundstart object to the database
-                fundstartRepository.save(existingFundstart);
-            
-            } else {
-                // Set the lcode value of the fundstart object
-                fundstart.setLcode(lcode);
-            
-                // Save the Fundstart object to the database
-                fundstartRepository.save(fundstart);
-            }
-            
-            // Add a success message to the model to display on the page
-            FundStart fstart = fundstartRepository.findByLcode(lcode);
-            model.addAttribute("fstart", fstart);
-            
-            // Redirect the user back to the original page
-            return "redirect:/";
-            
-}
+        // Check if a record with the same lcode and dcode already exists
+        FundStart existingFundstart = fundstartRepository.findByLcodeAndDcode(lcode, fundstart.getDcode());
+  
+        if (existingFundstart != null) {
+            // Update the existing record
+            existingFundstart.setLingap(fundstart.getLingap());
+            existingFundstart.setF13Locale(fundstart.getF13Locale());
+            existingFundstart.setF13District(fundstart.getF13District());
+            existingFundstart.setF9(fundstart.getF9());
+            existingFundstart.setWkno(fundstart.getWkno());
+            existingFundstart.setUsmo(fundstart.getUsmo());
+            existingFundstart.setCfo(fundstart.getCfo());
+            existingFundstart.setBank(fundstart.getBank());
+
+            // set other fields here
+
+            // Save the updated Fundstart object to the database
+            fundstartRepository.save(existingFundstart);
+
+        } else {
+            // Set the lcode value of the fundstart object
+            fundstart.setLcode(lcode);
+
+            // Save the Fundstart object to the database
+            fundstartRepository.save(fundstart);
+        }
+
+        // Add a success message to the model to display on the page
+        FundStart fstart = fundstartRepository.findByLcode(lcode);
+        model.addAttribute("fstart", fstart);
+
+        // Redirect the user back to the original page
+        return "redirect:/";
+
+    }
 
 
 
@@ -403,6 +403,7 @@ public String saveFundstart(@PathVariable Integer lcode, @RequestBody FundStart 
         }
         return "fundstartlist";
     }
+
     @GetMapping("/collectionpermit")
     public String collpermit(Model model, Authentication authentication) {
         List<District> districts = districtRepository.findAllDistricts();
@@ -416,65 +417,67 @@ public String saveFundstart(@PathVariable Integer lcode, @RequestBody FundStart 
         }
         return "permitcontrol";
     }
+
     @GetMapping("/lokal-list-permit/{districtId}")
-public String getLocalesPermit(@PathVariable Integer districtId, Model model) {
-    logger.info("Entering myEndpoint method");
+    public String getLocalesPermit(@PathVariable Integer districtId, Model model) {
+        logger.info("Entering myEndpoint method");
 
-    // Load the Lokal records for the district
-    List<Lokal> locales = lokalRepository.findByDistrict(districtId);
-    model.addAttribute("locales", locales);
+        // Load the Lokal records for the district
+        List<Lokal> locales = lokalRepository.findByDistrict(districtId);
+        model.addAttribute("locales", locales);
 
-    // Create a map of CollectionPermit objects keyed by the lcode
-    Map<Integer, CollectionPermit> collpermitMap = new HashMap<>();
-    for (Lokal locale : locales) {
-        CollectionPermit collPermit = collectionpermitRepository.findByLcode(locale.getLcode());
-        collpermitMap.put(locale.getLcode(), collPermit);
-    }
-    model.addAttribute("collpermitMap", collpermitMap);
-
-    return "lokal-list-permit";
-}
-
-@PostMapping("/savepermit/{lcode}")
-public String saveCollectionPermit(@PathVariable Integer lcode, @RequestBody CollectionPermit collectionPermit, Model model) {
-    logger.info("Entering myEndpoint method: /savepermit/" + lcode);
-
-    // Check if a record with the same lcode already exists
-    CollectionPermit existingCollectionPermit = collectionpermitRepository.findByLcode(lcode);
-
-    if (existingCollectionPermit != null) {
-        // Update the existing record
-        existingCollectionPermit.setLocale(collectionPermit.getLocale());
-        existingCollectionPermit.setDistrict(collectionPermit.getDistrict());
-        existingCollectionPermit.setLingap(collectionPermit.getLingap());
-        existingCollectionPermit.setPermitnumber_locale(collectionPermit.getPermitnumber_locale());
-        existingCollectionPermit.setPermitnumber_district(collectionPermit.getPermitnumber_district());
-
-        // Save the updated CollectionPermit object to the database
-        collectionpermitRepository.save(existingCollectionPermit);
-    } else {
-        // Set the lcode value of the CollectionPermit object
-        collectionPermit.setLcode(lcode);
-
-        // Set the default values for the permit numbers if they are null
-        if (collectionPermit.getPermitnumber_locale() == null) {
-            collectionPermit.setPermitnumber_locale("");
+        // Create a map of CollectionPermit objects keyed by the lcode
+        Map<Integer, CollectionPermit> collpermitMap = new HashMap<>();
+        for (Lokal locale : locales) {
+            CollectionPermit collPermit = collectionpermitRepository.findByLcode(locale.getLcode());
+            collpermitMap.put(locale.getLcode(), collPermit);
         }
-        if (collectionPermit.getPermitnumber_district() == null) {
-            collectionPermit.setPermitnumber_district("");
-        }
+        model.addAttribute("collpermitMap", collpermitMap);
 
-        // Save the CollectionPermit object to the database
-        collectionpermitRepository.save(collectionPermit);
+        return "lokal-list-permit";
     }
 
-    // Add a success message to the model to display on the page
-    CollectionPermit collPermit = collectionpermitRepository.findByLcode(lcode);
-    model.addAttribute("collPermit", collPermit);
+    @PostMapping("/savepermit/{lcode}")
+    public String saveCollectionPermit(@PathVariable Integer lcode, @RequestBody CollectionPermit collectionPermit,
+            Model model) {
+        logger.info("Entering myEndpoint method: /savepermit/" + lcode);
 
-    // Redirect the user back to the original page
-    return "redirect:/";
-}
+        // Check if a record with the same lcode already exists
+        CollectionPermit existingCollectionPermit = collectionpermitRepository.findByLcode(lcode);
+
+        if (existingCollectionPermit != null) {
+            // Update the existing record
+            existingCollectionPermit.setLocale(collectionPermit.getLocale());
+            existingCollectionPermit.setDistrict(collectionPermit.getDistrict());
+            existingCollectionPermit.setLingap(collectionPermit.getLingap());
+            existingCollectionPermit.setPermitnumber_locale(collectionPermit.getPermitnumber_locale());
+            existingCollectionPermit.setPermitnumber_district(collectionPermit.getPermitnumber_district());
+
+            // Save the updated CollectionPermit object to the database
+            collectionpermitRepository.save(existingCollectionPermit);
+        } else {
+            // Set the lcode value of the CollectionPermit object
+            collectionPermit.setLcode(lcode);
+
+            // Set the default values for the permit numbers if they are null
+            if (collectionPermit.getPermitnumber_locale() == null) {
+                collectionPermit.setPermitnumber_locale("");
+            }
+            if (collectionPermit.getPermitnumber_district() == null) {
+                collectionPermit.setPermitnumber_district("");
+            }
+
+            // Save the CollectionPermit object to the database
+            collectionpermitRepository.save(collectionPermit);
+        }
+
+        // Add a success message to the model to display on the page
+        CollectionPermit collPermit = collectionpermitRepository.findByLcode(lcode);
+        model.addAttribute("collPermit", collPermit);
+
+        // Redirect the user back to the original page
+        return "redirect:/";
+    }
 
 
 }
