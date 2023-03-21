@@ -10,18 +10,6 @@
 <body>
     <div class="container">
 
-        <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Lokal List</title>
-
-</head>
-
-<body>
-    <div class="container">
-
         <table class="table" id="lokalTable2">
             <thead>
                 <tr>
@@ -29,7 +17,8 @@
                     <th>Locale</th>
                     <th>Week Started</th>
                     <th>Lingap</th>
-                    <th>F13</th>
+                    <th>F13 Locale</th>
+                    <th>F13 District</th>
                     <th>F9</th>
                     <th>Bank</th>
                     <th>USMO</th>
@@ -48,8 +37,11 @@
                         th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].lingap : ''}"
                         name="lingap" class="form-control"></td>
                     <td><input type="text"
-                        th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].f13 : ''}"
-                        name="f13" class="form-control"></td>
+                        th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].f13locale : ''}"
+                        name="f13locale" class="form-control"></td>
+                    <td><input type="text"
+                        th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].f13district : ''}"
+                        name="f13district" class="form-control"></td>
                     <td><input type="text"
                         th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].f9 : ''}"
                         name="f9" class="form-control"></td>
@@ -75,16 +67,6 @@
         </table>
         
         
-    </div>
-
-    </div>
-
-
-
-</body>
-
-</html>
-
     </div>
 
     </div>

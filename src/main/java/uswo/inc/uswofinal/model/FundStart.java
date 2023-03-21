@@ -1,5 +1,7 @@
 package uswo.inc.uswofinal.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,20 +26,23 @@ public class FundStart {
 
     private String wkno;
 
-    private Double lingap;
+    private BigDecimal lingap;
 
-    private Double f13;
+    @Column(name = "f13locale")
+    private BigDecimal f13Locale;
 
-    private Double f9;
+    @Column(name = "f13district")
+    private BigDecimal f13District;
+
+    private BigDecimal f9;
 
     @Column(name = "bank")
-    private Double Bank;
+    private BigDecimal bank;
 
     @Column(name = "usmo")
-    private Double Usmo;
+    private BigDecimal usmo;
 
     @Column(name = "cfo")
-    private Double Cfo;
+    private BigDecimal cfo;
 
-    
 }

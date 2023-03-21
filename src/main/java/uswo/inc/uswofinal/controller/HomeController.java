@@ -359,7 +359,8 @@ public String saveFundstart(@PathVariable Integer lcode, @RequestBody FundStart 
             if (existingFundstart != null) {
                 // Update the existing record
                 existingFundstart.setLingap(fundstart.getLingap());
-                existingFundstart.setF13(fundstart.getF13());
+                existingFundstart.setF13Locale(fundstart.getF13Locale());
+                existingFundstart.setF13District(fundstart.getF13District());
                 existingFundstart.setF9(fundstart.getF9());
                 existingFundstart.setWkno(fundstart.getWkno());
                 existingFundstart.setUsmo(fundstart.getUsmo());
@@ -387,6 +388,7 @@ public String saveFundstart(@PathVariable Integer lcode, @RequestBody FundStart 
             return "redirect:/";
             
 }
+
 
 
     @GetMapping("/fundstartlist")

@@ -68,66 +68,71 @@ function search_locales(districtId)
 
 </script>
 <script>
-  $(document).ready(function () {
-      // Add an event listener to the table that listens for button clicks even from the <div>
-      $("#lokalTable").on("click", ".btn.btn-primary", handleButtonClick2);
-      
-      
-  });
+ $(document).ready(function () {
+    // Add an event listener to the table that listens for button clicks even from the <div>
+    $("#lokalTable").on("click", ".btn.btn-primary", handleButtonClick2);
+});
 
-  // Define a function to handle button click events
+// Define a function to handle button click events
 function handleButtonClick2(event) {
-console.log("Button clicked!");
-if ($(event.target).hasClass("btn") && $(event.target).hasClass("btn-primary")) {
-const buttonId = $(event.target).attr("id");
-const tableRow = $(event.target).closest("tr");
-const wkno = tableRow.find('td:eq(2) input').val();
-const lingap = tableRow.find('td:eq(3) input').val();
-const f13 = tableRow.find('td:eq(4) input').val();
-const f9 = tableRow.find('td:eq(5) input').val();
-const bank = tableRow.find('td:eq(6) input').val();
-const usmo = tableRow.find('td:eq(7) input').val();
-const cfo = tableRow.find('td:eq(8) input').val();
-const tdValue = tableRow.find('td:eq(1)').text();
-const districtCode = tableRow.find('button').attr('data-district-code');
+    console.log("Button clicked!");
+    if ($(event.target).hasClass("btn") && $(event.target).hasClass("btn-primary")) {
+        const buttonId = $(event.target).attr("id");
+        const tableRow = $(event.target).closest("tr");
+        const wkno = tableRow.find('td:eq(2) input').val();
+        const lingap = tableRow.find('td:eq(3) input').val();
+        const f13locale = tableRow.find('td:eq(4) input').val();
+        const f13district = tableRow.find('td:eq(5) input').val();
+        const f9 = tableRow.find('td:eq(6) input').val();
+        const bank = tableRow.find('td:eq(7) input').val();
+        const usmo = tableRow.find('td:eq(8) input').val();
+        const cfo = tableRow.find('td:eq(9) input').val();
+        const tdValue = tableRow.find('td:eq(1)').text();
+        const districtCode = tableRow.find('button').attr('data-district-code');
 
+        const lcode = buttonId.split('-')[1];
+        console.log("Lcode: " + lcode);
+        console.log("Week Started: " + wkno);
+        console.log("Lingap: " + lingap);
+        console.log("F13 Locale: " + f13locale);
+        console.log("F13 District: " + f13district);
+        console.log("F9: " + f9);
+        console.log("Bank: " + bank);
+        console.log("USMO: " + usmo);
+        console.log("CFO: " + cfo);
+        console.log("Dcode: " + districtCode);
 
-const lcode = buttonId.split('-')[1];
-console.log("Lcode: " + lcode);
-console.log("Week Started: " + wkno);
-console.log("Lingap: " + lingap);
-console.log("F13: " + f13);
-console.log("F9: " + f9);
-console.log("Bank: " + bank);
-console.log("USMO: " + usmo);
-console.log("CFO: " + cfo);
-console.log("Dcode: " + districtCode);
-
-console.log(tableRow.html())
-const xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-xhr.open("POST", "/savefundstart/" + lcode);
-xhr.setRequestHeader("Content-Type", "application/json");
-xhr.onreadystatechange = function() {
-if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-  const messageDiv = document.createElement("div");
-  messageDiv.classList.add("text-success");
-  messageDiv.textContent = "Record of " + tdValue + " is updated successfully!";
-  document.body.appendChild(messageDiv);
-} else if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 404) {
-  const messageDiv = document.createElement("div");
-  messageDiv.classList.add("text-danger");
-  messageDiv.textContent = "Record not found!";
-  document.body.appendChild(messageDiv);
+        console.log(tableRow.html())
+        const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.open("POST", "/savefundstart/" + lcode);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("text-success");
+                messageDiv.textContent = "Record of " + tdValue + " is updated successfully!";
+                document.body.appendChild(messageDiv);
+            } else if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 404) {
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("text-danger");
+                messageDiv.textContent = "Record not found!";
+                document.body.appendChild(messageDiv);
+            }
+        };
+        xhr.send(JSON.stringify({
+            wkno: wkno,
+            lingap: lingap,
+            f13locale: f13locale,
+            f13district: f13district,
+            f9: f9,
+            bank: bank,
+            usmo: usmo,
+            cfo: cfo,
+            dcode: districtCode
+        }));
+    }
 }
-};
-xhr.send(JSON.stringify({wkno: wkno, lingap: lingap, f13: f13, f9: f9, bank: bank, usmo: usmo, cfo: cfo, dcode: districtCode}));
-
-}
-}
-
-
-
 
 </script>
 
