@@ -422,6 +422,13 @@
   <input type="text" id="total-central" name="total-central" value="0.00" readonly />
   <label for="total-cfolokrem">Total CFO & Locale Remittance :</label>
   <input type="text" id="total-cfolokrem" name="total-cfolokrem" value="0.00" readonly />
+  
+  <label for="total-lokalexpenses">Total Lokal Expenses:</label>
+  <input type="text" id="total-lokalexpenses" name="total-lokalexpenses" value="0.00" readonly />
+  
+  <label for="total-lokalrefund">Total Lokal Refund:</label>
+  <input type="text" id="total-lokalrefund" name="total-lokalrefund" value="0.00" readonly />
+   
   <div id="total" style="display: none;">
     <label for="total-admthur">ADMTHUR:</label>
     <input type="text" id="total-admthur" name="total-admthur" value="0.00" readonly />
@@ -509,7 +516,7 @@
   }
 
   function computeTotalRemittance(numSets) {
-    var totalCfolokrem = 0, totalCentral = 0, totalAdmin = 0, totalRemainder = 0, totalWholeweek = 0, totalWeekend = 0, totalAdmthur = 0, totalAdmsun = 0, totalCws = 0, totalSol = 0, totalSod = 0, totalAid = 0, totalTxgv = 0, totalRefcent = 0, totalExpcent = 0, totalCfolok = 0, totalMof = 0, totalIntl = 0;
+    var totalLokalExpenses=0, totalLokalRefund=0, totalCfolokrem = 0, totalCentral = 0, totalAdmin = 0, totalRemainder = 0, totalWholeweek = 0, totalWeekend = 0, totalAdmthur = 0, totalAdmsun = 0, totalCws = 0, totalSol = 0, totalSod = 0, totalAid = 0, totalTxgv = 0, totalRefcent = 0, totalExpcent = 0, totalCfolok = 0, totalMof = 0, totalIntl = 0;
     for (var i = 1; i <= numSets; i++) {
       var admthur = parseFloat(document.getElementById("admthur" + i).value);
       var admsun = parseFloat(document.getElementById("admsun" + i).value);
@@ -529,7 +536,8 @@
       var mof = parseFloat(document.getElementById("mof" + i).value);
 
 
-
+      totalLokalExpenses += explok;
+      totalLokalRefund += reflok;
       totalAdmthur += admthur;
       totalAdmsun += admsun;
       totalCws += cws;
@@ -569,6 +577,8 @@
     document.getElementById("total-mof").value = totalMof.toFixed(2);
     document.getElementById("total-intl").value = totalIntl.toFixed(2);
     document.getElementById("total-remittance").value = totalRemittance.toFixed(2);
+    document.getElementById("total-lokalexpenses").value = totalLokalExpenses.toFixed(2);
+    document.getElementById("total-lokalrefund").value = totalLokalRefund.toFixed(2);
   }
 
 
