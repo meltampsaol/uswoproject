@@ -44,5 +44,6 @@ public class FundStart {
 
     @Column(name = "cfo")
     private BigDecimal cfo;
+    
 
 }
