@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lokal List</title>
+
+</head>
+
+<body>
+    <div class="container">
+
+        <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lokal List</title>
+
+</head>
+
+<body>
+    <div class="container">
+
+        <table class="table" id="lokalTable2">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Locale</th>
+                    <th>Week Started</th>
+                    <th>Lingap</th>
+                    <th>F13</th>
+                    <th>F9</th>
+                    <th>Bank</th>
+                    <th>USMO</th>
+                    <th>CFO</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="locale : ${locales}">
+                    <td th:text="${locale.lcode}"></td>
+                    <td th:text="${locale.locale}"></td>
+                    <td><input type="text"
+                        th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].wkno : ''}"
+                        name="wkno" class="form-control"></td>
+                    <td><input type="text"
+                        th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].lingap : ''}"
+                        name="lingap" class="form-control"></td>
+                    <td><input type="text"
+                        th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].f13 : ''}"
+                        name="f13" class="form-control"></td>
+                    <td><input type="text"
+                        th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].f9 : ''}"
+                        name="f9" class="form-control"></td>
+                    <td><input type="text"
+                        th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].bank : ''}"
+                        name="bank" class="form-control"></td>
+                    <td><input type="text"
+                        th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].usmo : ''}"
+                        name="usmo" class="form-control"></td>
+                    <td><input type="text"
+                        th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].cfo : ''}"
+                        name="cfo" class="form-control"></td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" 
+                            th:attr="data-id=${locale.lcode}, data-district-code=${locale.did}" 
+                            name="updateBtn" th:id="'updateBtn-' + ${locale.lcode}">
+                            Save Fund Start
+                        </button>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+        
+        
+    </div>
+
+    </div>
+
+
+
+</body>
+
+</html>
+
+    </div>
+
+    </div>
+
+
+
+</body>
+
+</html>

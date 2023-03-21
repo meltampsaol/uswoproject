@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lokal List</title>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<!-- Include Bootstrap's JavaScript after jQuery -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+
+<!-- Include jquery.dataTables.min.js after jQuery -->
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      
+
+      // Handle onchange event of the district dropdown
+      $('#districtDropdown').on('change', function () {
+        // Get the selected district ID
+        var districtId = $(this).val();
+
+        // Call the backend API to get the locales for the selected district
+        //getLocales(districtId);
+        search_locales(districtId);
+      });
+
+    });
+  
+
+
+function search_locales(districtId)
+		{
+      
+			if (window.XMLHttpRequest)
+			  {// code for IE7+, Firefox, Chrome, Opera, Safari
+			  xmlhttp=new XMLHttpRequest();
+			  }
+			else
+			  {// code for IE6, IE5
+			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			  }
+			xmlhttp.onreadystatechange=function()
+			  {
+			  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+				{
+				document.getElementById("lokalTable").innerHTML=xmlhttp.responseText;
+				}
+			  }
+			xmlhttp.open("GET","/lokal-list-fundstart/"+districtId,true);
+			xmlhttp.send();
+		}
+
+
+
+</script>
+<script>
+  $(document).ready(function () {
+      // Add an event listener to the table that listens for button clicks even from the <div>
+      $("#lokalTable").on("click", ".btn.btn-primary", handleButtonClick2);
+      
+      
+  });
+
+  // Define a function to handle button click events
+function handleButtonClick2(event) {
+console.log("Button clicked!");
+if ($(event.target).hasClass("btn") && $(event.target).hasClass("btn-primary")) {
+const buttonId = $(event.target).attr("id");
+const tableRow = $(event.target).closest("tr");
+const wkno = tableRow.find('td:eq(2) input').val();
+const lingap = tableRow.find('td:eq(3) input').val();
+const f13 = tableRow.find('td:eq(4) input').val();
+const f9 = tableRow.find('td:eq(5) input').val();
+const bank = tableRow.find('td:eq(6) input').val();
+const usmo = tableRow.find('td:eq(7) input').val();
+const cfo = tableRow.find('td:eq(8) input').val();
+const tdValue = tableRow.find('td:eq(1)').text();
+const districtCode = tableRow.find('button').attr('data-district-code');
+
+
+const lcode = buttonId.split('-')[1];
+console.log("Lcode: " + lcode);
+console.log("Week Started: " + wkno);
+console.log("Lingap: " + lingap);
+console.log("F13: " + f13);
+console.log("F9: " + f9);
+console.log("Bank: " + bank);
+console.log("USMO: " + usmo);
+console.log("CFO: " + cfo);
+console.log("Dcode: " + districtCode);
+
+console.log(tableRow.html())
+const xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+xhr.open("POST", "/savefundstart/" + lcode);
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.onreadystatechange = function() {
+if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("text-success");
+  messageDiv.textContent = "Record of " + tdValue + " is updated successfully!";
+  document.body.appendChild(messageDiv);
+} else if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 404) {
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("text-danger");
+  messageDiv.textContent = "Record not found!";
+  document.body.appendChild(messageDiv);
+}
+};
+xhr.send(JSON.stringify({wkno: wkno, lingap: lingap, f13: f13, f9: f9, bank: bank, usmo: usmo, cfo: cfo, dcode: districtCode}));
+
+}
+}
+
+
+
+
+</script>
+
+
+
+
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+  <a class="navbar-brand" href="#">USWO App</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/f1control">F1Control</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/fundstart">FundStart</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Districts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Expenses Panel</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Refunds</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">F2Bs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/mynote">My Notes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/collectionpermit">Collection Permit</a>
+      </li>
+    </ul>
+    <form class="form-inline ml-auto">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <div th:if="${welcomeMessage}">
+      <a class="btn btn-outline-light ml-2" th:if="${welcomeMessage != 'Welcome! Please log in to access the site.'}" href="/logout">Logout</a>
+      <a class="btn btn-outline-light ml-2" th:if="${welcomeMessage == 'Welcome! Please log in to access the site.'}" href="/login">Login</a>
+    </div>
+    
+
+  </div>
+</nav>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-12">
+        <div th:if="${welcomeMessage}">
+          <p th:text="${welcomeMessage}"></p>
+      </div>
+  </div>
+  </div>
+  </div>
+      
+  <div class="container my-4">
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Select a District:</h3>
+        <select class="form-control" id="districtDropdown">
+          <option value="">-- Select a District --</option>
+          <th:block th:each="district : ${districts}">
+            <option th:value="${district.did}" th:text="${district.district}"></option>
+          </th:block>
+        </select>
+      </div>
+      <div class="col-md-8">
+        <h3>Updated Records:</h3>
+        <div id="updatedRecords"></div>
+      </div>
+    </div>
+    <hr>
+
+    <h3>Lokal List:</h3>
+  </div>
+  <div class="col-md-12">
+    <div id="lokalTable"></div>
+    <div id="locale-dropdown"></div>
+</div>
+</body>
+  <!-- jQuery -->
+
+</html>

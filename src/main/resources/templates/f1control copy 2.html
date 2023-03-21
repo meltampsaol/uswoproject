@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lokal List</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      // Initialize DataTables plugin on the table
+      var table = $('#lokalTable').DataTable();
+
+      // Handle onchange event of the district dropdown
+      $('#districtDropdown').on('change', function () {
+        // Get the selected district ID
+        var districtId = $(this).val();
+
+        // Call the backend API to get the locales for the selected district
+        //getLocales(districtId);
+        getLocales(districtId);
+      });
+
+      // Handle click event of the update button
+      $('#lokalTable').on('click', '.updateBtn', function () {
+        // Get the lokal ID and the midweek and weekend values
+        var lokalId = $(this).data('id');
+        var midweek = $(this).closest('tr').find('input.midweekInput').val();
+        var weekend = $(this).closest('tr').find('input.weekendInput').val();
+
+        // Call the backend API to update the lokal record
+        $.ajax({
+          url: '/update-lokal/' + lokalId,
+          type: 'PUT',
+          data: {
+            midweek: midweek,
+            weekend: weekend
+          },
+          success: function (data) {
+            // Add the updated record to the updated records div
+            $('#updatedRecords').append(data);
+            // Hide the row of the updated record
+            table.row($(this).closest('tr')).remove().draw(false);
+          },
+          error: function (xhr, textStatus, errorThrown) {
+            console.log(xhr.responseText);
+          }
+        });
+      });
+    });
+   
+  function getLocales(districtId) {
+  console.log("/api/getlocales2/ called!");
+  if (districtId) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "/api/getlocales2/" + districtId);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.withCredentials = true;
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        var locales = JSON.parse(xhr.responseText);
+        console.log(locales);
+        console.log(xhr.getResponseHeader("X-SQL-Query"));
+        var table = $('#lokalTable').DataTable();
+        table.clear().draw(); // clear the table before appending the new rows
+        $('#updatedRecords').empty();
+        $.each(locales, function (i, locale) {
+          var row = $('<tr>').append(
+            $('<td>').text(locale.lcode),
+            $('<td>').text(locale.locale),
+            $('<td>').html('<input type="text" class="midweekInput form-control" value="' + locale.midweek + '">'),
+            $('<td>').html('<input type="text" class="weekendInput form-control" value="' + locale.weekend + '">'),
+            $('<td>').append(
+              $('<button>').text('Update').addClass('btn btn-primary updateBtn').data('id', locale.lcode)
+            )
+          ).appendTo(table);
+        });
+      }
+    };
+    xhr.timeout = 5000;
+    xhr.send();
+  }
+}
+
+function search_locales(districtId)
+		{
+      
+			if (window.XMLHttpRequest)
+			  {// code for IE7+, Firefox, Chrome, Opera, Safari
+			  xmlhttp=new XMLHttpRequest();
+			  }
+			else
+			  {// code for IE6, IE5
+			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			  }
+			xmlhttp.onreadystatechange=function()
+			  {
+			  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+				{
+				document.getElementById("lokalTable").innerHTML=xmlhttp.responseText;
+				}
+			  }
+			xmlhttp.open("GET","/api/getlocales2/"+districtId,true);
+			xmlhttp.send();
+		}
+
+</script>
+
+
+
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+  <a class="navbar-brand" href="#">USWO App</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/f1control">F1Control</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">FundStart</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Districts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Expenses Panel</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Refunds</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">F2Bs</a>
+      </li>
+    </ul>
+    <form class="form-inline ml-auto">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <div th:if="${welcomeMessage}">
+      <a class="btn btn-outline-light ml-2" th:if="${welcomeMessage != 'Welcome! Please log in to access the site.'}" href="/logout">Logout</a>
+      <a class="btn btn-outline-light ml-2" th:if="${welcomeMessage == 'Welcome! Please log in to access the site.'}" href="/login">Login</a>
+    </div>
+    
+
+  </div>
+</nav>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-12">
+        <div th:if="${welcomeMessage}">
+          <p th:text="${welcomeMessage}"></p>
+      </div>
+  </div>
+  </div>
+  </div>
+      
+  <div class="container my-4">
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Select a District:</h3>
+        <select class="form-control" id="districtDropdown">
+          <option value="">-- Select a District --</option>
+          <th:block th:each="district : ${districts}">
+            <option th:value="${district.did}" th:text="${district.district}"></option>
+          </th:block>
+        </select>
+      </div>
+      <div class="col-md-8">
+        <h3>Updated Records:</h3>
+        <div id="updatedRecords"></div>
+      </div>
+    </div>
+    <hr>
+
+    <h3>Lokal List:</h3>
+    <div id="lokalTable"></div>
+    <div id="locale-dropdown"></div>
+  </div>
+</body>
+  <!-- jQuery -->
+
+</html>

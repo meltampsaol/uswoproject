@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Auditor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  
+
+  <style>
+    .set-total {
+      display: none;
+    }
+
+    #set1-total {
+      display: block;
+    }
+
+    #set2-total {
+      display: none;
+    }
+
+    #set3-total {
+      display: none;
+    }
+
+    #set4-total {
+      display: block;
+    }
+
+    #set5-total {
+      display: none;
+    }
+
+    #set6-total {
+      display: none;
+    }
+
+    #set7-total {
+      display: block;
+    }
+
+    #set8-total {
+      display: none;
+    }
+
+    #set9-total {
+      display: none;
+    }
+
+    #set10-total {
+      display: block;
+    }
+
+    input {
+      width: 60px;
+    }
+
+    .set-fields {
+      width: 50px;
+      /* adjust the width as needed */
+    }
+
+    .total-fields {
+      width: 80px;
+      /* adjust the width as needed */
+    }
+  </style>
+
+</head>
+
+<body>
+  <input type="hidden" id="wscount" name="wscount" th:value="${wscount}">
+  <div>
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th>District</th>
+          <th>Lcode</th>
+          <th>Lokal</th>
+          <th>Worship Count</th>
+        </tr>
+        <tr>
+          <td><span th:text="${dname}"></span></td>
+          <td><span th:text="${lcode}"></span></td>
+          <td><span th:text="${lokal}"></span></td>
+          <td><span th:text="${wscount}"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Set 1 -->
+  <div id="set1" style="display: none;" class="table table-bordered">
+    <label for="admthur1">ADMTHUR:</label>
+    <input type="text" id="admthur1" name="admthur1" value="0.00" />
+
+    <label for="admsun1">ADMSUN:</label>
+    <input type="text" id="admsun1" name="admsun1" value="0.00" />
+
+    <label for="cws1">CWS:</label>
+    <input type="text" id="cws1" name="cws1" value="0.00" />
+
+    <label for="sol1">SOL:</label>
+    <input type="text" id="sol1" name="sol1" value="0.00" />
+
+    <label for="sod1">SOD:</label>
+    <input type="text" id="sod1" name="sod1" value="0.00" />
+
+    <label for="aid1">AID:</label>
+    <input type="text" id="aid1" name="aid1" value="0.00" />
+    <label for="txgv1">TXGV:</label>
+    <input type="text" id="txgv1" name="txgv1" value="0.00" />
+
+    <label for="reflok1">REFLOK:</label>
+    <input type="text" id="reflok1" name="reflok1" value="0.00" />
+
+    <label for="refdist1">REFDIST:</label>
+    <input type="text" id="refdist1" name="refdist1" value="0.00" />
+
+    <label for="refcent1">REFCENT:</label>
+    <input type="text" id="refcent1" name="refcent1" value="0.00" />
+    <label for="explok1">EXPLOK:</label>
+    <input type="text" id="explok1" name="explok1" value="0.00" />
+
+    <label for="expdist1">EXPDIST:</label>
+    <input type="text" id="expdist1" name="expdist1" value="0.00" />
+
+    <label for="expcent1">EXPCENT:</label>
+    <input type="text" id="expcent1" name="expcent1" value="0.00" />
+
+    <label for="mof1">MOF:</label>
+    <input type="text" id="mof1" name="mof1" value="0.00" />
+
+    <label for="cfolok1">CFOLOK:</label>
+    <input type="text" id="cfolok1" name="cfolok1" value="0.00" />
+    <label for="intl1">INTL:</label>
+    <input type="text" id="intl1" name="intl1" value="0.00" />
+
+
+    <!-- Add an empty div after each set -->
+    <div id="set1-total" class="set-total"></div>
+  </div>
+
+  <!-- Set 2 -->
+  <div id="set2" style="display: none;" class="table table-bordered">
+    <label for="admthur2">ADMTHUR:</label>
+    <input type="text" id="admthur2" name="admthur2" value="0.00" />
+
+    <label for="admsun2">ADMSUN:</label>
+    <input type="text" id="admsun2" name="admsun2" value="0.00" />
+
+    <label for="cws2">CWS:</label>
+    <input type="text" id="cws2" name="cws2" value="0.00" />
+
+    <label for="sol2">SOL:</label>
+    <input type="text" id="sol2" name="sol2" value="0.00" />
+
+    <label for="sod2">SOD:</label>
+    <input type="text" id="sod2" name="sod2" value="0.00" />
+
+    <label for="aid2">AID:</label>
+    <input type="text" id="aid2" name="aid2" value="0.00" />
+    <label for="txgv2">TXGV:</label>
+    <input type="text" id="txgv2" name="txgv2" value="0.00" />
+
+    <label for="reflok2">REFLOK:</label>
+    <input type="text" id="reflok2" name="reflok2" value="0.00" />
+
+    <label for="refdist2">REFDIST:</label>
+    <input type="text" id="refdist2" name="refdist2" value="0.00" />
+
+    <label for="refcent2">REFCENT:</label>
+    <input type="text" id="refcent2" name="refcent2" value="0.00" />
+
+    <label for="explok2">EXPLOK:</label>
+    <input type="text" id="explok2" name="explok2" value="0.00" />
+
+    <label for="expdist2">EXPDIST:</label>
+    <input type="text" id="expdist2" name="expdist2" value="0.00" />
+
+    <label for="expcent2">EXPCENT:</label>
+    <input type="text" id="expcent2" name="expcent2" value="0.00" />
+
+    <label for="mof2">MOF:</label>
+    <input type="text" id="mof2" name="mof2" value="0.00" />
+
+    <label for="cfolok2">CFOLOK:</label>
+    <input type="text" id="cfolok2" name="cfolok2" value="0.00" />
+    <label for="intl2">INTL:</label>
+    <input type="text" id="intl2" name="intl2" value="0.00" />
+
+
+    <!-- Add an empty div after each set -->
+    <div id="set2-total" class="set-total"></div>
+  </div>
+
+  <div id="set3" style="display: none;" class="table table-bordered">
+    <label for="admthur3">ADMTHUR:</label>
+    <input type="text" id="admthur3" name="admthur3" value="0.00" />
+
+    <label for="admsun3">ADMSUN:</label>
+    <input type="text" id="admsun3" name="admsun3" value="0.00" />
+
+    <label for="cws3">CWS:</label>
+    <input type="text" id="cws3" name="cws3" value="0.00" />
+
+    <label for="sol3">SOL:</label>
+    <input type="text" id="sol3" name="sol3" value="0.00" />
+
+    <label for="sod3">SOD:</label>
+    <input type="text" id="sod3" name="sod3" value="0.00" />
+
+    <label for="aid3">AID:</label>
+    <input type="text" id="aid3" name="aid3" value="0.00" />
+    <label for="txgv3">TXGV:</label>
+    <input type="text" id="txgv3" name="txgv3" value="0.00" />
+
+    <label for="reflok3">REFLOK:</label>
+    <input type="text" id="reflok3" name="reflok3" value="0.00" />
+
+    <label for="refdist3">REFDIST:</label>
+    <input type="text" id="refdist3" name="refdist3" value="0.00" />
+
+    <label for="refcent3">REFCENT:</label>
+    <input type="text" id="refcent3" name="refcent3" value="0.00" />
+    <label for="explok3">EXPLOK:</label>
+    <input type="text" id="explok3" name="explok3" value="0.00" />
+
+    <label for="expdist3">EXPDIST:</label>
+    <input type="text" id="expdist3" name="expdist3" value="0.00" />
+
+    <label for="expcent3">EXPCENT:</label>
+    <input type="text" id="expcent3" name="expcent3" value="0.00" />
+
+    <label for="mof3">MOF:</label>
+    <input type="text" id="mof3" name="mof3" value="0.00" />
+
+    <label for="cfolok3">CFOLOK:</label>
+    <input type="text" id="cfolok3" name="cfolok3" value="0.00" />
+    <label for="intl3">INTL:</label>
+    <input type="text" id="intl3" name="intl3" value="0.00" />
+
+
+    <!-- Add an empty div after each set -->
+    <div id="set3-total" class="set-total"></div>
+  </div>
+
+  <!-- Set 4 -->
+  <div id="set4" style="display: none;" class="table table-bordered">
+    <label for="admthur4">ADMTHUR:</label>
+    <input type="text" id="admthur4" name="admthur4" value="0.00" />
+
+    <label for="admsun4">ADMSUN:</label>
+    <input type="text" id="admsun4" name="admsun4" value="0.00" />
+
+    <label for="cws4">CWS:</label>
+    <input type="text" id="cws4" name="cws4" value="0.00" />
+
+    <label for="sol4">SOL:</label>
+    <input type="text" id="sol4" name="sol4" value="0.00" />
+
+    <label for="sod4">SOD:</label>
+    <input type="text" id="sod4" name="sod4" value="0.00" />
+
+    <label for="aid4">AID:</label>
+    <input type="text" id="aid4" name="aid4" value="0.00" />
+    <label for="txgv4">TXGV:</label>
+    <input type="text" id="txgv4" name="txgv4" value="0.00" />
+
+    <label for="reflok4">REFLOK:</label>
+    <input type="text" id="reflok4" name="reflok4" value="0.00" />
+
+    <label for="refdist4">REFDIST:</label>
+    <input type="text" id="refdist4" name="refdist4" value="0.00" />
+
+    <label for="refcent4">REFCENT:</label>
+    <input type="text" id="refcent4" name="refcent4" value="0.00" />
+
+    <label for="explok4">EXPLOK:</label>
+    <input type="text" id="explok4" name="explok4" value="0.00" />
+
+    <label for="expdist4">EXPDIST:</label>
+    <input type="text" id="expdist4" name="expdist4" value="0.00" />
+
+    <label for="expcent4">EXPCENT:</label>
+    <input type="text" id="expcent4" name="expcent4" value="0.00" />
+
+    <label for="mof4">MOF:</label>
+    <input type="text" id="mof4" name="mof4" value="0.00" />
+
+    <label for="cfolok4">CFOLOK:</label>
+    <input type="text" id="cfolok4" name="cfolok4" value="0.00" />
+    <label for="intl4">INTL:</label>
+    <input type="text" id="intl4" name="intl4" value="0.00" />
+
+
+    <!-- Add an empty div after each set -->
+    <div id="set4-total" class="set-total"></div>
+  </div>
+
+  <div id="set5" style="display: none;" class="table table-bordered">
+
+    <label for="admthur5">ADMTHUR:</label>
+    <input type="text" id="admthur5" name="admthur5" value="0.00" />
+
+    <label for="admsun5">ADMSUN:</label>
+    <input type="text" id="admsun5" name="admsun5" value="0.00" />
+
+    <label for="cws5">CWS:</label>
+    <input type="text" id="cws5" name="cws5" value="0.00" />
+
+    <label for="sol5">SOL:</label>
+    <input type="text" id="sol5" name="sol5" value="0.00" />
+
+    <label for="sod5">SOD:</label>
+    <input type="text" id="sod5" name="sod5" value="0.00" />
+
+    <label for="aid5">AID:</label>
+    <input type="text" id="aid5" name="aid5" value="0.00" />
+    <label for="txgv5">TXGV:</label>
+    <input type="text" id="txgv5" name="txgv5" value="0.00" />
+
+    <label for="reflok5">REFLOK:</label>
+    <input type="text" id="reflok5" name="reflok5" value="0.00" />
+
+    <label for="refdist5">REFDIST:</label>
+    <input type="text" id="refdist5" name="refdist5" value="0.00" />
+
+    <label for="refcent5">REFCENT:</label>
+    <input type="text" id="refcent5" name="refcent5" value="0.00" />
+    <label for="explok5">EXPLOK:</label>
+    <input type="text" id="explok5" name="explok5" value="0.00" />
+
+    <label for="expdist5">EXPDIST:</label>
+    <input type="text" id="expdist5" name="expdist5" value="0.00" />
+
+    <label for="expcent5">EXPCENT:</label>
+    <input type="text" id="expcent5" name="expcent5" value="0.00" />
+
+    <label for="mof5">MOF:</label>
+    <input type="text" id="mof5" name="mof5" value="0.00" />
+
+    <label for="cfolok5">CFOLOK:</label>
+    <input type="text" id="cfolok5" name="cfolok5" value="0.00" />
+    <label for="intl5">INTL:</label>
+    <input type="text" id="intl5" name="intl5" value="0.00" />
+
+
+    <!-- Add an empty div after each set -->
+    <div id="set5-total" class="set-total"></div>
+  </div>
+
+  <!-- Set 6 -->
+  <div id="set6" style="display: none;" class="table table-bordered">
+    <label for="admthur6">ADMTHUR:</label>
+    <input type="text" id="admthur6" name="admthur6" value="0.00" />
+
+    <label for="admsun6">ADMSUN:</label>
+    <input type="text" id="admsun6" name="admsun6" value="0.00" />
+
+    <label for="cws6">CWS:</label>
+    <input type="text" id="cws6" name="cws6" value="0.00" />
+
+    <label for="sol6">SOL:</label>
+    <input type="text" id="sol6" name="sol6" value="0.00" />
+
+    <label for="sod6">SOD:</label>
+    <input type="text" id="sod6" name="sod6" value="0.00" />
+
+    <label for="aid6">AID:</label>
+    <input type="text" id="aid6" name="aid6" value="0.00" />
+    <label for="txgv6">TXGV:</label>
+    <input type="text" id="txgv6" name="txgv6" value="0.00" />
+
+    <label for="reflok6">REFLOK:</label>
+    <input type="text" id="reflok6" name="reflok6" value="0.00" />
+
+    <label for="refdist6">REFDIST:</label>
+    <input type="text" id="refdist6" name="refdist6" value="0.00" />
+
+    <label for="refcent6">REFCENT:</label>
+    <input type="text" id="refcent6" name="refcent6" value="0.00" />
+
+    <label for="explok6">EXPLOK:</label>
+    <input type="text" id="explok6" name="explok6" value="0.00" />
+
+    <label for="expdist6">EXPDIST:</label>
+    <input type="text" id="expdist6" name="expdist6" value="0.00" />
+
+    <label for="expcent6">EXPCENT:</label>
+    <input type="text" id="expcent6" name="expcent6" value="0.00" />
+
+    <label for="mof6">MOF:</label>
+    <input type="text" id="mof6" name="mof6" value="0.00" />
+
+    <label for="cfolok6">CFOLOK:</label>
+    <input type="text" id="cfolok6" name="cfolok6" value="0.00" />
+
+    <label for="intl6">INTL:</label>
+    <input type="text" id="intl6" name="intl6" value="0.00" />
+
+    <!-- Add an empty div after each set -->
+    <div id="set6-total" class="set-total"></div>
+  </div>
+
+
+
+  <div class="empty"></div>
+  <!-- Total Row -->
+  <div>
+    <label>Total </label>
+  </div>
+  <label for="total-admin">Total Admin:</label>
+  <input type="text" id="total-admin" name="total-admin" value="0.00" readonly />
+  <label for="total-weekend">Total Weekend:</label>
+  <input type="text" id="total-weekend" name="total-weekend" value="0.00" readonly />
+  <label for="total-wholeweek">Total WholeWeek:</label>
+  <input type="text" id="total-wholeweek" name="total-wholeweek" value="0.00" readonly />
+  <label for="total-remainder">Total Remainder:</label>
+  <input type="text" id="total-remainder" name="total-remainder" value="0.00" readonly />
+  <label for="total-central">Total Central:</label>
+  <input type="text" id="total-central" name="total-central" value="0.00" readonly />
+  <label for="total-cfolokrem">Total CFO & Locale Remittance :</label>
+  <input type="text" id="total-cfolokrem" name="total-cfolokrem" value="0.00" readonly />
+  <div id="total" style="display: none;">
+    <label for="total-admthur">ADMTHUR:</label>
+    <input type="text" id="total-admthur" name="total-admthur" value="0.00" readonly />
+    <label for="total-admsun">ADMSUN:</label>
+    <input type="text" id="total-admsun" name="total-admsun" value="0.00" readonly />
+
+    <label for="total-cws">CWS:</label>
+    <input type="text" id="total-cws" name="total-cws" value="0.00" readonly />
+    <labelfor="total-sol">SOL:</label>
+      <input type="text" id="total-sol" name="total-sol" value="0.00" readonly />
+      <labelfor="total-sod">SOD:</label>
+        <input type="text" id="total-sod" name="total-sod" value="0.00" readonly />
+
+        <label for="total-aid">AID:</label>
+        <input type="text" id="total-aid" name="total-aid" value="0.00" readonly />
+
+        <label for="total-txgv">TXGV:</label>
+        <input type="text" id="total-txgv" name="total-txgv" value="0.00" readonly />
+
+        <label for="total-refcent">REFCENT:</label>
+        <input type="text" id="total-refcent" name="total-refcent" value="0.00" readonly />
+
+        <label for="total-expcent">EXPCENT:</label>
+        <input type="text" id="total-expcent" name="total-expcent" value="0.00" readonly />
+
+        <label for="total-cfolok">CFOLOK:</label>
+        <input type="text" id="total-cfolok" name="total-cfolok" value="0.00" readonly />
+
+        <label for="total-mof">MOF:</label>
+        <input type="text" id="total-mof" name="total-mof" value="0.00" readonly />
+
+        <label for="total-intl">INTL:</label>
+        <input type="text" id="total-intl" name="total-intl" value="0.00" readonly />
+
+        <label for="total-remittance">Remittance:</label>
+        <input type="text" id="total-remittance" name="total-remittance" value="0.00" readonly />
+
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    var wscountField = document.getElementById('wscount');
+    var numSets = parseInt(wscountField.value);
+
+    updateSets();
+    computeTotalRemittance(numSets);
+    showSetDivs(numSets);
+
+    $('input:not(#total input)').on('change', function () {
+      computeTotalRemittance(numSets);
+    });
+    $('input:not(#total input)').on('keyup', function () {
+      computeTotalRemittance(numSets);
+    });
+    $('input:not(#total input)').on('keydown', function () {
+      computeTotalRemittance(numSets);
+    });
+
+  });
+
+  function updateSets() {
+    // get the current value of wscount
+    var wscount = parseInt(document.getElementById('wscount').value);
+
+    // show or hide the set divs based on wscount
+    for (var i = 1; i <= 10; i++) {
+      var setDiv = document.getElementById('set' + i);
+      if (setDiv) {
+        if (i <= wscount) {
+          setDiv.style.display = 'block';
+        } else {
+          setDiv.style.display = 'none';
+        }
+      }
+    }
+
+    // show or hide the total row based on wscount
+    var totalRow = document.getElementById('total');
+    if (totalRow) {
+      if (wscount > 0) {
+        totalRow.style.display = 'block';
+      } else {
+        totalRow.style.display = 'none';
+      }
+    }
+  }
+
+  function computeTotalRemittance(numSets) {
+    var totalCfolokrem = 0, totalCentral = 0, totalAdmin = 0, totalRemainder = 0, totalWholeweek = 0, totalWeekend = 0, totalAdmthur = 0, totalAdmsun = 0, totalCws = 0, totalSol = 0, totalSod = 0, totalAid = 0, totalTxgv = 0, totalRefcent = 0, totalExpcent = 0, totalCfolok = 0, totalMof = 0, totalIntl = 0;
+    for (var i = 1; i <= numSets; i++) {
+      var admthur = parseFloat(document.getElementById("admthur" + i).value);
+      var admsun = parseFloat(document.getElementById("admsun" + i).value);
+      var cws = parseFloat(document.getElementById("cws" + i).value);
+      var aid = parseFloat(document.getElementById("aid" + i).value);
+      var sol = parseFloat(document.getElementById("sol" + i).value);
+      var sod = parseFloat(document.getElementById("sod" + i).value);
+      var txgv = parseFloat(document.getElementById("txgv" + i).value);
+      var refcent = parseFloat(document.getElementById("refcent" + i).value);
+      var reflok = parseFloat(document.getElementById("reflok" + i).value);
+      var refdist = parseFloat(document.getElementById("refdist" + i).value);
+      var expcent = parseFloat(document.getElementById("expcent" + i).value);
+      var explok = parseFloat(document.getElementById("explok" + i).value);
+      var expdist = parseFloat(document.getElementById("expdist" + i).value);
+      var cfolok = parseFloat(document.getElementById("cfolok" + i).value);
+      var intl = parseFloat(document.getElementById("intl" + i).value);
+      var mof = parseFloat(document.getElementById("mof" + i).value);
+
+
+
+      totalAdmthur += admthur;
+      totalAdmsun += admsun;
+      totalCws += cws;
+      totalSol += sol;
+      totalSod += sod;
+      totalAid += aid;
+      totalTxgv += txgv;
+      totalRefcent += refcent;
+      totalExpcent += expcent;
+      totalCfolok += cfolok;
+      totalMof += mof;
+      totalIntl += intl;
+      totalWeekend += admsun + cws + sol + sod + aid + txgv + refcent + refdist + reflok;
+      totalWholeweek += admthur + admsun + cws + sol + sod + aid + txgv + refcent + refdist + reflok;
+      totalRemainder += admthur + admsun + cws + sol + sod + aid + txgv + refcent + refdist + reflok - (expcent + expdist + explok);
+      totalAdmin += admthur + admsun + cws;
+      totalCentral += admthur + admsun + txgv + cws + refcent - expcent;
+      totalCfolokrem += cfolok + intl + mof;
+    }
+    var totalRemittance = totalAdmthur + totalAdmsun + totalCws + totalAid + totalTxgv + totalRefcent - totalExpcent + totalCfolok + totalMof + totalIntl;
+    document.getElementById("total-cfolokrem").value = totalCfolokrem.toFixed(2);
+    document.getElementById("total-central").value = totalCentral.toFixed(2);
+    document.getElementById("total-admin").value = totalAdmin.toFixed(2);
+    document.getElementById("total-remainder").value = totalRemainder.toFixed(2);
+    document.getElementById("total-wholeweek").value = totalWholeweek.toFixed(2);
+    document.getElementById("total-weekend").value = totalWeekend.toFixed(2);
+    document.getElementById("total-admthur").value = totalAdmthur.toFixed(2);
+    document.getElementById("total-admsun").value = totalAdmsun.toFixed(2);
+    document.getElementById("total-cws").value = totalCws.toFixed(2);
+    document.getElementById("total-sol").value = totalSol.toFixed(2);
+    document.getElementById("total-sod").value = totalSod.toFixed(2);
+    document.getElementById("total-aid").value = totalAid.toFixed(2);
+    document.getElementById("total-txgv").value = totalTxgv.toFixed(2);
+    document.getElementById("total-refcent").value = totalRefcent.toFixed(2);
+    document.getElementById("total-expcent").value = totalExpcent.toFixed(2);
+    document.getElementById("total-cfolok").value = totalCfolok.toFixed(2);
+    document.getElementById("total-mof").value = totalMof.toFixed(2);
+    document.getElementById("total-intl").value = totalIntl.toFixed(2);
+    document.getElementById("total-remittance").value = totalRemittance.toFixed(2);
+  }
+
+
+  function showSetDivs(numSets) {
+    for (var i = 1; i <= 10; i++) {
+      var setDiv = document.getElementById('set' + i);
+      if (setDiv) {
+        if (i <= numSets) {
+          setDiv.style.display = 'block';
+        } else {
+          setDiv.style.display = 'none';
+        }
+      }
+
+      var totalDiv = document.getElementById('set' + i + '-total');
+      if (totalDiv) {
+        if (i <= numSets) {
+          totalDiv.style.display = 'block';
+        } else {
+          totalDiv.style.display = 'none';
+        }
+      }
+    }
+  }
+
+  function calculateCfolokIntl(setNum) {
+    var sol = parseFloat(document.getElementById("sol" + setNum).value);
+    var cfolok = 0.1 * sol;
+    var intl = 0.05 * sol;
+    document.getElementById("cfolok" + setNum).value = cfolok.toFixed(2);
+    document.getElementById("intl" + setNum).value = intl.toFixed(2);
+  }
+
+  // add change event listener to each "sol" field
+  for (var i = 1; i <= 10; i++) {
+    var solField = document.getElementById("sol" + i);
+    if (solField) {
+      solField.addEventListener("change", function () {
+        var setNum = parseInt(this.id.replace("sol", ""));
+        calculateCfolokIntl(setNum);
+        computeTotalRemittance(parseInt(document.getElementById("wscount").value));
+      });
+    }
+  }
+
+
+  // get all input fields
+  document.addEventListener('DOMContentLoaded', function () {
+    // get all input fields
+    var inputs = document.getElementsByTagName("input");
+
+    // set initial focus on first input field
+    inputs[0].focus();
+
+    // add event listener for keydown
+    document.addEventListener("keydown", function (e) {
+      var keyCode = e.keyCode;
+      var active = document.activeElement;
+
+      // move focus to next input field on right arrow key press
+      if (keyCode === 39) {
+        if (active.nextElementSibling) {
+          active.nextElementSibling.focus();
+        }
+      }
+
+      // move focus to previous input field on left arrow key press
+      if (keyCode === 37) {
+        if (active.previousElementSibling) {
+          active.previousElementSibling.focus();
+        }
+      }
+
+      // move focus to input field above on up arrow key press
+      if (keyCode === 38) {
+        var row = active.parentElement.previousElementSibling;
+        if (row) {
+          var col = active.cellIndex;
+          var prevRow = row.previousElementSibling;
+          if (prevRow) {
+            prevRow.children[col].querySelector("input").focus();
+          }
+        }
+      }
+
+      // move focus to input field below on down arrow key press
+      if (keyCode === 40) {
+        var row = active.parentElement.nextElementSibling;
+        if (row) {
+          var col = active.cellIndex;
+          var nextRow = row.nextElementSibling;
+          if (nextRow) {
+            nextRow.children[col].querySelector("input").focus();
+          }
+        }
+      }
+    });
+
+  });
+  
+
+  </script>
+</body>
+
+</html>

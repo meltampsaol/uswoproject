@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Generated Fields</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+  <style>
+    body {
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    .total {
+      font-weight: bold;
+      font-size: 18px;
+      color: green;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Generated Fields</h2>
+    <hr>
+    <form id="fields-form">
+        Lcode<input type="text" id="lcode-input" name="lcode" th:value="${lcode}">
+        Midweek Value<input type="text" id="midweek-input" name="midweek" th:value="${midweek}">
+        Weekend Value<input type="text" id="weekend-input" name="weekend" th:value="${weekend}">
+        
+
+            <hr>
+
+      <div class="form-group">
+        <label for="total">Total:</label>
+        <span class="total" id="total"></span>
+      </div>
+
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+<script>
+  $(document).ready(function() {
+  const lcode = $("#lcode-input").val();
+  const midweek = $("#midweek-input").val();
+  const totalField = $("#total");
+
+  // Generate the form fields based on the midweek value
+  for (let i = 1; i <= midweek; i++) {
+    const fieldId = "field-" + i;
+    const label = "Field " + i + ":";
+    const input = '<input type="text" class="form-control" id="' + fieldId + '" name="' + fieldId + '" style="width: 100px;">';
+
+    const formGroup = '<div class="form-group"><label for="' + fieldId + '">' + label + '</label>' + input + '</div>';
+    $("#fields-form").append(formGroup);
+  }
+
+  // Add arrow key navigation
+  addArrowKeyNavigation();
+
+  $(".form-control").on("input", function() {
+    let total = 0;
+    $(".form-control").each(function() {
+      const value = parseFloat($(this).val());
+      if (!isNaN(value)) {
+        total += value;
+      }
+    });
+
+    totalField.text(total.toFixed(2));
+
+    if (total > 0) {
+      totalField.addClass("text-success");
+      totalField.removeClass("text-danger");
+    } else if (total < 0) {
+      totalField.addClass("text-danger");
+      totalField.removeClass("text-success");
+    } else {
+      totalField.removeClass("text-danger text-success");
+    }
+  });
+});
+
+function addArrowKeyNavigation() {
+  const fields = $(".form-control");
+
+  fields.each(function(index, field) {
+    $(field).keydown(function(event) {
+      const key = event.which;
+
+      // Move focus to the left
+      if (key === 37 && index > 0) {
+        fields.eq(index - 1).focus();
+      }
+
+      // Move focus to the right
+      if (key === 39 && index < fields.length - 1) {
+        fields.eq(index + 1).focus();
+      }
+
+      // Move focus up
+      if (key === 38 && index - 3 >= 0) {
+        fields.eq(index - 3).focus();
+      }
+
+      // Move focus down
+      if (key === 40 && index + 3 < fields.length) {
+        fields.eq(index + 3).focus();
+      }
+    });
+  });
+}
+
+
+</script>  
+  
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lokal List</title>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<!-- Include Bootstrap's JavaScript after jQuery -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+
+<!-- Include jquery.dataTables.min.js after jQuery -->
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      
+
+      // Handle onchange event of the district dropdown
+      $('#districtDropdown').on('change', function () {
+        // Get the selected district ID
+        var districtId = $(this).val();
+
+        // Call the backend API to get the locales for the selected district
+        //getLocales(districtId);
+        search_locales(districtId);
+      });
+
+    });
+  
+
+
+function search_locales(districtId)
+		{
+      
+			if (window.XMLHttpRequest)
+			  {// code for IE7+, Firefox, Chrome, Opera, Safari
+			  xmlhttp=new XMLHttpRequest();
+			  }
+			else
+			  {// code for IE6, IE5
+			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			  }
+			xmlhttp.onreadystatechange=function()
+			  {
+			  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+				{
+				document.getElementById("lokalTable").innerHTML=xmlhttp.responseText;
+				}
+			  }
+			xmlhttp.open("GET","/lokal-list/"+districtId,true);
+			xmlhttp.send();
+		}
+
+
+
+</script>
+<script>
+  $(document).ready(function () {
+      // Add an event listener to the table that listens for button clicks even from the <div>
+      $("#lokalTable").on("click", ".btn.btn-primary", handleButtonClick2);
+      $("#lokalTable").on("click", ".btn.btn-success", handleButtonClick3);
+      
+  });
+
+  // Define a function to handle button click events
+function handleButtonClick2(event) {
+console.log("Button clicked!");
+if ($(event.target).hasClass("btn") && $(event.target).hasClass("btn-primary")) {
+const buttonId = $(event.target).attr("id");
+const tableRow = $(event.target).closest("tr");
+const wscount = tableRow.find('td:eq(2) input').val();
+const tdValue = tableRow.find('td:eq(1)').text();
+
+
+const lcode = buttonId.split('-')[1];
+console.log("Lcode: " + lcode);
+console.log("WSCOUNT: " + wscount);
+
+console.log(tableRow.html())
+const xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+xhr.open("PUT", "/updateLokal/" + lcode);
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.onreadystatechange = function() {
+if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("text-success");
+  messageDiv.textContent = "Record of " + tdValue + " is updated successfully!";
+  document.body.appendChild(messageDiv);
+} else if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 404) {
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("text-danger");
+  messageDiv.textContent = "Record not found!";
+  document.body.appendChild(messageDiv);
+}
+};
+xhr.send(JSON.stringify({ wscount: wscount}));
+}
+}
+
+function handleButtonClick4(event) {
+  console.log("Button clicked!");
+  if ($(event.target).hasClass("btn") && $(event.target).hasClass("btn-success")) {
+    const buttonId = $(event.target).attr("id");
+    const lcode = buttonId.split('-')[1];
+    console.log("Lcode: " + lcode);
+    window.open("/f1auditor/" + lcode, "_blank");
+  }
+}
+//below is the code for f1auditor.html
+function handleButtonClick3(event) {
+  console.log("Button clicked!");
+  if ($(event.target).hasClass("btn") && $(event.target).hasClass("btn-success")) {
+    const buttonId = $(event.target).attr("id");
+    const tableRow = $(event.target).closest("tr");
+    const lcode = buttonId.split('-')[1];
+    console.log("Lcode: " + lcode);
+    $.get("/f1auditor/" + lcode, function(response) {
+      $("#lokalTable").html(response);
+      initializePage(); // call the function that initializes the page
+    });
+  }
+}
+
+function initializePage() {
+  // Add the col-md-12 class to the lokalTable div
+  $("#lokalTable").addClass("col-md-12");
+
+  var wscountField = document.getElementById('wscount');
+  var numSets = parseInt(wscountField.value);
+
+  updateSets();
+  computeTotalRemittance(numSets);
+  showSetDivs(numSets);
+
+  $('input:not(#total input)').on('change', function () {
+    computeTotalRemittance(numSets);
+  });
+  $('input:not(#total input)').on('keyup', function () {
+    computeTotalRemittance(numSets);
+  });
+  $('input:not(#total input)').on('keydown', function () {
+    computeTotalRemittance(numSets);
+  });
+
+  // Remove the col-md-4 class from each set of fields
+  for (var i = 1; i <= numSets; i++) {
+    var setDiv = document.getElementById('set' + i);
+    if (setDiv) {
+      setDiv.classList.remove("col-md-4");
+    }
+  }
+}
+
+
+</script>
+
+
+
+
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+  <a class="navbar-brand" href="#">USWO App</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/f1control">F1Control</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/fundstart">FundStart</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Districts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Expenses Panel</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Refunds</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">F2Bs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/mynote">My Notes</a>
+      </li>
+    </ul>
+    <form class="form-inline ml-auto">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <div th:if="${welcomeMessage}">
+      <a class="btn btn-outline-light ml-2" th:if="${welcomeMessage != 'Welcome! Please log in to access the site.'}" href="/logout">Logout</a>
+      <a class="btn btn-outline-light ml-2" th:if="${welcomeMessage == 'Welcome! Please log in to access the site.'}" href="/login">Login</a>
+    </div>
+    
+
+  </div>
+</nav>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-12">
+        <div th:if="${welcomeMessage}">
+          <p th:text="${welcomeMessage}"></p>
+      </div>
+  </div>
+  </div>
+  </div>
+  <div class="container my-8">
+    <div class="row">
+      <div class="col-md-8">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Locale</th>
+                <th>District</th>
+                <th>Wkno</th>
+                <th>Concerns</th>
+                <th>Action</th>
+                <th>Action Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr th:each="note : ${notes}">
+                <td th:text="${note.locale}"></td>
+                <td th:text="${note.district}"></td>
+                <td th:text="${note.wkno}"></td>
+                <td th:text="${note.concerns}"></td>
+                <td th:text="${note.action}"></td>
+                <td th:text="${note.actionDate}"></td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-edit"
+                            th:data-id="${note.id}">Edit</button>
+                    <button type="button" class="btn btn-danger btn-delete"
+                            th:data-id="${note.id}">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
+    <script type="text/javascript">
+        // Edit note
+        $(".btn-edit").click(function () {
+            var id = $(this).data("id");
+    
+            $("#notes_list").hide();
+            $("#note_form").show();
+            $("#note_form").load("edit_note_form.html?id=" + id);
+        });
+    
+        $(".btn-delete").click(function () {
+            if (confirm("Are you sure you want to delete this note?")) {
+                var recid = $(this).data("id");
+    
+                $.ajax({
+                    type: "POST",
+                    url: "delete_note.html",
+                    data: {recid: recid},
+                    success: function (data) {
+                        $("#notes_list").load("view_notes.html");
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>    

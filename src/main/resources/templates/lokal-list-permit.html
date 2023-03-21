@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lokal List</title>
+</head>
+
+<body>
+    <div class="container">
+
+        <table class="table" id="lokalTable2">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Locale</th>
+                    <th>District</th>
+                    <th>Permit Number (Locale)</th>
+                    <th>Permit Number (District)</th>
+                    <th>Locale Collection</th>
+                    <th>District Collection</th>
+                    <th>Lingap Collection Permit</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <form method="post" th:object="${collectionPermit}">
+                    <tr th:each="locale : ${locales}">
+                        <td th:text="${locale.lcode}"></td>
+                        <td th:text="${locale.locale}"></td>
+                        <td th:text="${locale.district.district}"></td>
+                        <td><input type="text"
+                            th:value="${collpermitMap[locale.lcode] != null ? collpermitMap[locale.lcode].permitnumber_locale : ''}"
+                            th:name="permitnumber_locale" class="form-control"></td>
+                        <td><input type="text"
+                            th:value="${collpermitMap[locale.lcode] != null ? collpermitMap[locale.lcode].permitnumber_district : ''}"
+                            th:name="permitnumber_district" class="form-control"></td>
+                        <td><input type="text"
+                            th:value="${collpermitMap[locale.lcode] != null ? collpermitMap[locale.lcode].locale : ''}"
+                            th:name="locale" class="form-control"></td>
+                        <td><input type="text"
+                            th:value="${collpermitMap[locale.lcode] != null ? collpermitMap[locale.lcode].district : ''}"
+                            th:name="district" class="form-control"></td>
+                        <td><input type="text"
+                            th:value="${collpermitMap[locale.lcode] != null ? collpermitMap[locale.lcode].lingap : ''}"
+                            th:name="lingap" class="form-control"></td>
+                        <td>
+                            <button type="submit" class="btn btn-primary" 
+                                th:attr="data-id=${locale.lcode}, data-district-code=${locale.did}" 
+                                name="updateBtn" th:id="'updateBtn-' + ${locale.lcode}">
+                                Save Collection Permit
+                            </button>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+        </table>
+        
+    </div>
+</body>
+
+</html>

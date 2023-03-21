@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Create User</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        >
+</head>
+<body>
+
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+  <a class="navbar-brand" href="#">USWO App</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="#">F1Control</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">FundStart</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Districts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Expenses Panel</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Refunds</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">F2Bs</a>
+      </li>
+    </ul>
+    <form class="form-inline ml-auto">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <a class="btn btn-outline-light ml-2"  href="/logout">Logout</a>
+  </div>
+</nav>
+<!-- Main content -->
+<div class="container mt-4">
+  <h1>Create User</h1>
+  <form method="POST" th:action="@{/save-user}">
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" class="form-control" id="username" name="username" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <div class="form-group">
+      <label for="roles">Roles:</label>
+      <input type="text" class="form-control" id="roles" name="roles" required>
+    </div>
+    <div class="form-group">
+      <label for="districts">Districts:</label>
+      <input type="text" class="form-control" id="districts" name="districts" required>
+      <small id="districtsHelp" class="form-text text-muted">Enter one or more district codes separated by
+        comma.</small>
+
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="admin" name="admin">
+      <label class="form-check-label" for="admin">Admin</label>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Create User</button>
+  </form>
+</div>
+<!-- Bootstrap JS dependencies -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        ></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        ></script>
+</body>
+</html>
+
+

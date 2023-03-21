@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lokal List</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Add an event listener to the table that listens for button clicks
+            $("#lokalTable").on("click", ".btn.btn-primary", handleButtonClick2);
+
+            function handleButtonClick2(event) {
+                console.log("Button clicked!");
+
+                if ($(event.target).hasClass("btn") && $(event.target).hasClass("btn-primary")) {
+    // Close the current window
+    window.close();
+
+    // Open the new popup window
+    const buttonId = $(event.target).attr("id");
+    const tableRow = $(event.target).closest("tr");
+    const wscount = tableRow.find('td:eq(2)').text().trim();
+    const lcode = buttonId.split('-')[1];
+
+    console.log("Lcode: " + lcode);
+    console.log("WSCOUNT: " + wscount);
+
+    // Open the field generator page with the lcode and cwscount values as URL parameters
+    window.open("/f1auditor/"+lcode, "Field Generator", "width=800,height=600,scrollbars=yes,menubar=yes,location=yes,resizable=yes");
+}
+
+
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+
+        <table class="table" id="lokalTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Locale</th>
+                    <th>WS Count</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="locale : ${locales}">
+                    <td th:text="${locale.lcode}"></td>
+                    <td th:text="${locale.locale}"></td>
+                    <td th:text="${locale.wscount}"></td>
+                   
+                    <td>
+                        <button type="button" class="btn btn-primary" th:attr="data-id=${locale.lcode}"
+                            name="generateBtn" th:id="'generateBtn-' + ${locale.lcode}">Generate</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Note</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    function filterLocales() {
+      let selectedDistrictId = document.getElementById('district').value;
+      let locales = document.getElementById('locale');
+      let allLocales = JSON.parse(locales.getAttribute('data-all-locales'));
+
+      locales.innerHTML = '';
+      for (let i = 0; i < allLocales.length; i++) {
+        if (allLocales[i].did === selectedDistrictId) {
+          let option = document.createElement('option');
+          option.value = allLocales[i].lcode;
+          option.text = allLocales[i].locale;
+          locales.add(option);
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <form id="add_note_form" th:action="@{/save-note}" th:object="${note}" method="post">
+    <div class="form-group">
+      <label for="district">District:</label>
+      <select class="form-control" id="district" name="district" th:field="*{district}" onchange="filterLocales()">
+        <option value="" selected disabled>Select a district</option>
+        <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}"></option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="locale">Locale:</label>
+      <select class="form-control" id="locale" name="locale" th:field="*{locale}" data-all-locales="${locales}">
+        <option value="" selected disabled>Select a locale</option>
+      </select>
+    </div>
+
+    <!-- Add other form groups here -->
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary" id="btn_cancel">Cancel</button>
+  </form>
+</body>
+</html>
