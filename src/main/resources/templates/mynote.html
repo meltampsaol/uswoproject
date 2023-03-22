@@ -119,54 +119,6 @@
     window.location.href = '/update-note/' + lcode;
 });
 
-    $(document).ready(function() {
-        // Add a new note
-        $('#add-note-form').submit(function(e) {
-            e.preventDefault(); // Prevent the form from submitting normally
-    
-            var formData = $(this).serialize(); // Serialize the form data
-    
-            $.ajax({
-                url: '/add-note',
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    // Handle the success response
-                    console.log(response);
-                    // Reload the notes list
-                    $('#notes-list').load('/mynote #notes-list');
-                },
-                error: function(error) {
-                    // Handle the error response
-                    console.log(error);
-                }
-            });
-        });
-    
-        // Update a note
-        $('#edit-note-form').submit(function(e) {
-            e.preventDefault(); // Prevent the form from submitting normally
-    
-            var formData = $(this).serialize(); // Serialize the form data
-            var noteId = $(this).data('note-id'); // Get the note ID from the form data attribute
-    
-            $.ajax({
-                url: '/update-note/' + noteId,
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    // Handle the success response
-                    console.log(response);
-                    // Reload the notes list
-                    $('#notes-list').load('/mynote #notes-list');
-                },
-                error: function(error) {
-                    // Handle the error response
-                    console.log(error);
-                }
-            });
-        });
-    });
     </script>
     <h2>My Notes</h2>
     <div id="notes-list"></div>

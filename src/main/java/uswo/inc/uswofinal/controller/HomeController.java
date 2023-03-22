@@ -352,7 +352,7 @@ public String updateNote(@PathVariable("id") Integer id, Note updatedNote) {
     return "redirect:/mynote";
 }
 
-@GetMapping("/update-note/{id}")
+@GetMapping("/updatenote/{id}")
 public String showUpdateNoteForm(@PathVariable("id") Integer id, Model model) {
     Optional<Note> noteOptional = noteRepository.findById(id);
     
