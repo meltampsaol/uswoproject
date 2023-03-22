@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
@@ -319,19 +320,14 @@ public class HomeController {
         return "addnote";
     }
 
-    @GetMapping("/add-note")
-    public String showAddNoteForm(Model model) {
-        model.addAttribute("note", new Note());
-        return "addnote";
+      
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        // Add a custom validator for the wkno field
+        binder.addValidators(new WknoValidator());
     }
 
-    @PostMapping("/add-note")
-    public String addNote(@ModelAttribute Note note) {
-        noteRepository.save(note);
-        return "redirect:/mynote";
-    }
-
-    @PostMapping("/update-note")
+    @PostMapping("/update-note/")
     public String updateNote(Note updatedNote) {
         Optional<Note> noteOptional = noteRepository.findById(updatedNote.getId());
 
