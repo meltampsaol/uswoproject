@@ -14,7 +14,7 @@
                 <label for="district">District:</label>
                 <select class="form-control" id="district" name="district.did" required>
                     <option value="" selected>Select District</option>
-                    <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.name}"></option>
+                    <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}"></option>
                 </select>
             </div>
             <div class="form-group">

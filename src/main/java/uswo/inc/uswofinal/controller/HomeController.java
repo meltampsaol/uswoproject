@@ -320,12 +320,7 @@ public class HomeController {
         return "addnote";
     }
 
-      
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        // Add a custom validator for the wkno field
-        binder.addValidators(new WknoValidator());
-    }
+   
 
     @PostMapping("/update-note/")
     public String updateNote(Note updatedNote) {
