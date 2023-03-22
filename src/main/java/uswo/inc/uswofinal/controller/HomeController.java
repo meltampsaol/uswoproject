@@ -332,34 +332,36 @@ public class HomeController {
         return "redirect:/mynote";
     }
 
-@PostMapping("/update-note/{id}")
-public String updateNote(@PathVariable("id") Integer id, Note updatedNote) {
-    Optional<Note> noteOptional = noteRepository.findById(id);
-
-    if (noteOptional.isPresent()) {
-        Note note = noteOptional.get();
-
-        // Update the note with the new values
-        note.setWkno(updatedNote.getWkno());
-        note.setConcerns(updatedNote.getConcerns());
-        note.setAction(updatedNote.getAction());
-        note.setActionDate(updatedNote.getActionDate());
-        note.setLcode(updatedNote.getLcode());
-
-        noteRepository.save(note);
+    @PostMapping("/update-note")
+    public String updateNote(Note updatedNote) {
+        Optional<Note> noteOptional = noteRepository.findById(updatedNote.getId());
+    
+        if (noteOptional.isPresent()) {
+            Note note = noteOptional.get();
+    
+            // Update the note with the new values
+            note.setWkno(updatedNote.getWkno());
+            note.setConcerns(updatedNote.getConcerns());
+            note.setAction(updatedNote.getAction());
+            note.setActionDate(updatedNote.getActionDate());
+            note.setLcode(updatedNote.getLcode());
+    
+            noteRepository.save(note);
+        }
+    
+        return "redirect:/mynote";
     }
-
-    return "redirect:/mynote";
-}
+    
 @GetMapping("/updatenote/{id}")
 public String showUpdateNoteForm(@PathVariable("id") Integer id, Model model) {
     Optional<Note> noteOptional = noteRepository.findById(id);
     
     if (noteOptional.isPresent()) {
         Note note = noteOptional.get();
-        Integer did = note.getDid();
-        District district = districtRepository.findBydid(did);
-        note.setDistrict(district);
+        District district = note.getDistrict();
+        model.addAttribute("districtName", district.getDistrict());
+        
+
         model.addAttribute("note", note);
         return "updatenote";
     } else {
