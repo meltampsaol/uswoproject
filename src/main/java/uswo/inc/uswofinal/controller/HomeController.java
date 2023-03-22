@@ -320,6 +320,52 @@ public class HomeController {
         return "addnote";
     }
 
+    @GetMapping("/add-note")
+    public String showAddNoteForm(Model model) {
+        model.addAttribute("note", new Note());
+        return "addnote";
+    }
+    
+    @PostMapping("/add-note")
+    public String addNote(@ModelAttribute Note note) {
+        noteRepository.save(note);
+        return "redirect:/mynote";
+    }
+
+@PostMapping("/update-note/{id}")
+public String updateNote(@PathVariable("id") Integer id, Note updatedNote) {
+    Optional<Note> noteOptional = noteRepository.findById(id);
+
+    if (noteOptional.isPresent()) {
+        Note note = noteOptional.get();
+
+        // Update the note with the new values
+        note.setWkno(updatedNote.getWkno());
+        note.setConcerns(updatedNote.getConcerns());
+        note.setAction(updatedNote.getAction());
+        note.setActionDate(updatedNote.getActionDate());
+        note.setLcode(updatedNote.getLcode());
+
+        noteRepository.save(note);
+    }
+
+    return "redirect:/mynote";
+}
+
+@GetMapping("/update-note/{id}")
+public String showUpdateNoteForm(@PathVariable("id") Integer id, Model model) {
+    Optional<Note> noteOptional = noteRepository.findById(id);
+    
+    if (noteOptional.isPresent()) {
+        Note note = noteOptional.get();
+        model.addAttribute("note", note);
+        return "update-note";
+    } else {
+        return "error-page";
+    }
+}
+
+
     @GetMapping("/lokal-list-fundstart/{districtId}")
     public String getLocalesFundStart(@PathVariable Integer districtId, Model model) {
         logger.info("Entering myEndpoint method");

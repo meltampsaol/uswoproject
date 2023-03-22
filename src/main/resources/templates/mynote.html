@@ -113,30 +113,63 @@
       </div>
     </div>
   </div>
-    <script type="text/javascript">
-        // Edit note
-        $(".btn-edit").click(function () {
-            var id = $(this).data("id");
+  <script>
+    $(document).on('click', '[id^="edit-"]', function() {
+    var lcode = $(this).data('lcode');
+    window.location.href = '/update-note/' + lcode;
+});
+
+    $(document).ready(function() {
+        // Add a new note
+        $('#add-note-form').submit(function(e) {
+            e.preventDefault(); // Prevent the form from submitting normally
     
-            $("#notes_list").hide();
-            $("#note_form").show();
-            $("#note_form").load("edit_note_form.html?id=" + id);
+            var formData = $(this).serialize(); // Serialize the form data
+    
+            $.ajax({
+                url: '/add-note',
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    // Handle the success response
+                    console.log(response);
+                    // Reload the notes list
+                    $('#notes-list').load('/mynote #notes-list');
+                },
+                error: function(error) {
+                    // Handle the error response
+                    console.log(error);
+                }
+            });
         });
     
-        $(".btn-delete").click(function () {
-            if (confirm("Are you sure you want to delete this note?")) {
-                var recid = $(this).data("id");
+        // Update a note
+        $('#edit-note-form').submit(function(e) {
+            e.preventDefault(); // Prevent the form from submitting normally
     
-                $.ajax({
-                    type: "POST",
-                    url: "delete_note.html",
-                    data: {recid: recid},
-                    success: function (data) {
-                        $("#notes_list").load("view_notes.html");
-                    }
-                });
-            }
+            var formData = $(this).serialize(); // Serialize the form data
+            var noteId = $(this).data('note-id'); // Get the note ID from the form data attribute
+    
+            $.ajax({
+                url: '/update-note/' + noteId,
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    // Handle the success response
+                    console.log(response);
+                    // Reload the notes list
+                    $('#notes-list').load('/mynote #notes-list');
+                },
+                error: function(error) {
+                    // Handle the error response
+                    console.log(error);
+                }
+            });
         });
+    });
     </script>
+    <h2>My Notes</h2>
+    <div id="notes-list"></div>
+    
 </body>
 </html>    

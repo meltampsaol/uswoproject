@@ -37,6 +37,7 @@ public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
                     .requestMatchers("/lokal-list/*","/update-lokal/*","/lokal/*","/updateLokal/*","/f1generator/*","/fieldgenerator/*").permitAll()
                     .requestMatchers("/f1auditor/*","/mynote","/addnote","/lokal-list-fundstart/*","/fundstart").permitAll()
                     .requestMatchers("/savefundstart/*","/fundstartlist","/collectionpermit","/lokal-list-permit/*","/savepermit/*").permitAll()
+                    .requestMatchers("/add-note","/update-note/*").permitAll()
                     .requestMatchers("/home").authenticated()
                     .and()
                     .formLogin()
