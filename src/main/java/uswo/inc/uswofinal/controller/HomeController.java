@@ -305,7 +305,6 @@ public class HomeController {
         model.addAttribute("notes", notes);
         return "mynote";
     }
-    
 
     @GetMapping("/addnote")
     public String addNoteForm(Model model) {
@@ -325,7 +324,7 @@ public class HomeController {
         model.addAttribute("note", new Note());
         return "addnote";
     }
-    
+
     @PostMapping("/add-note")
     public String addNote(@ModelAttribute Note note) {
         noteRepository.save(note);
@@ -335,41 +334,38 @@ public class HomeController {
     @PostMapping("/update-note")
     public String updateNote(Note updatedNote) {
         Optional<Note> noteOptional = noteRepository.findById(updatedNote.getId());
-    
+
         if (noteOptional.isPresent()) {
             Note note = noteOptional.get();
-    
+
             // Update the note with the new values
             note.setWkno(updatedNote.getWkno());
             note.setConcerns(updatedNote.getConcerns());
             note.setAction(updatedNote.getAction());
             note.setActionDate(updatedNote.getActionDate());
             note.setLcode(updatedNote.getLcode());
-    
+
             noteRepository.save(note);
         }
-    
+
         return "redirect:/mynote";
     }
-    
-@GetMapping("/updatenote/{id}")
-public String showUpdateNoteForm(@PathVariable("id") Integer id, Model model) {
-    Optional<Note> noteOptional = noteRepository.findById(id);
-    
-    if (noteOptional.isPresent()) {
-        Note note = noteOptional.get();
-        District district = note.getDistrict();
-        model.addAttribute("districtName", district.getDistrict());
-        
 
-        model.addAttribute("note", note);
-        return "updatenote";
-    } else {
-        return "error-page";
+    @GetMapping("/updatenote/{id}")
+    public String showUpdateNoteForm(@PathVariable("id") Integer id, Model model) {
+        Optional<Note> noteOptional = noteRepository.findById(id);
+
+        if (noteOptional.isPresent()) {
+            Note note = noteOptional.get();
+            District district = note.getDistrict();
+            model.addAttribute("districtName", district.getDistrict());
+
+            model.addAttribute("note", note);
+            return "updatenote";
+        } else {
+            return "error-page";
+        }
     }
-}
-
-
 
     @GetMapping("/lokal-list-fundstart/{districtId}")
     public String getLocalesFundStart(@PathVariable Integer districtId, Model model) {
