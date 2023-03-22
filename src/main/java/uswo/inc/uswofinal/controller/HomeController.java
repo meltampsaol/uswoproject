@@ -359,7 +359,7 @@ public String showUpdateNoteForm(@PathVariable("id") Integer id, Model model) {
     if (noteOptional.isPresent()) {
         Note note = noteOptional.get();
         model.addAttribute("note", note);
-        return "update-note";
+        return "updatenote";
     } else {
         return "error-page";
     }
