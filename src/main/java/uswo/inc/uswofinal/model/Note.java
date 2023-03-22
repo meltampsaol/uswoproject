@@ -19,6 +19,9 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recid")
     private Integer id;
+    
+    @Column(name = "did", insertable = false, updatable = false)
+    private Integer did;
 
     @Column(name = "lcode")
     public Integer lcode;
@@ -106,6 +109,12 @@ public class Note {
         this.lcode = lcode;
     }
 
-    // Constructors, Getters, Setters, and toString() method omitted for brevity
+    public Integer getDid() {
+        return did;
+    }
+
+    public void setDid(Integer did) {
+        this.did = did;
+    }
 
 }

@@ -297,14 +297,15 @@ public class HomeController {
     public String showNotes(Model model) {
         List<Note> notes = noteRepository.findAll();
         for (Note note : notes) {
-            District district = districtRepository.findByDid(note.getDid());
+            District district = districtRepository.findBydid(note.getDid());
             if (district != null) {
-                note.setDistrictName(district.getDistrict());
+                note.setDistrict(district);
             }
         }
         model.addAttribute("notes", notes);
         return "mynote";
     }
+    
 
     @GetMapping("/addnote")
     public String addNoteForm(Model model) {
