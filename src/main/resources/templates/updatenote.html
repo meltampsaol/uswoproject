@@ -87,32 +87,44 @@
           <div class="col-md-8">
     <h1>Update Note</h1>
     <form action="/update-note/{id}" method="post">
-      <input type="hidden" name="_method" value="PUT">
       <table>
-          <tr>
-              <td><label for="wkno">Week Number:</label></td>
-              <td><input type="text" name="wkno" th:value="${note.wkno}" required></td>
-          </tr>
-          <tr>
-              <td><label for="concerns">Concerns:</label></td>
-              <td><textarea name="concerns" th:field="${note.concerns}" required th:value="${note.concerns}"></textarea></td>
-          </tr>
-          <tr>
-              <td><label for="action">Action:</label></td>
-              <td><textarea name="action" th:field="${note.action}" required th:value="${note.action}"></textarea></td>
-          </tr>
-          <tr>
-              <td><label for="actionDate">Action Date:</label></td>
-              <td><input type="date" name="actionDate" th:value="${note.actionDate}" required></td>
-          </tr>
-          <tr>
-              <td><label for="lcode">L Code:</label></td>
-              <td><input type="text" name="lcode" th:value="${note.lcode}" required></td>
-          </tr>
-          <tr>
-              <td colspan="2" align="center"><button type="submit" class="btn btn-info">Update</button></td>
-          </tr>
-      </table>
+        <tr>
+            <td>Record ID:</td>
+            <td><span th:text="${note.id}"></span></td>
+        </tr>
+        <tr>
+            <td>District Name:</td>
+            <td><span th:text="${note.district}"></span></td>
+        </tr>
+        <tr>
+            <td>Locale Name:</td>
+            <td><span th:text="${note.locale}"></span></td>
+        </tr>
+        <tr>
+            <td><label for="wkno">Week Number:</label></td>
+            <td><input type="text" name="wkno" th:value="${note.wkno}" required></td>
+        </tr>
+        <tr>
+            <td><label for="concerns">Concerns:</label></td>
+            <td><textarea name="concerns" th:field="${note.concerns}" required th:value="${note.concerns}"></textarea></td>
+        </tr>
+        <tr>
+            <td><label for="action">Action:</label></td>
+            <td><textarea name="action" th:field="${note.action}" required th:value="${note.action}"></textarea></td>
+        </tr>
+        <tr>
+            <td><label for="actionDate">Action Date:</label></td>
+            <td><input type="date" name="actionDate" th:value="${note.actionDate}" required></td>
+        </tr>
+        <tr>
+            <td><input type="hidden" name="lcode" th:value="${note.lcode}" required></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><button type="submit" class="btn btn-info">Update</button></td>
+        </tr>
+    </table>
+    
   </form>
   
     </div>

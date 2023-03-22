@@ -29,6 +29,8 @@ public class Note {
     @Column(name = "locale")
     public String locale;
 
+    
+
     @ManyToOne
     @JoinColumn(name = "did", referencedColumnName = "did")
     public District district;

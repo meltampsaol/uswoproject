@@ -351,19 +351,22 @@ public String updateNote(@PathVariable("id") Integer id, Note updatedNote) {
 
     return "redirect:/mynote";
 }
-
 @GetMapping("/updatenote/{id}")
 public String showUpdateNoteForm(@PathVariable("id") Integer id, Model model) {
     Optional<Note> noteOptional = noteRepository.findById(id);
     
     if (noteOptional.isPresent()) {
         Note note = noteOptional.get();
+        Integer did = note.getDid();
+        District district = districtRepository.findBydid(did);
+        note.setDistrict(district);
         model.addAttribute("note", note);
         return "updatenote";
     } else {
         return "error-page";
     }
 }
+
 
 
     @GetMapping("/lokal-list-fundstart/{districtId}")
