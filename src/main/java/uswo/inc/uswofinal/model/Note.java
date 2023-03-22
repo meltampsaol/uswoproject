@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,8 +26,9 @@ public class Note {
     @Column(name = "locale")
     public String locale;
 
-    @Column(name = "district")
-    public String district;
+    @ManyToOne
+    @JoinColumn(name = "did", referencedColumnName = "did")
+    public District district;
 
     @Column(name = "wkno")
     public String wkno;
@@ -55,11 +58,11 @@ public class Note {
         this.locale = locale;
     }
 
-    public String getDistrict() {
+    public District getDistrict() {
         return district;
     }
 
-    public void setDistrict(String district) {
+    public void setDistrict(District district) {
         this.district = district;
     }
 
@@ -105,5 +108,4 @@ public class Note {
 
     // Constructors, Getters, Setters, and toString() method omitted for brevity
 
-    
 }

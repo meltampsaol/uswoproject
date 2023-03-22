@@ -296,6 +296,12 @@ public class HomeController {
     @GetMapping("/mynote")
     public String showNotes(Model model) {
         List<Note> notes = noteRepository.findAll();
+        for (Note note : notes) {
+            District district = districtRepository.findByDid(note.getDid());
+            if (district != null) {
+                note.setDistrictName(district.getDistrict());
+            }
+        }
         model.addAttribute("notes", notes);
         return "mynote";
     }
@@ -356,7 +362,7 @@ public class HomeController {
         logger.info("F13 District value" + fundstart.getF13District());
         // Check if a record with the same lcode and dcode already exists
         FundStart existingFundstart = fundstartRepository.findByLcodeAndDcode(lcode, fundstart.getDcode());
-  
+
         if (existingFundstart != null) {
             // Update the existing record
             existingFundstart.setLingap(fundstart.getLingap());
@@ -389,8 +395,6 @@ public class HomeController {
         return "redirect:/";
 
     }
-
-
 
     @GetMapping("/fundstartlist")
     public String fundstarlist(Model model, Authentication authentication) {
@@ -479,6 +483,5 @@ public class HomeController {
         // Redirect the user back to the original page
         return "redirect:/";
     }
-
 
 }
