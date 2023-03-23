@@ -1,5 +1,6 @@
 package uswo.inc.uswofinal.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -83,35 +84,41 @@ public class HomeController {
     private static final String UPLOAD_DIR = "uploads/"; 
     
     @PostMapping("/upload/")
-    public ResponseEntity<?> handleFileUpload(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("approval_number") String approvalNumber,
-            @RequestParam("particulars") String particulars,
-            @RequestParam("lcode") Integer lcode,
-            @RequestParam("did") Integer did) {
+public ResponseEntity<?> handleFileUpload(
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("approval_number") String approvalNumber,
+        @RequestParam("particulars") String particulars,
+        @RequestParam("lcode") Integer lcode,
+        @RequestParam("did") Integer did) {
 
-        try {
-            // Save the uploaded file to the local file system
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
-            Files.write(path, bytes);
-
-            // Save the file details to the database
-            FundReleaseRequest fundReleaseRequest = new FundReleaseRequest();
-            fundReleaseRequest.setFileName(file.getOriginalFilename());
-            fundReleaseRequest.setUploadDate(new Date());
-            fundReleaseRequest.setApprovalNumber(approvalNumber);
-            fundReleaseRequest.setParticulars(particulars);
-            fundReleaseRequest.setLcode(lcode);
-            fundReleaseRequest.setDid(did);
-            fundReleaseRequestRepository.save(fundReleaseRequest);
-
-            return new ResponseEntity<>("File uploaded successfully.", HttpStatus.OK);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Error occurred while uploading the file.", HttpStatus.INTERNAL_SERVER_ERROR);
+    try {
+        // Ensure the uploads directory exists
+        File uploadDir = new File(UPLOAD_DIR);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
         }
+
+        // Save the uploaded file to the local file system
+        byte[] bytes = file.getBytes();
+        Path path = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
+        Files.write(path, bytes);
+
+        // Save the file details to the database
+        FundReleaseRequest fundReleaseRequest = new FundReleaseRequest();
+        fundReleaseRequest.setFileName(file.getOriginalFilename());
+        fundReleaseRequest.setUploadDate(new Date());
+        fundReleaseRequest.setApprovalNumber(approvalNumber);
+        fundReleaseRequest.setParticulars(particulars);
+        fundReleaseRequest.setLcode(lcode);
+        fundReleaseRequest.setDid(did);
+        fundReleaseRequestRepository.save(fundReleaseRequest);
+
+        return new ResponseEntity<>("File uploaded successfully.", HttpStatus.OK);
+    } catch (IOException e) {
+        e.printStackTrace();
+        return new ResponseEntity<>("Error occurred while uploading the file.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}
 
 
     @GetMapping("/uploadrequest")
