@@ -16,6 +16,12 @@
         "label": "off"
       }
     ],
-    "meta-viewport": "off"
+    "meta-viewport": "off",
+    "axe/text-alternatives": [
+      "default",
+      {
+        "frame-title": "off"
+      }
+    ]
   }
 }

@@ -83,6 +83,7 @@ public class HomeController {
     private FundReleaseRequestRepository fundReleaseRequestRepository;
 
     private static final String UPLOAD_DIR = "uploads/";
+    
     @GetMapping("/viewrequest")
     public String viewRequest(Model model) {
         model.addAttribute("message", "Welcome to USWO App!");

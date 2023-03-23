@@ -94,7 +94,7 @@
         <button onclick="searchRequest()">Search</button>
     </div>
     <div id="pdf_container">
-        <iframe id="pdf_viewer" src="" width="100%" height="600"></iframe>
+        <iframe th:src="@{'/uploads/' + fileName}" width="100%" height="800px"></iframe>
     </div>
     <script>
         function searchRequest() {
