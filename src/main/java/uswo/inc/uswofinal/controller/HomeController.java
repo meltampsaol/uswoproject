@@ -33,6 +33,7 @@ import uswo.inc.uswofinal.dto.LokalDto;
 import uswo.inc.uswofinal.model.CollectionPermit;
 import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.FundReleaseRequest;
+import uswo.inc.uswofinal.model.FundReleaseRequestForm;
 import uswo.inc.uswofinal.model.FundStart;
 import uswo.inc.uswofinal.model.Lokal;
 import uswo.inc.uswofinal.model.Note;
@@ -84,15 +85,11 @@ public class HomeController {
     private static final String UPLOAD_DIR = "uploads/";
 
     @PostMapping("/upload/")
-    public ResponseEntity<?> handleFileUpload(
+    public String handleFileUpload(
             @RequestParam("file") MultipartFile file,
-            @RequestParam("approval_number") String approvalNumber,
-            @RequestParam("particulars") String particulars,
-            @RequestParam("lcode") Integer lcode,
-            @RequestParam("did") Integer did) {
+            @ModelAttribute("fundRequest") FundReleaseRequestForm fundRequestForm) {
 
         try {
-            logger.info("Entering Uploading PDF file");
             // Ensure the uploads directory exists
             File uploadDir = new File(UPLOAD_DIR);
             if (!uploadDir.exists()) {
@@ -104,20 +101,33 @@ public class HomeController {
             Path path = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
             Files.write(path, bytes);
 
-            // Save the file details to the database
-            FundReleaseRequest fundReleaseRequest = new FundReleaseRequest();
-            fundReleaseRequest.setFileName(file.getOriginalFilename());
-            fundReleaseRequest.setUploadDate(new Date());
-            fundReleaseRequest.setApprovalNumber(approvalNumber);
-            fundReleaseRequest.setParticulars(particulars);
-            fundReleaseRequest.setLcode(lcode);
-            fundReleaseRequest.setDid(did);
-            fundReleaseRequestRepository.save(fundReleaseRequest);
+            // Check if the combination of lcode, did, and approval_number already exists
+            FundReleaseRequest existingFundReleaseRequest = fundReleaseRequestRepository
+                    .findByLcodeAndDidAndApprovalNumber(
+                            fundRequestForm.getLcode(), fundRequestForm.getDid(), fundRequestForm.getApprovalNumber());
 
-            return new ResponseEntity<>("File uploaded successfully.", HttpStatus.OK);
+            if (existingFundReleaseRequest != null) {
+                // Update the existing record with new values
+                existingFundReleaseRequest.setParticulars(fundRequestForm.getParticulars());
+                existingFundReleaseRequest.setUploadDate(new Date());
+                existingFundReleaseRequest.setFileName(file.getOriginalFilename());
+                fundReleaseRequestRepository.save(existingFundReleaseRequest);
+            } else {
+                // Save the file details to the database
+                FundReleaseRequest fundReleaseRequest = new FundReleaseRequest();
+                fundReleaseRequest.setFileName(file.getOriginalFilename());
+                fundReleaseRequest.setUploadDate(new Date());
+                fundReleaseRequest.setApprovalNumber(fundRequestForm.getApprovalNumber());
+                fundReleaseRequest.setParticulars(fundRequestForm.getParticulars());
+                fundReleaseRequest.setLcode(fundRequestForm.getLcode());
+                fundReleaseRequest.setDid(fundRequestForm.getDid());
+                fundReleaseRequestRepository.save(fundReleaseRequest);
+            }
+
+            return "redirect:/your-success-page";
         } catch (IOException e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Error occurred while uploading the file.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return "redirect:/your-error-page";
         }
     }
 
@@ -129,7 +139,7 @@ public class HomeController {
         model.addAttribute("locales", locales);
 
         // Add other attributes and return the view
-        model.addAttribute("fundrequest", new FundReleaseRequest());
+        model.addAttribute("fundRequest", new FundReleaseRequestForm());
         return "uploadrequest";
     }
 

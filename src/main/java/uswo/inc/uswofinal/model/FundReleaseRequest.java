@@ -2,20 +2,38 @@ package uswo.inc.uswofinal.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
 
 @Entity
-@Table(name = "fund_release_requests")
+@Table(name = "fund_release_requests",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"lcode", "did", "approval_number"}))
 public class FundReleaseRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "lcode", referencedColumnName = "lcode", insertable = false, updatable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private Lokal lokal;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "did", referencedColumnName = "did", insertable = false, updatable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private District district;
 
     @Column(name = "file_name", nullable = false)
     private String fileName;
@@ -81,6 +99,22 @@ public class FundReleaseRequest {
 
     public void setDid(Integer did) {
         this.did = did;
+    }
+
+    public Lokal getLokal() {
+        return lokal;
+    }
+
+    public void setLokal(Lokal lokal) {
+        this.lokal = lokal;
+    }
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
     }
 
     
