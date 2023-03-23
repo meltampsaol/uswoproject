@@ -20,7 +20,7 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 
     Note save(Note note);
 
-    List<Note> findByLocale(String locale);
+    List<Note> findByLokal(String locale);
 
     List<Note> findByDistrict(String district);
 

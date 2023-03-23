@@ -29,9 +29,6 @@ public class Note {
     @Column(name = "lcode")
     public Integer lcode;
 
-    @Column(name = "locale")
-    public String locale;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "lcode", referencedColumnName = "lcode", insertable = false, updatable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
