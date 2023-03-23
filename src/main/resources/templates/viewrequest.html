@@ -109,16 +109,17 @@
               success: function (data) {
                 var fileName = data.fileName;
                 var filePath = '/uploads/' + fileName;
+                console.log('File path: ' + filePath);
                 $('#pdf_viewer').attr('src', filePath);
                 $('#pdf_container').show();
               },
-
               error: function (xhr, status, error) {
                 alert('Error searching for request');
               }
             });
+
+            $('#pdf_container').hide();
           }
-          $('#pdf_container').hide();
         </script>
         <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
 
