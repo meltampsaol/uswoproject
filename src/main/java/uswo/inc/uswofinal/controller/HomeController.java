@@ -295,17 +295,22 @@ public class HomeController {
     }
 
     @GetMapping("/mynote")
-    public String showNotes(Model model) {
-        List<Note> notes = noteRepository.findAll();
-        for (Note note : notes) {
-            District district = districtRepository.findBydid(note.getDid());
-            if (district != null) {
-                note.setDistrict(district);
-            }
+public String showNotes(Model model) {
+    List<Note> notes = noteRepository.findAll();
+    for (Note note : notes) {
+        District district = districtRepository.findBydid(note.getDid());
+        if (district != null) {
+            note.setDistrict(district);
         }
-        model.addAttribute("notes", notes);
-        return "mynote";
+        Lokal lokal = lokalRepository.findByLokalCode(note.getLcode());
+        if (lokal != null) {
+            note.setLokal(lokal);
+        }
     }
+    model.addAttribute("notes", notes);
+    return "mynote";
+}
+
 
     @GetMapping("/addnote")
     public String addNoteForm(Model model) {

@@ -70,6 +70,16 @@ public class Note {
         this.district = district;
     }
 
+    
+
+    public Lokal getLokal() {
+        return lokal;
+    }
+
+    public void setLokal(Lokal lokal) {
+        this.lokal = lokal;
+    }
+
     public String getWkno() {
         return wkno;
     }
