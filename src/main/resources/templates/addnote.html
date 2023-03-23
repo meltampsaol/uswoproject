@@ -1,12 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<head th:replace="fragments/head :: head"></head>
+<head>
+  <meta charset="UTF-8">
+  <title>Lokal List</title>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<!-- Include Bootstrap's JavaScript after jQuery -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+
+<!-- Include jquery.dataTables.min.js after jQuery -->
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+
+</style>
+</head>
 <body>
-  <div th:replace="fragments/header :: header"></div>
-
-  <div class="container-fluid">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand" href="#">USWO App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/f1control">F1Control</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/fundstart">FundStart</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Districts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Expenses Panel</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Refunds</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">F2Bs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/mynote">My Notes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/collectionpermit">Collection Permit</a>
+        </li>
+      </ul>
+      <form class="form-inline ml-auto">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <div th:if="${welcomeMessage}">
+        <a class="btn btn-outline-light ml-2" th:if="${welcomeMessage != 'Welcome! Please log in to access the site.'}" href="/logout">Logout</a>
+        <a class="btn btn-outline-light ml-2" th:if="${welcomeMessage == 'Welcome! Please log in to access the site.'}" href="/login">Login</a>
+      </div>
+      
+  
+    </div>
+  </nav>
+  <div class="container my-8">
+    <div class="row">
+      <div class="col-md-6">
     <h1>Add Note</h1>
     <form action="#" th:action="@{/add-note}" th:object="${note}" method="post">
       <div class="form-group">
@@ -44,25 +110,27 @@
       <button type="submit" class="btn btn-primary">Add Note</button>
     </form>
   </div>
+</div>
+  </div>
+  
+  
 
-  <div th:replace="fragments/footer :: footer"></div>
-
-  <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
-  <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}"></script>
+ 
   <script>
     $(document).ready(function () {
       $('#district').change(function () {
         var did = $(this).val();
-        $.get('/get-locales/' + did, function (data) {
+        $.get('/getlocales/' + did, function (data) { 
           $('#locale').empty();
           $('#locale').append($('<option>').val('').text('Select Locale'));
           $.each(data, function (i, locale) {
-            $('#locale').append($('<option>').val(locale.lcode).text(locale.name));
+            $('#locale').append($('<option>').val(locale.lcode).text(locale.locale));
           });
         });
       });
     });
   </script>
-</body>
-
+ <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
+ 
+  </body>
 </html>

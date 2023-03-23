@@ -28,5 +28,5 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 
     List<Note> findByActionDate(LocalDate actionDate);
 
-    // Add more custom queries here if needed
+    Note findByLcodeAndWknoAndConcern(Integer lcode, String wkno, String concerns);
 }

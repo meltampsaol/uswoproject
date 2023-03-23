@@ -357,6 +357,21 @@ public class HomeController {
             return "error-page";
         }
     }
+    @PostMapping("/addnote/")
+    public String addNote(@ModelAttribute("note") Note note) {
+    Note existingNote = noteRepository.findByLcodeAndWknoAndConcerns(note.getLcode(), note.getWkno(), note.getConcerns());
+    if (existingNote != null) {
+        // update the existing note with new values
+        existingNote.setAction(note.getAction());
+        existingNote.setActionDate(note.getActionDate());
+        // update any other fields as necessary
+        noteRepository.save(existingNote);
+    } else {
+        // insert a new note
+        noteRepository.save(note);
+    }
+    return "redirect:/notes";
+}
 
     @GetMapping("/lokal-list-fundstart/{districtId}")
     public String getLocalesFundStart(@PathVariable Integer districtId, Model model) {
