@@ -83,6 +83,20 @@ public class HomeController {
     private FundReleaseRequestRepository fundReleaseRequestRepository;
 
     private static final String UPLOAD_DIR = "uploads/";
+    @GetMapping("/viewrequest")
+    public String viewRequest(Model model) {
+        model.addAttribute("message", "Welcome to USWO App!");
+        return "viewrequest";
+    }
+    @GetMapping("/requests/{approvalNumber}")
+    public ResponseEntity<?> getRequestByApprovalNumber(@PathVariable String approvalNumber) {
+        FundReleaseRequest request = fundReleaseRequestRepository.findByApprovalNumber(approvalNumber);
+        if (request != null) {
+            return ResponseEntity.ok(request);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Request not found");
+        }
+    }
 
     @PostMapping("/upload/")
     public String handleFileUpload(

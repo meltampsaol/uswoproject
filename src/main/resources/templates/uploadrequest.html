@@ -75,19 +75,19 @@
       <div class="col-md-6">
     <h1>Upload File</h1>
     <form action="#" th:action="@{/upload/}" th:object="${fundRequest}" method="post" enctype="multipart/form-data">
-          <div class="form-group">
-            <label for="district">District:</label>
-            <select class="form-control" id="district" name="district.did" required>
-              <option value="" selected>Select District</option>
-              <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}"></option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="locale">Locale:</label>
-            <select class="form-control" id="locale" name="locale" required>
-              <option value="" selected>Select Locale</option>
-            </select>
-          </div>
+      <div class="form-group">
+        <label for="district">District:</label>
+        <select class="form-control" id="district" name="did" required>
+          <option value="" selected>Select District</option>
+          <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}"></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="locale">Locale:</label>
+        <select class="form-control" id="locale" name="lcode" required>
+          <option value="" selected>Select Locale</option>
+        </select>
+      </div>
         <div>
             <label for="file">File:</label>
             <input type="file" id="file" name="file" required>

@@ -9,6 +9,7 @@ import uswo.inc.uswofinal.model.FundReleaseRequest;
 @Repository
 public interface FundReleaseRequestRepository extends JpaRepository<FundReleaseRequest, Long> {
     FundReleaseRequest findByLcodeAndDidAndApprovalNumber(Integer lcode, Integer did, String approvalNumber);
+    FundReleaseRequest findByApprovalNumber(String approvalNumber);
    
 }
 
