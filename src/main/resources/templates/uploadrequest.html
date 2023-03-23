@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>File Upload</title>
+</head>
+<body>
+    <h1>Upload File</h1>
+    <form action="#" th:action="@{/api/fund-release-requests/upload}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="district">District:</label>
+            <select class="form-control" id="district" name="district.did" required>
+              <option value="" selected>Select District</option>
+              <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="locale">Locale:</label>
+            <select class="form-control" id="locale" name="locale" required>
+              <option value="" selected>Select Locale</option>
+            </select>
+          </div>
+        <div>
+            <label for="file">File:</label>
+            <input type="file" id="file" name="file" required>
+        </div>
+        <div>
+            <label for="approval_number">Approval Number:</label>
+            <input type="text" id="approval_number" name="approval_number" required>
+        </div>
+        <div>
+            <label for="particulars">Particulars:</label>
+            <textarea id="particulars" name="particulars"></textarea>
+        </div>
+       
+        <button type="submit">Upload</button>
+    </form>
+    <script>
+        $(document).ready(function () {
+          $('#district').change(function () {
+            var did = $(this).val();
+            $.get('/getlocales/' + did, function (data) { 
+              $('#locale').empty();
+              $('#locale').append($('<option>').val('').text('Select Locale'));
+              $.each(data, function (i, locale) {
+                $('#locale').append($('<option>').val(locale.lcode).text(locale.locale));
+              });
+            });
+          });
+        });
+      </script>
+</body>
+</html>
