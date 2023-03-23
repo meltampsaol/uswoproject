@@ -354,8 +354,9 @@ public String showNotes(Model model) {
         if (noteOptional.isPresent()) {
             Note note = noteOptional.get();
             District district = note.getDistrict();
+            Lokal lokal = note.getLokal();
             model.addAttribute("districtName", district.getDistrict());
-
+            model.addAttribute("locale", lokal.getLocale());
             model.addAttribute("note", note);
             return "updatenote";
         } else {
