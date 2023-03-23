@@ -88,39 +88,49 @@
     <div class="row">
       <div class="col-md-8">
         <h1>View Request</h1>
-        <div>
-          <label for="approval_number">Approval Number:</label>
-          <input type="text" id="approvalNumber" name="approvalNumber" required>
-          <button onclick="searchRequest()">Search</button>
-        </div>
-        <div id="pdf_container">
-          <iframe th:src="@{'/uploads/' + fileName}" width="100%" height="600px"></iframe>
-        </div>
-        <script>
-          function searchRequest() {
-            var approvalNumber = $('#approvalNumber').val();
-            if (approvalNumber === '') {
-              alert('Approval number is required');
-              return;
-            }
-            $.ajax({
-              type: 'GET',
-              url: '/requests/' + approvalNumber,
-              success: function (data) {
-                var fileName = data.fileName;
-                var filePath = '/uploads/' + fileName;
-                console.log('File path: ' + filePath);
-                $('#pdf_viewer').attr('src', filePath);
-                $('#pdf_container').show();
-              },
-              error: function (xhr, status, error) {
-                alert('Error searching for request');
-              }
-            });
+<div>
+  <label for="approval_number">Approval Number:</label>
+  <input type="text" id="approvalNumber" name="approvalNumber" required>
+  <button onclick="searchRequest()">Search</button>
+</div>
+<div id="pdf_container">
+</div>
+<script>
+  function searchRequest() {
+    var approvalNumber = $('#approvalNumber').val();
+    if (approvalNumber === '') {
+      alert('Approval number is required');
+      return;
+    }
+    $.ajax({
+      type: 'GET',
+      url: '/requests/' + approvalNumber,
+      success: function (data) {
+        var fileName = data.fileName;
+        showPdf(fileName);
+      },
+      error: function (xhr, status, error) {
+        alert('Error searching for request');
+      }
+    });
 
-            $('#pdf_container').hide();
-          }
-        </script>
+    $('#pdf_container').hide();
+  }
+
+  function showPdf(fileName) {
+    $('#pdf_container').empty();
+
+    var object = $('<object>').attr({
+      data: '/uploads/' + fileName,
+      type: 'application/pdf',
+      width: 500,
+      height: 600
+    }).appendTo('#pdf_container');
+
+    var altLink = $('<a>').attr('href', '/uploads/' + fileName).text(fileName).appendTo('#pdf_container');
+  }
+</script>
+
         <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
