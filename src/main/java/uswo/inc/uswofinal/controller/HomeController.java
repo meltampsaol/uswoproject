@@ -124,10 +124,10 @@ public class HomeController {
                 fundReleaseRequestRepository.save(fundReleaseRequest);
             }
 
-            return "redirect:/your-success-page";
+            return "redirect:/viewrequest";
         } catch (IOException e) {
             e.printStackTrace();
-            return "redirect:/your-error-page";
+            return "redirect:/error-page";
         }
     }
 
