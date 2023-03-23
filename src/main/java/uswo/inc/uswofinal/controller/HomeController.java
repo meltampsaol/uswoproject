@@ -81,45 +81,45 @@ public class HomeController {
     @Autowired
     private FundReleaseRequestRepository fundReleaseRequestRepository;
 
-    private static final String UPLOAD_DIR = "uploads/"; 
-    
+    private static final String UPLOAD_DIR = "uploads/";
+
     @PostMapping("/upload/")
-public ResponseEntity<?> handleFileUpload(
-        @RequestParam("file") MultipartFile file,
-        @RequestParam("approval_number") String approvalNumber,
-        @RequestParam("particulars") String particulars,
-        @RequestParam("lcode") Integer lcode,
-        @RequestParam("did") Integer did) {
+    public ResponseEntity<?> handleFileUpload(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("approval_number") String approvalNumber,
+            @RequestParam("particulars") String particulars,
+            @RequestParam("lcode") Integer lcode,
+            @RequestParam("did") Integer did) {
 
-    try {
-        // Ensure the uploads directory exists
-        File uploadDir = new File(UPLOAD_DIR);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
+        try {
+            logger.info("Entering Uploading PDF file");
+            // Ensure the uploads directory exists
+            File uploadDir = new File(UPLOAD_DIR);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            // Save the uploaded file to the local file system
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
+            Files.write(path, bytes);
+
+            // Save the file details to the database
+            FundReleaseRequest fundReleaseRequest = new FundReleaseRequest();
+            fundReleaseRequest.setFileName(file.getOriginalFilename());
+            fundReleaseRequest.setUploadDate(new Date());
+            fundReleaseRequest.setApprovalNumber(approvalNumber);
+            fundReleaseRequest.setParticulars(particulars);
+            fundReleaseRequest.setLcode(lcode);
+            fundReleaseRequest.setDid(did);
+            fundReleaseRequestRepository.save(fundReleaseRequest);
+
+            return new ResponseEntity<>("File uploaded successfully.", HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error occurred while uploading the file.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        // Save the uploaded file to the local file system
-        byte[] bytes = file.getBytes();
-        Path path = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
-        Files.write(path, bytes);
-
-        // Save the file details to the database
-        FundReleaseRequest fundReleaseRequest = new FundReleaseRequest();
-        fundReleaseRequest.setFileName(file.getOriginalFilename());
-        fundReleaseRequest.setUploadDate(new Date());
-        fundReleaseRequest.setApprovalNumber(approvalNumber);
-        fundReleaseRequest.setParticulars(particulars);
-        fundReleaseRequest.setLcode(lcode);
-        fundReleaseRequest.setDid(did);
-        fundReleaseRequestRepository.save(fundReleaseRequest);
-
-        return new ResponseEntity<>("File uploaded successfully.", HttpStatus.OK);
-    } catch (IOException e) {
-        e.printStackTrace();
-        return new ResponseEntity<>("Error occurred while uploading the file.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
-}
-
 
     @GetMapping("/uploadrequest")
     public String showUploadPage(Model model) {
@@ -358,22 +358,21 @@ public ResponseEntity<?> handleFileUpload(
     }
 
     @GetMapping("/mynote")
-public String showNotes(Model model) {
-    List<Note> notes = noteRepository.findAll();
-    for (Note note : notes) {
-        District district = districtRepository.findBydid(note.getDid());
-        if (district != null) {
-            note.setDistrict(district);
+    public String showNotes(Model model) {
+        List<Note> notes = noteRepository.findAll();
+        for (Note note : notes) {
+            District district = districtRepository.findBydid(note.getDid());
+            if (district != null) {
+                note.setDistrict(district);
+            }
+            Lokal lokal = lokalRepository.findByLokalCode(note.getLcode());
+            if (lokal != null) {
+                note.setLokal(lokal);
+            }
         }
-        Lokal lokal = lokalRepository.findByLokalCode(note.getLcode());
-        if (lokal != null) {
-            note.setLokal(lokal);
-        }
+        model.addAttribute("notes", notes);
+        return "mynote";
     }
-    model.addAttribute("notes", notes);
-    return "mynote";
-}
-
 
     @GetMapping("/addnote")
     public String addNoteForm(Model model) {
@@ -387,8 +386,6 @@ public String showNotes(Model model) {
         model.addAttribute("note", new Note());
         return "addnote";
     }
-
-   
 
     @PostMapping("/update-note/")
     public String updateNote(Note updatedNote) {
@@ -426,21 +423,23 @@ public String showNotes(Model model) {
             return "error-page";
         }
     }
+
     @PostMapping("/addnote/")
     public String addNote(@ModelAttribute("note") Note note) {
-    Note existingNote = noteRepository.findByLcodeAndWknoAndConcerns(note.getLcode(), note.getWkno(), note.getConcerns());
-    if (existingNote != null) {
-        // update the existing note with new values
-        existingNote.setAction(note.getAction());
-        existingNote.setActionDate(note.getActionDate());
-        // update any other fields as necessary
-        noteRepository.save(existingNote);
-    } else {
-        // insert a new note
-        noteRepository.save(note);
+        Note existingNote = noteRepository.findByLcodeAndWknoAndConcerns(note.getLcode(), note.getWkno(),
+                note.getConcerns());
+        if (existingNote != null) {
+            // update the existing note with new values
+            existingNote.setAction(note.getAction());
+            existingNote.setActionDate(note.getActionDate());
+            // update any other fields as necessary
+            noteRepository.save(existingNote);
+        } else {
+            // insert a new note
+            noteRepository.save(note);
+        }
+        return "redirect:/mynote";
     }
-    return "redirect:/mynote";
-}
 
     @GetMapping("/lokal-list-fundstart/{districtId}")
     public String getLocalesFundStart(@PathVariable Integer districtId, Model model) {

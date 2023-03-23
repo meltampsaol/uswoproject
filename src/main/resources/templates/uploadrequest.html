@@ -74,7 +74,7 @@
     <div class="row">
       <div class="col-md-6">
     <h1>Upload File</h1>
-    <form action="#" th:action="@{/upload/}" th:object="${fundrequest}" method="post" enctype="multipart/form-data"></form>
+    <form action="#" th:action="@{/upload/}" th:object="${fundrequest}" method="post" enctype="multipart/form-data">
           <div class="form-group">
             <label for="district">District:</label>
             <select class="form-control" id="district" name="district.did" required>
@@ -84,7 +84,7 @@
           </div>
           <div class="form-group">
             <label for="locale">Locale:</label>
-            <select class="form-control" id="locale" name="locale" required>
+            <select class="form-control" id="locale" name="lcode" required>
               <option value="" selected>Select Locale</option>
             </select>
           </div>
