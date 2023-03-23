@@ -90,7 +90,7 @@
     <h1>View Request</h1>
     <div>
         <label for="approval_number">Approval Number:</label>
-        <input type="text" id="approval_number" name="approval_number" required>
+        <input type="text" id="approvalNumber" name="approvalNumber" required>
         <button onclick="searchRequest()">Search</button>
     </div>
     <div id="pdf_container">
@@ -98,7 +98,7 @@
     </div>
     <script>
         function searchRequest() {
-            var approvalNumber = $('#approval_number').val();
+            var approvalNumber = $('#approvalNumber').val();
             if (approvalNumber === '') {
                 alert('Approval number is required');
                 return;
