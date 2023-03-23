@@ -103,12 +103,14 @@
           </thead>
           <tbody>
             <tr th:each="note : ${notes}">
-              <td th:text="${note.locale}"></td>
-              <td th:text="${note.district.district}"></td>
-              <td th:text="${note.wkno}"></td>
-              <td th:text="${note.concerns}"></td>
-              <td th:text="${note.action}"></td>
-              <td th:text="${note.actionDate}"></td>
+              <td th:text="${note.lokal.locale}">Locale</td>
+              <td th:text="${note.district.district}">District</td>
+              <td th:text="${note.wkno}">Week Number</td>
+              <td th:text="${note.concerns}">Concerns</td>
+              <td th:text="${note.action}">Action</td>
+              <td th:text="${note.actionDate}">Action Date</td>
+         
+          
               <td>
                 <button type="button" class="btn btn-primary" th:id="'edit-' + ${note.id}"
                   th:attr="data-id=${note.id}, data-lcode=${note.lcode}">Edit</button>

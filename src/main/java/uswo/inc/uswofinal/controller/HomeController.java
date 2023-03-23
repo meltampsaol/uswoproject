@@ -370,7 +370,7 @@ public class HomeController {
         // insert a new note
         noteRepository.save(note);
     }
-    return "redirect:/notes";
+    return "redirect:/mynote";
 }
 
     @GetMapping("/lokal-list-fundstart/{districtId}")

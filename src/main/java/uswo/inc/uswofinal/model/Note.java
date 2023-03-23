@@ -2,8 +2,11 @@ package uswo.inc.uswofinal.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +22,7 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recid")
     private Integer id;
-    
+
     @Column(name = "did", insertable = false, updatable = false)
     private Integer did;
 
@@ -29,11 +32,15 @@ public class Note {
     @Column(name = "locale")
     public String locale;
 
-    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "lcode", referencedColumnName = "lcode", insertable = false, updatable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private Lokal lokal;
 
-    @ManyToOne
-    @JoinColumn(name = "did", referencedColumnName = "did")
-    public District district;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "did", referencedColumnName = "did", insertable = false, updatable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private District district;
 
     @Column(name = "wkno")
     public String wkno;
@@ -53,14 +60,6 @@ public class Note {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
     }
 
     public District getDistrict() {
