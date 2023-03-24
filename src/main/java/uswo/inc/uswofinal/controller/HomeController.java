@@ -1,10 +1,12 @@
 package uswo.inc.uswofinal.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,24 +97,48 @@ public class HomeController {
     public Object viewPdf(Model model) {
         return "viewrequest";
     }
+    @GetMapping("/searchrequest")
+    public Object searchRequest(Model model) {
+        return "searchrequest";
+    }
 
     @GetMapping("/requests")
 public ResponseEntity<byte[]> getRequestBySearch(@RequestParam(required = false) String approvalNumber,
-        @RequestParam(required = false) String lokal, @RequestParam(required = false) String particular,
+        @RequestParam(required = false) String locale, @RequestParam(required = false) String particular,
         HttpServletResponse response) throws IOException {
 
-    List<FundReleaseRequest> requests = fundReleaseRequestRepository.findByApprovalNumberContainingOrLokalContainingOrParticularsContaining(approvalNumber, lokal, particular);
+    List<FundReleaseRequest> requests = null;
+    if (approvalNumber != null && !approvalNumber.isEmpty()) {
+        requests = fundReleaseRequestRepository.findByApprovalNumberContaining(approvalNumber);
+    } else if (locale != null && !locale.isEmpty()) {
+        requests = fundReleaseRequestRepository.findByLokalContaining(locale);
+    } else if (particular != null && !particular.isEmpty()) {
+        requests = fundReleaseRequestRepository.findByParticularsContaining(particular);
+    } else {
+        return ResponseEntity.badRequest().build();
+    }
 
-    // If a match is found, return the PDF file
     if (!requests.isEmpty()) {
-        String fileName = requests.get(0).getFileName();
-        Path pdfPath = Paths.get(UPLOAD_DIR, fileName);
-        byte[] pdfBytes = Files.readAllBytes(pdfPath);
+        List<byte[]> pdfBytesList = new ArrayList<>();
+        for (FundReleaseRequest request : requests) {
+            String fileName = request.getFileName();
+            Path pdfPath = Paths.get(UPLOAD_DIR, fileName);
+            byte[] pdfBytes = Files.readAllBytes(pdfPath);
+            pdfBytesList.add(pdfBytes);
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ZipOutputStream zos = new ZipOutputStream(baos);
+        for (int i = 0; i < pdfBytesList.size(); i++) {
+            ZipEntry entry = new ZipEntry(requests.get(i).getApprovalNumber() + ".pdf");
+            zos.putNextEntry(entry);
+            zos.write(pdfBytesList.get(i));
+            zos.closeEntry();
+        }
+        zos.close();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("inline", fileName);
-        headers.setContentLength(pdfBytes.length);
-        return ResponseEntity.ok().headers(headers).body(pdfBytes);
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "requests.zip");
+        return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
     } else {
         return ResponseEntity.notFound().build();
     }

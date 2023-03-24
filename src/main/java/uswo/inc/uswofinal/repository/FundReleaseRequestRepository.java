@@ -13,6 +13,8 @@ public interface FundReleaseRequestRepository extends JpaRepository<FundReleaseR
     FundReleaseRequest findByLcodeAndDidAndApprovalNumber(Integer lcode, Integer did, String approvalNumber);
     FundReleaseRequest findByApprovalNumber(String approvalNumber);
     List<FundReleaseRequest> findByApprovalNumberContainingOrLokalContainingOrParticularsContaining(String approvalNumber, String lokal, String particular);
-   
+    List<FundReleaseRequest> findByApprovalNumberContaining(String approvalNumber);
+    List<FundReleaseRequest> findByParticularsContaining(String particulars);
+    List<FundReleaseRequest> findByLokalContaining(String lokal);
+    List<FundReleaseRequest> findByParticulars(String particulars);
 }
-
