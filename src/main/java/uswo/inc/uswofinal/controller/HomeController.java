@@ -134,6 +134,24 @@ public class HomeController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/requests2/{id}")
+    public ResponseEntity<byte[]> getRequestByApprovalNumber(@PathVariable Integer id,
+            HttpServletResponse response)
+            throws IOException {
+        FundReleaseRequest request = fundReleaseRequestRepository.findById(id);
+        if (request != null) {
+            String fileName = request.getFileName();
+            Path pdfPath = Paths.get(UPLOAD_DIR, fileName);
+            byte[] pdfBytes = Files.readAllBytes(pdfPath);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("inline", fileName);
+            headers.setContentLength(pdfBytes.length);
+            return ResponseEntity.ok().headers(headers).body(pdfBytes);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping("/upload/")
     public String handleFileUpload(

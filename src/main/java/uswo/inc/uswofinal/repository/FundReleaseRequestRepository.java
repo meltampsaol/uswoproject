@@ -28,7 +28,7 @@ public interface FundReleaseRequestRepository extends JpaRepository<FundReleaseR
        "OR d.district LIKE %:search% " +
        "OR f.particulars LIKE %:search%")
 List<FundReleaseRequest> searchRequests(@Param("search") String search);
-
+FundReleaseRequest findById(Integer id);
 
 
 }

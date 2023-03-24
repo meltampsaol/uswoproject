@@ -12,9 +12,9 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function(event) {
-            var approvalNumber = [[${approvalNumber}]];
+          var id = [[${id}]];
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/requests/" + approvalNumber);
+            xhr.open("GET", "/requests2/" + id);
             xhr.responseType = "blob";
             xhr.onload = function() {
                 if (xhr.status === 200) {
