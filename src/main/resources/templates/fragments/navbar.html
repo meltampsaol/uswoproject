@@ -31,8 +31,14 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Districts</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Expenses Panel</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="expensesDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">Expenses Panel</a>
+          <div class="dropdown-menu" aria-labelledby="expensesDropdown">
+            <a class="dropdown-item" href="/expenses/expense-add">Add</a>
+            <a class="dropdown-item" href="/expenses/expense-view">View</a>
+            <a class="dropdown-item" href="/expenses/expense-search">Search</a>
+          </div>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Refunds</a>

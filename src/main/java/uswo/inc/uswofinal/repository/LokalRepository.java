@@ -17,8 +17,9 @@ public interface LokalRepository extends JpaRepository<Lokal, Integer> {
     Optional<Lokal> findByLcode(Integer lcode);
     Optional<Lokal> findById(Integer lcode);
 
-    @Query("SELECT l FROM Lokal l WHERE l.district.did = :did ORDER BY l.locale")
-    List<Lokal> findByDistrict(@Param("did") Integer did);
+   
+    @Query("SELECT l FROM Lokal l JOIN FETCH l.district WHERE l.did = :districtId ORDER BY l.locale")
+    List<Lokal> findByDistrict(@Param("districtId") Integer districtId);
 
     @Query("SELECT l FROM Lokal l WHERE l.lcode = :lcode")
     Lokal findByLokalCode(@Param("lcode") Integer lcode);

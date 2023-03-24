@@ -1,6 +1,7 @@
 package uswo.inc.uswofinal.model;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,11 +10,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "expenses")
-public class Expenses {
+public class Expense {
+    
+    @Column(name = "date_encoded")
+    private Date dateEncoded;
+
+    @PrePersist
+    protected void onCreate() {
+        dateEncoded = new Date();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,8 +46,11 @@ public class Expenses {
     @Column(name = "f10")
     private String f10;
 
-    @Column(name = "amount")
-    private double amount;
+    @Column(name = "amount_requested")
+    private double amountRequested;
+
+    @Column(name = "actual_expenses")
+    private double actualExpenses;
 
     @Column(name = "date_purchased")
     private LocalDate datePurchased;
@@ -99,12 +112,22 @@ public class Expenses {
         this.f10 = f10;
     }
 
-    public double getAmount() {
-        return amount;
+   
+
+    public double getAmountRequested() {
+        return amountRequested;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setAmountRequested(double amountRequested) {
+        this.amountRequested = amountRequested;
+    }
+
+    public double getActualExpenses() {
+        return actualExpenses;
+    }
+
+    public void setActualExpenses(double actualExpenses) {
+        this.actualExpenses = actualExpenses;
     }
 
     public LocalDate getDatePurchased() {
