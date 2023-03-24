@@ -91,7 +91,6 @@ public class HomeController {
 
     @GetMapping("/viewrequest")
     public Object viewPdf(Model model) {
-        model.addAttribute("fileName", "Yigo2750.pdf");
         return "viewrequest";
     }
 
