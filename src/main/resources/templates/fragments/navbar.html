@@ -1,52 +1,55 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <!-- Optional table can go here -->
-            <div th:fragment="navigation-links">
-                <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-                    <a class="navbar-brand" href="#">USWO App</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/f1control">F1Control</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/fundstart">FundStart</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Districts</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Expenses Panel</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Refunds</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">F2Bs</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/mynote">My Notes</a>
-                            </li>
-                        </ul>
-                        <form class="form-inline ml-auto">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-                        </form>
-                        <div th:if="${welcomeMessage}">
-                            <a class="btn btn-outline-light ml-2"
-                                th:if="${welcomeMessage != 'Welcome! Please log in to access the site.'}" href="/logout">Logout</a>
-                            <a class="btn btn-outline-light ml-2"
-                                th:if="${welcomeMessage == 'Welcome! Please log in to access the site.'}" href="/login">Login</a>
-                        </div>
-                    </div>
-                </nav>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand" href="#">USWO App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/f1control">F1Control</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/fundstart">FundStart</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="fundReleaseDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">FundRelease</a>
+            <div class="dropdown-menu" aria-labelledby="fundReleaseDropdown">
+              <a class="dropdown-item" href="/uploadrequest">Upload</a>
+              <a class="dropdown-item" href="/viewrequest">View</a>
             </div>
-           
-        </div>
+          </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Districts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Expenses Panel</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Refunds</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">F2Bs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/mynote">My Notes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/collectionpermit">Collection Permit</a>
+        </li>
+      </ul>
+      <form class="form-inline ml-auto">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <div th:if="${welcomeMessage}">
+        <a class="btn btn-outline-light ml-2" th:if="${welcomeMessage != 'Welcome! Please log in to access the site.'}"
+          href="/logout">Logout</a>
+        <a class="btn btn-outline-light ml-2" th:if="${welcomeMessage == 'Welcome! Please log in to access the site.'}"
+          href="/login">Login</a>
+      </div>
+
+
     </div>
-</div>
+  </nav>

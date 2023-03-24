@@ -16,7 +16,10 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,10 +28,12 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import jakarta.servlet.http.HttpServletResponse;
 import uswo.inc.uswofinal.dto.LokalDto;
 import uswo.inc.uswofinal.model.CollectionPermit;
 import uswo.inc.uswofinal.model.District;
@@ -83,21 +88,31 @@ public class HomeController {
     private FundReleaseRequestRepository fundReleaseRequestRepository;
 
     private static final String UPLOAD_DIR = "uploads/";
-    
+
     @GetMapping("/viewrequest")
-    public String viewRequest(Model model) {
-        model.addAttribute("message", "Welcome to USWO App!");
+    public Object viewPdf(Model model) {
+        model.addAttribute("fileName", "Yigo2750.pdf");
         return "viewrequest";
     }
+
     @GetMapping("/requests/{approvalNumber}")
-    public ResponseEntity<?> getRequestByApprovalNumber(@PathVariable String approvalNumber) {
+    public ResponseEntity<byte[]> getRequestByApprovalNumber(@PathVariable String approvalNumber, HttpServletResponse response)
+            throws IOException {
         FundReleaseRequest request = fundReleaseRequestRepository.findByApprovalNumber(approvalNumber);
         if (request != null) {
-            return ResponseEntity.ok(request);
+            String fileName = request.getFileName();
+            Path pdfPath = Paths.get(UPLOAD_DIR, fileName);
+            byte[] pdfBytes = Files.readAllBytes(pdfPath);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("inline", fileName);
+            headers.setContentLength(pdfBytes.length);
+            return ResponseEntity.ok().headers(headers).body(pdfBytes);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Request not found");
+            return ResponseEntity.notFound().build();
         }
     }
+    
 
     @PostMapping("/upload/")
     public String handleFileUpload(

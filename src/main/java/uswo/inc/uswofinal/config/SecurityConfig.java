@@ -1,6 +1,5 @@
 package uswo.inc.uswofinal.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -17,51 +16,57 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import uswo.inc.uswofinal.repository.UserInfoRepository;
 import uswo.inc.uswofinal.service.UserInfoUserDetailsService;
 
-
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
-public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
-    return new HandlerMappingIntrospector();
-} 
+    public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
+        return new HandlerMappingIntrospector();
+    }
 
- 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-            return http.authorizeHttpRequests()
-                    .requestMatchers("/", "/all","/create-user","/save-user","/api/getlocales2/*","/getlocales/*","/f1control","/save-ws","/getlocales3/*").permitAll()
-                    .requestMatchers("/lokal-list/*","/update-lokal/*","/lokal/*","/updateLokal/*","/f1generator/*","/fieldgenerator/*").permitAll()
-                    .requestMatchers("/f1auditor/*","/mynote","/addnote","/lokal-list-fundstart/*","/fundstart").permitAll()
-                    .requestMatchers("/savefundstart/*","/fundstartlist","/collectionpermit","/lokal-list-permit/*","/savepermit/*").permitAll()
-                    .requestMatchers("/addnote","/update-note/*","/updatenote/*","/update-note/","/addnote/").permitAll()
-                    .requestMatchers("/uploadrequest","/upload/","/viewrequest","/requests/*").permitAll()
-                    .requestMatchers("/home").authenticated()
-                    .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/home") 
-                    .permitAll()
-                    .and()
-                    .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/landing")
-                    .permitAll()
-                    .and()
-                    .csrf().disable()
-                    .build();
-       
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests()
+                .requestMatchers("/", "/all", "/create-user", "/save-user", "/api/getlocales2/*", "/getlocales/*",
+                        "/f1control", "/save-ws", "/getlocales3/*")
+                .permitAll()
+                .requestMatchers("/lokal-list/*", "/update-lokal/*", "/lokal/*", "/updateLokal/*", "/f1generator/*",
+                        "/fieldgenerator/*")
+                .permitAll()
+                .requestMatchers("/f1auditor/*", "/mynote", "/addnote", "/lokal-list-fundstart/*", "/fundstart")
+                .permitAll()
+                .requestMatchers("/savefundstart/*", "/fundstartlist", "/collectionpermit", "/lokal-list-permit/*","/savepermit/*")
+                .permitAll()
+                .requestMatchers("/addnote", "/update-note/*", "/updatenote/*", "/update-note/", "/addnote/").permitAll()
+                .requestMatchers("/uploadrequest", "/upload/", "/viewrequest", "/requests/*").permitAll()
+                .requestMatchers("/uploads/*","/file").permitAll()
+                .requestMatchers("/home").authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/home")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/landing")
+                .permitAll()
+                .and()
+                .headers()
+                .frameOptions()
+                .sameOrigin()
+                .and()
+                .csrf().disable()
+                .build();
+
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 
     @Bean
     public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
