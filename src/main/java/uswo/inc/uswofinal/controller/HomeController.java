@@ -101,7 +101,11 @@ public class HomeController {
         model.addAttribute("approvalNumber", approvalNumber);
         return "searchresult";
     }
-
+    @GetMapping("/searchpdf/{id}")
+    public String searchPDF(@PathVariable Integer id, Model model) {
+        model.addAttribute("id", id);
+        return "searchpdf";
+    }
     @GetMapping("/requests")
     public ResponseEntity<List<FundReleaseRequest>> searchRequests(@RequestParam String search) {
         List<FundReleaseRequest> requests = fundReleaseRequestRepository.searchRequests(search);
@@ -127,10 +131,11 @@ public class HomeController {
         }
     }
     @GetMapping("/search/{id}")
-    public ResponseEntity<byte[]> getRequestById(@PathVariable Integer id,
+    public ResponseEntity<byte[]> getRequestById(@PathVariable String id,
             HttpServletResponse response)
             throws IOException {
-        FundReleaseRequest request = fundReleaseRequestRepository.findById(id);
+        Integer newid = Integer.parseInt(id);       
+        FundReleaseRequest request = fundReleaseRequestRepository.findById(newid);
         if (request != null) {
             String fileName = request.getFileName();
             Path pdfPath = Paths.get(UPLOAD_DIR, fileName);

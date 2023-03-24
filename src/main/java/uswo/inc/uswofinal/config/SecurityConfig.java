@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .requestMatchers("/addnote", "/update-note/*", "/updatenote/*", "/update-note/", "/addnote/").permitAll()
                 .requestMatchers("/uploadrequest", "/upload/", "/viewrequest", "/requests/*").permitAll()
                 .requestMatchers("/uploads/*","/file","fragments/*","/requests","/searchrequest","/requestlist","/searchresult/*").permitAll()
-                .requestMatchers("/search/*").permitAll()
+                .requestMatchers("/search/*","/searchpdf/*").permitAll()
                 .requestMatchers("/home").authenticated()
                 .and()
                 .formLogin()
