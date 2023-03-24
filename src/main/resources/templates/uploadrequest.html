@@ -22,43 +22,66 @@
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
 
+<style>
+  table {
+    margin-top: 20px;
+  }
 </style>
 </head>
 <body>
- <div th:replace="fragments/navbar::navbar"></div>
+  <div th:replace="fragments/navbar :: navbar"></div>
   <div class="container my-8">
     <div class="row">
       <div class="col-md-6">
-    <h1>Upload File</h1>
+    
     <form action="#" th:action="@{/upload/}" th:object="${fundRequest}" method="post" enctype="multipart/form-data">
-      <div class="form-group">
-        <label for="district">District:</label>
-        <select class="form-control" id="district" name="did" required>
-          <option value="" selected>Select District</option>
-          <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}"></option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="locale">Locale:</label>
-        <select class="form-control" id="locale" name="lcode" required>
-          <option value="" selected>Select Locale</option>
-        </select>
-      </div>
-        <div>
-            <label for="file">File:</label>
-            <input type="file" id="file" name="file" required>
-        </div>
-        <div>
-            <label for="approval_number">Approval Number:</label>
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-md-8 mx-auto">
+      <table class="table table-bordered">
+        <tr><td colspan="2" class="mx auto"><h2>Upload File</h2></td></tr>
+        <tr>
+          <td><label for="district">District:</label></td>
+          <td>
+            <select class="form-control" id="district" name="did" required>
+              <option value="" selected>Select District</option>
+              <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}"></option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="locale">Locale:</label></td>
+          <td>
+            <select class="form-control" id="locale" name="lcode" required>
+              <option value="" selected>Select Locale</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="file">File:</label></td>
+          <td>
+            <input type="file" id="file" name="file" required class="btn-info">
+          </td>
+        </tr>
+        <tr>
+          <td><label for="approval_number">Approval Number:</label></td>
+          <td>
             <input type="text" id="approval_number" name="approvalNumber" required>
-        </div>
-        <div>
-            <label for="particulars">Particulars:</label>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="particulars">Particulars:</label></td>
+          <td>
             <textarea id="particulars" name="particulars"></textarea>
-        </div>
-       
-        <button type="submit">Upload</button>
+          </td>
+        </tr>
+        <tr><td colspan="2" align="center"><button type="submit" class="btn btn-primary">Upload</button></td></tr> 
+      </table>
+      </div>
+      </div>
+      </div>
     </form>
+    
    
  
   <script>

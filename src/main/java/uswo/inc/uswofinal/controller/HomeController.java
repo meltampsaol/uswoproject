@@ -95,8 +95,32 @@ public class HomeController {
         return "viewrequest";
     }
 
+    @GetMapping("/requests")
+public ResponseEntity<byte[]> getRequestBySearch(@RequestParam(required = false) String approvalNumber,
+        @RequestParam(required = false) String lokal, @RequestParam(required = false) String particular,
+        HttpServletResponse response) throws IOException {
+
+    List<FundReleaseRequest> requests = fundReleaseRequestRepository.findByApprovalNumberContainingOrLokalContainingOrParticularsContaining(approvalNumber, lokal, particular);
+
+    // If a match is found, return the PDF file
+    if (!requests.isEmpty()) {
+        String fileName = requests.get(0).getFileName();
+        Path pdfPath = Paths.get(UPLOAD_DIR, fileName);
+        byte[] pdfBytes = Files.readAllBytes(pdfPath);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("inline", fileName);
+        headers.setContentLength(pdfBytes.length);
+        return ResponseEntity.ok().headers(headers).body(pdfBytes);
+    } else {
+        return ResponseEntity.notFound().build();
+    }
+}
+
+
     @GetMapping("/requests/{approvalNumber}")
-    public ResponseEntity<byte[]> getRequestByApprovalNumber(@PathVariable String approvalNumber, HttpServletResponse response)
+    public ResponseEntity<byte[]> getRequestByApprovalNumber(@PathVariable String approvalNumber,
+            HttpServletResponse response)
             throws IOException {
         FundReleaseRequest request = fundReleaseRequestRepository.findByApprovalNumber(approvalNumber);
         if (request != null) {
@@ -112,7 +136,6 @@ public class HomeController {
             return ResponseEntity.notFound().build();
         }
     }
-    
 
     @PostMapping("/upload/")
     public String handleFileUpload(

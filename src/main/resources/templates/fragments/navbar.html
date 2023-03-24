@@ -1,4 +1,11 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Navbar</title>
+</head>
+<body>
+<div th:fragment="navbar">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
     <a class="navbar-brand" href="#">USWO App</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +56,10 @@
         <a class="btn btn-outline-light ml-2" th:if="${welcomeMessage == 'Welcome! Please log in to access the site.'}"
           href="/login">Login</a>
       </div>
-
-
     </div>
   </nav>
+
+  <!-- Define the fragment for the navbar -->
+ </div>
+</body>
+</html>
