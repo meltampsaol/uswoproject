@@ -1,12 +1,10 @@
 package uswo.inc.uswofinal.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,13 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,7 +26,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -43,7 +36,6 @@ import uswo.inc.uswofinal.model.CollectionPermit;
 import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.FundReleaseRequest;
 import uswo.inc.uswofinal.model.FundReleaseRequestForm;
-import uswo.inc.uswofinal.model.FundReleaseSearchCriteria;
 import uswo.inc.uswofinal.model.FundStart;
 import uswo.inc.uswofinal.model.Lokal;
 import uswo.inc.uswofinal.model.Note;
@@ -134,7 +126,7 @@ public class HomeController {
             return ResponseEntity.notFound().build();
         }
     }
-    @GetMapping("/requests2/{id}")
+    @GetMapping("/search/{id}")
     public ResponseEntity<byte[]> getRequestById(@PathVariable Integer id,
             HttpServletResponse response)
             throws IOException {

@@ -11,22 +11,29 @@
     <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function(event) {
-          var id = [[${id}]];
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/requests2/" + id);
-            xhr.responseType = "blob";
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    var blob = new Blob([xhr.response], { type: "application/pdf" });
-                    var url = URL.createObjectURL(blob);
-                    document.getElementById("pdf-frame").src = url;
-                } else {
-                    console.log("Error:", xhr.status);
-                }
-            };
-            xhr.send();
+        document.addEventListener("DOMContentLoaded", function() {
+          // Get the "id" parameter from the URL
+          const urlParams = new URLSearchParams(window.location.search);
+          const id = urlParams.get("id");
+      
+          // Send an AJAX request to fetch the PDF file
+          const xhr = new XMLHttpRequest();
+          xhr.open("GET", "/search/" + id);
+          xhr.responseType = "blob";
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              // If the request was successful, display the PDF file in the iframe
+              const blob = new Blob([xhr.response], { type: "application/pdf" });
+              const url = URL.createObjectURL(blob);
+              const pdfFrame = document.getElementById("pdf-frame");
+              pdfFrame.src = url;
+            } else {
+              console.log("Error:", xhr.status);
+            }
+          };
+          xhr.send();
         });
-    </script>
+      </script>
+      
 </body>
 </html>
