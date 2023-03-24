@@ -103,16 +103,19 @@ public class HomeController {
     public Object searchRequest(Model model) {
         return "searchrequest";
     }
-    
+
+    @GetMapping("/searchresult/{approvalNumber}")
+    public String searchResult(@PathVariable String approvalNumber, Model model) {
+        model.addAttribute("approvalNumber", approvalNumber);
+        return "searchresult";
+    }
 
     @GetMapping("/requests")
-public ResponseEntity<List<FundReleaseRequest>> searchRequests(@RequestParam String search) {
-    List<FundReleaseRequest> requests = fundReleaseRequestRepository.searchRequests(search);
-    return ResponseEntity.ok(requests);
-}
+    public ResponseEntity<List<FundReleaseRequest>> searchRequests(@RequestParam String search) {
+        List<FundReleaseRequest> requests = fundReleaseRequestRepository.searchRequests(search);
+        return ResponseEntity.ok(requests);
+    }
 
-
-    
     @GetMapping("/requests/{approvalNumber}")
     public ResponseEntity<byte[]> getRequestByApprovalNumber(@PathVariable String approvalNumber,
             HttpServletResponse response)

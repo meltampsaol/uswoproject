@@ -1,73 +1,32 @@
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Lokal List</title>
-  <!-- DataTables CSS -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-  <!-- Include Bootstrap's JavaScript after jQuery -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-
-
-  <!-- Include jquery.dataTables.min.js after jQuery -->
-  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-
-
-
-
-
+    <title>View Request</title>
 </head>
-
 <body>
-  <div th:replace="fragments/navbar :: navbar"></div>
-  <div class="container mt-4">
-    <div class="row">
-      <div class="col-12">
-        <div th:if="${welcomeMessage}">
-          <p th:text="${welcomeMessage}"></p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="container my-8">
-    <div class="row">
-      <div class="col-md-8">
-        <h1>View Request</h1>
-        <h1>View Request</h1>
-        
-        <iframe id="pdf-frame" width="100%" height="800px"></iframe>
-        
-        
-        <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
-        
-        <script>
-          window.addEventListener('DOMContentLoaded', function() {
-            var approvalNumber = window.location.search.substring(1).split('=')[1];
+ 
+  <iframe id="pdf-frame" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; border: none;"></iframe>
+
+
+    <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            var approvalNumber = [[${approvalNumber}]];
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/requests/" + approvalNumber);
             xhr.responseType = "blob";
             xhr.onload = function() {
-              if (xhr.status === 200) {
-                var blob = new Blob([xhr.response], { type: "application/pdf" });
-                var url = URL.createObjectURL(blob);
-                document.getElementById("pdf-frame").src = url;
-              } else {
-                console.log("Error:", xhr.status);
-              }
+                if (xhr.status === 200) {
+                    var blob = new Blob([xhr.response], { type: "application/pdf" });
+                    var url = URL.createObjectURL(blob);
+                    document.getElementById("pdf-frame").src = url;
+                } else {
+                    console.log("Error:", xhr.status);
+                }
             };
             xhr.send();
-          });
-        </script>
-        
+        });
+    </script>
 </body>
-
 </html>
