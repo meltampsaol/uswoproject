@@ -101,11 +101,13 @@ public class HomeController {
         model.addAttribute("approvalNumber", approvalNumber);
         return "searchresult";
     }
+
     @GetMapping("/searchpdf/{id}")
-    public String searchPDF(@PathVariable Integer id, Model model) {
+    public String searchPDF(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("id", id);
         return "searchpdf";
     }
+
     @GetMapping("/requests")
     public ResponseEntity<List<FundReleaseRequest>> searchRequests(@RequestParam String search) {
         List<FundReleaseRequest> requests = fundReleaseRequestRepository.searchRequests(search);
@@ -130,11 +132,12 @@ public class HomeController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("/search/{id}")
     public ResponseEntity<byte[]> getRequestById(@PathVariable Integer id,
             HttpServletResponse response)
             throws IOException {
-             
+
         FundReleaseRequest request = fundReleaseRequestRepository.findById(id);
         if (request != null) {
             String fileName = request.getFileName();

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html>
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>View Request</title>
 </head>
@@ -16,8 +15,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Get the "id" parameter from the URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id');
+            const id = [[${id}]];
             if (id) {
                 console.log('The id is:', id);
             } else {
