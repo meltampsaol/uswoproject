@@ -135,7 +135,7 @@ public class HomeController {
         }
     }
     @GetMapping("/requests2/{id}")
-    public ResponseEntity<byte[]> getRequestByApprovalNumber(@PathVariable Integer id,
+    public ResponseEntity<byte[]> getRequestById(@PathVariable Integer id,
             HttpServletResponse response)
             throws IOException {
         FundReleaseRequest request = fundReleaseRequestRepository.findById(id);
