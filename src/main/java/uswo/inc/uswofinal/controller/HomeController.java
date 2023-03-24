@@ -131,11 +131,11 @@ public class HomeController {
         }
     }
     @GetMapping("/search/{id}")
-    public ResponseEntity<byte[]> getRequestById(@PathVariable String id,
+    public ResponseEntity<byte[]> getRequestById(@PathVariable Integer id,
             HttpServletResponse response)
             throws IOException {
-        Integer newid = Integer.parseInt(id);       
-        FundReleaseRequest request = fundReleaseRequestRepository.findById(newid);
+             
+        FundReleaseRequest request = fundReleaseRequestRepository.findById(id);
         if (request != null) {
             String fileName = request.getFileName();
             Path pdfPath = Paths.get(UPLOAD_DIR, fileName);
