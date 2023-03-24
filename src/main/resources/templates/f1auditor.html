@@ -5,8 +5,23 @@
   <meta charset="UTF-8">
   <title>Auditor</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-	  
 
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+  <!-- Include Bootstrap's JavaScript after jQuery -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+
+  <!-- Include jquery.dataTables.min.js after jQuery -->
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <style>
     .set-total {
       display: none;
@@ -65,6 +80,11 @@
       width: 80px;
       /* adjust the width as needed */
     }
+
+    .blue-100 {
+      color: hsl(210, 30%, 60%);
+      /* additional styles... */
+    }
   </style>
 
 </head>
@@ -90,7 +110,7 @@
     </table>
   </div>
   <!-- Set 1 -->
-  <div id="set1" style="display: none;" class="table table-bordered">
+  <div id="set1" style="display: none;" class="table table-bordered btn-info">
     <label for="admthur1">ADMTHUR:</label>
     <input type="text" id="admthur1" name="admthur1" value="0.00" />
 
@@ -142,7 +162,7 @@
   </div>
 
   <!-- Set 2 -->
-  <div id="set2" style="display: none;" class="table table-bordered">
+  <div id="set2" style="display: none;" class="table table-bordered btn btn-light">
     <label for="admthur2">ADMTHUR:</label>
     <input type="text" id="admthur2" name="admthur2" value="0.00" />
 
@@ -194,7 +214,7 @@
     <div id="set2-total" class="set-total"></div>
   </div>
 
-  <div id="set3" style="display: none;" class="table table-bordered">
+  <div id="set3" style="display: none;" class="table table-bordered btn btn-success">
     <label for="admthur3">ADMTHUR:</label>
     <input type="text" id="admthur3" name="admthur3" value="0.00" />
 
@@ -246,7 +266,7 @@
   </div>
 
   <!-- Set 4 -->
-  <div id="set4" style="display: none;" class="table table-bordered">
+  <div id="set4" style="display: none;" class="table table-bordered btn btn-primary">
     <label for="admthur4">ADMTHUR:</label>
     <input type="text" id="admthur4" name="admthur4" value="0.00" />
 
@@ -298,7 +318,7 @@
     <div id="set4-total" class="set-total"></div>
   </div>
 
-  <div id="set5" style="display: none;" class="table table-bordered">
+  <div id="set5" style="display: none;" class="table table-bordered btn btn-success">
 
     <label for="admthur5">ADMTHUR:</label>
     <input type="text" id="admthur5" name="admthur5" value="0.00" />
@@ -351,7 +371,7 @@
   </div>
 
   <!-- Set 6 -->
-  <div id="set6" style="display: none;" class="table table-bordered">
+  <div id="set6" style="display: none;" class="table table-bordered btn btn-primary">
     <label for="admthur6">ADMTHUR:</label>
     <input type="text" id="admthur6" name="admthur6" value="0.00" />
 
@@ -407,29 +427,29 @@
 
   <div class="empty"></div>
   <!-- Total Row -->
-  <div>
-    <label>Total </label>
+
+  <div class="table table-bordered btn btn-info">
+    <label for="total-admin">Total Admin:</label>
+    <input type="text" id="total-admin" name="total-admin" value="0.00" readonly />
+    <label for="total-weekend">Total Weekend:</label>
+    <input type="text" id="total-weekend" name="total-weekend" value="0.00" readonly />
+    <label for="total-wholeweek">Total WholeWeek:</label>
+    <input type="text" id="total-wholeweek" name="total-wholeweek" value="0.00" readonly />
+    <label for="total-remainder">Total Remainder:</label>
+    <input type="text" id="total-remainder" name="total-remainder" value="0.00" readonly />
+    <label for="total-central">Total Central:</label>
+    <input type="text" id="total-central" name="total-central" value="0.00" readonly />
+    <label for="total-cfolokrem">Total CFO & Locale Remittance :</label>
+    <input type="text" id="total-cfolokrem" name="total-cfolokrem" value="0.00" readonly />
+
+    <label for="total-lokalexpenses">Total Lokal Expenses:</label>
+    <input type="text" id="total-lokalexpenses" name="total-lokalexpenses" value="0.00" readonly />
+
+    <label for="total-lokalrefund">Total Lokal Refund:</label>
+    <input type="text" id="total-lokalrefund" name="total-lokalrefund" value="0.00" readonly />
   </div>
-  <label for="total-admin">Total Admin:</label>
-  <input type="text" id="total-admin" name="total-admin" value="0.00" readonly />
-  <label for="total-weekend">Total Weekend:</label>
-  <input type="text" id="total-weekend" name="total-weekend" value="0.00" readonly />
-  <label for="total-wholeweek">Total WholeWeek:</label>
-  <input type="text" id="total-wholeweek" name="total-wholeweek" value="0.00" readonly />
-  <label for="total-remainder">Total Remainder:</label>
-  <input type="text" id="total-remainder" name="total-remainder" value="0.00" readonly />
-  <label for="total-central">Total Central:</label>
-  <input type="text" id="total-central" name="total-central" value="0.00" readonly />
-  <label for="total-cfolokrem">Total CFO & Locale Remittance :</label>
-  <input type="text" id="total-cfolokrem" name="total-cfolokrem" value="0.00" readonly />
-  
-  <label for="total-lokalexpenses">Total Lokal Expenses:</label>
-  <input type="text" id="total-lokalexpenses" name="total-lokalexpenses" value="0.00" readonly />
-  
-  <label for="total-lokalrefund">Total Lokal Refund:</label>
-  <input type="text" id="total-lokalrefund" name="total-lokalrefund" value="0.00" readonly />
-   
-  <div id="total" style="display: none;">
+  <div class="empty"></div>
+  <div id="total" style="display: none;" class="table table-bordered btn btn-info">
     <label for="total-admthur">ADMTHUR:</label>
     <input type="text" id="total-admthur" name="total-admthur" value="0.00" readonly />
     <label for="total-admsun">ADMSUN:</label>
@@ -469,216 +489,216 @@
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-    var wscountField = document.getElementById('wscount');
-    var numSets = parseInt(wscountField.value);
+      var wscountField = document.getElementById('wscount');
+      var numSets = parseInt(wscountField.value);
 
-    updateSets();
-    computeTotalRemittance(numSets);
-    showSetDivs(numSets);
-
-    $('input:not(#total input)').on('change', function () {
+      updateSets();
       computeTotalRemittance(numSets);
-    });
-    $('input:not(#total input)').on('keyup', function () {
-      computeTotalRemittance(numSets);
-    });
-    $('input:not(#total input)').on('keydown', function () {
-      computeTotalRemittance(numSets);
-    });
+      showSetDivs(numSets);
 
-  });
-
-  function updateSets() {
-    // get the current value of wscount
-    var wscount = parseInt(document.getElementById('wscount').value);
-
-    // show or hide the set divs based on wscount
-    for (var i = 1; i <= 10; i++) {
-      var setDiv = document.getElementById('set' + i);
-      if (setDiv) {
-        if (i <= wscount) {
-          setDiv.style.display = 'block';
-        } else {
-          setDiv.style.display = 'none';
-        }
-      }
-    }
-
-    // show or hide the total row based on wscount
-    var totalRow = document.getElementById('total');
-    if (totalRow) {
-      if (wscount > 0) {
-        totalRow.style.display = 'block';
-      } else {
-        totalRow.style.display = 'none';
-      }
-    }
-  }
-
-  function computeTotalRemittance(numSets) {
-    var totalLokalExpenses=0, totalLokalRefund=0, totalCfolokrem = 0, totalCentral = 0, totalAdmin = 0, totalRemainder = 0, totalWholeweek = 0, totalWeekend = 0, totalAdmthur = 0, totalAdmsun = 0, totalCws = 0, totalSol = 0, totalSod = 0, totalAid = 0, totalTxgv = 0, totalRefcent = 0, totalExpcent = 0, totalCfolok = 0, totalMof = 0, totalIntl = 0;
-    for (var i = 1; i <= numSets; i++) {
-      var admthur = parseFloat(document.getElementById("admthur" + i).value);
-      var admsun = parseFloat(document.getElementById("admsun" + i).value);
-      var cws = parseFloat(document.getElementById("cws" + i).value);
-      var aid = parseFloat(document.getElementById("aid" + i).value);
-      var sol = parseFloat(document.getElementById("sol" + i).value);
-      var sod = parseFloat(document.getElementById("sod" + i).value);
-      var txgv = parseFloat(document.getElementById("txgv" + i).value);
-      var refcent = parseFloat(document.getElementById("refcent" + i).value);
-      var reflok = parseFloat(document.getElementById("reflok" + i).value);
-      var refdist = parseFloat(document.getElementById("refdist" + i).value);
-      var expcent = parseFloat(document.getElementById("expcent" + i).value);
-      var explok = parseFloat(document.getElementById("explok" + i).value);
-      var expdist = parseFloat(document.getElementById("expdist" + i).value);
-      var cfolok = parseFloat(document.getElementById("cfolok" + i).value);
-      var intl = parseFloat(document.getElementById("intl" + i).value);
-      var mof = parseFloat(document.getElementById("mof" + i).value);
-
-
-      totalLokalExpenses += explok;
-      totalLokalRefund += reflok;
-      totalAdmthur += admthur;
-      totalAdmsun += admsun;
-      totalCws += cws;
-      totalSol += sol;
-      totalSod += sod;
-      totalAid += aid;
-      totalTxgv += txgv;
-      totalRefcent += refcent;
-      totalExpcent += expcent;
-      totalCfolok += cfolok;
-      totalMof += mof;
-      totalIntl += intl;
-      totalWeekend += admsun + cws + sol + sod + aid + txgv + refcent + refdist + reflok;
-      totalWholeweek += admthur + admsun + cws + sol + sod + aid + txgv + refcent + refdist + reflok;
-      totalRemainder += admthur + admsun + cws + sol + sod + aid + txgv + refcent + refdist + reflok - (expcent + expdist + explok);
-      totalAdmin += admthur + admsun + cws;
-      totalCentral += admthur + admsun + txgv + cws + refcent - expcent;
-      totalCfolokrem += cfolok + intl + mof;
-    }
-    var totalRemittance = totalAdmthur + totalAdmsun + totalCws + totalAid + totalTxgv + totalRefcent - totalExpcent + totalCfolok + totalMof + totalIntl;
-    document.getElementById("total-cfolokrem").value = totalCfolokrem.toFixed(2);
-    document.getElementById("total-central").value = totalCentral.toFixed(2);
-    document.getElementById("total-admin").value = totalAdmin.toFixed(2);
-    document.getElementById("total-remainder").value = totalRemainder.toFixed(2);
-    document.getElementById("total-wholeweek").value = totalWholeweek.toFixed(2);
-    document.getElementById("total-weekend").value = totalWeekend.toFixed(2);
-    document.getElementById("total-admthur").value = totalAdmthur.toFixed(2);
-    document.getElementById("total-admsun").value = totalAdmsun.toFixed(2);
-    document.getElementById("total-cws").value = totalCws.toFixed(2);
-    document.getElementById("total-sol").value = totalSol.toFixed(2);
-    document.getElementById("total-sod").value = totalSod.toFixed(2);
-    document.getElementById("total-aid").value = totalAid.toFixed(2);
-    document.getElementById("total-txgv").value = totalTxgv.toFixed(2);
-    document.getElementById("total-refcent").value = totalRefcent.toFixed(2);
-    document.getElementById("total-expcent").value = totalExpcent.toFixed(2);
-    document.getElementById("total-cfolok").value = totalCfolok.toFixed(2);
-    document.getElementById("total-mof").value = totalMof.toFixed(2);
-    document.getElementById("total-intl").value = totalIntl.toFixed(2);
-    document.getElementById("total-remittance").value = totalRemittance.toFixed(2);
-    document.getElementById("total-lokalexpenses").value = totalLokalExpenses.toFixed(2);
-    document.getElementById("total-lokalrefund").value = totalLokalRefund.toFixed(2);
-  }
-
-
-  function showSetDivs(numSets) {
-    for (var i = 1; i <= 10; i++) {
-      var setDiv = document.getElementById('set' + i);
-      if (setDiv) {
-        if (i <= numSets) {
-          setDiv.style.display = 'block';
-        } else {
-          setDiv.style.display = 'none';
-        }
-      }
-
-      var totalDiv = document.getElementById('set' + i + '-total');
-      if (totalDiv) {
-        if (i <= numSets) {
-          totalDiv.style.display = 'block';
-        } else {
-          totalDiv.style.display = 'none';
-        }
-      }
-    }
-  }
-
-  function calculateCfolokIntl(setNum) {
-    var sol = parseFloat(document.getElementById("sol" + setNum).value);
-    var cfolok = 0.1 * sol;
-    var intl = 0.05 * sol;
-    document.getElementById("cfolok" + setNum).value = cfolok.toFixed(2);
-    document.getElementById("intl" + setNum).value = intl.toFixed(2);
-  }
-
-  // add change event listener to each "sol" field
-  for (var i = 1; i <= 10; i++) {
-    var solField = document.getElementById("sol" + i);
-    if (solField) {
-      solField.addEventListener("change", function () {
-        var setNum = parseInt(this.id.replace("sol", ""));
-        calculateCfolokIntl(setNum);
-        computeTotalRemittance(parseInt(document.getElementById("wscount").value));
+      $('input:not(#total input)').on('change', function () {
+        computeTotalRemittance(numSets);
       });
-    }
-  }
+      $('input:not(#total input)').on('keyup', function () {
+        computeTotalRemittance(numSets);
+      });
+      $('input:not(#total input)').on('keydown', function () {
+        computeTotalRemittance(numSets);
+      });
 
-
-  // get all input fields
-  document.addEventListener('DOMContentLoaded', function () {
-    // get all input fields
-    var inputs = document.getElementsByTagName("input");
-
-    // set initial focus on first input field
-    inputs[0].focus();
-
-    // add event listener for keydown
-    document.addEventListener("keydown", function (e) {
-      var keyCode = e.keyCode;
-      var active = document.activeElement;
-
-      // move focus to next input field on right arrow key press
-      if (keyCode === 39) {
-        if (active.nextElementSibling) {
-          active.nextElementSibling.focus();
-        }
-      }
-
-      // move focus to previous input field on left arrow key press
-      if (keyCode === 37) {
-        if (active.previousElementSibling) {
-          active.previousElementSibling.focus();
-        }
-      }
-
-      // move focus to input field above on up arrow key press
-      if (keyCode === 38) {
-        var row = active.parentElement.previousElementSibling;
-        if (row) {
-          var col = active.cellIndex;
-          var prevRow = row.previousElementSibling;
-          if (prevRow) {
-            prevRow.children[col].querySelector("input").focus();
-          }
-        }
-      }
-
-      // move focus to input field below on down arrow key press
-      if (keyCode === 40) {
-        var row = active.parentElement.nextElementSibling;
-        if (row) {
-          var col = active.cellIndex;
-          var nextRow = row.nextElementSibling;
-          if (nextRow) {
-            nextRow.children[col].querySelector("input").focus();
-          }
-        }
-      }
     });
 
-  });
-  
+    function updateSets() {
+      // get the current value of wscount
+      var wscount = parseInt(document.getElementById('wscount').value);
+
+      // show or hide the set divs based on wscount
+      for (var i = 1; i <= 10; i++) {
+        var setDiv = document.getElementById('set' + i);
+        if (setDiv) {
+          if (i <= wscount) {
+            setDiv.style.display = 'block';
+          } else {
+            setDiv.style.display = 'none';
+          }
+        }
+      }
+
+      // show or hide the total row based on wscount
+      var totalRow = document.getElementById('total');
+      if (totalRow) {
+        if (wscount > 0) {
+          totalRow.style.display = 'block';
+        } else {
+          totalRow.style.display = 'none';
+        }
+      }
+    }
+
+    function computeTotalRemittance(numSets) {
+      var totalLokalExpenses = 0, totalLokalRefund = 0, totalCfolokrem = 0, totalCentral = 0, totalAdmin = 0, totalRemainder = 0, totalWholeweek = 0, totalWeekend = 0, totalAdmthur = 0, totalAdmsun = 0, totalCws = 0, totalSol = 0, totalSod = 0, totalAid = 0, totalTxgv = 0, totalRefcent = 0, totalExpcent = 0, totalCfolok = 0, totalMof = 0, totalIntl = 0;
+      for (var i = 1; i <= numSets; i++) {
+        var admthur = parseFloat(document.getElementById("admthur" + i).value);
+        var admsun = parseFloat(document.getElementById("admsun" + i).value);
+        var cws = parseFloat(document.getElementById("cws" + i).value);
+        var aid = parseFloat(document.getElementById("aid" + i).value);
+        var sol = parseFloat(document.getElementById("sol" + i).value);
+        var sod = parseFloat(document.getElementById("sod" + i).value);
+        var txgv = parseFloat(document.getElementById("txgv" + i).value);
+        var refcent = parseFloat(document.getElementById("refcent" + i).value);
+        var reflok = parseFloat(document.getElementById("reflok" + i).value);
+        var refdist = parseFloat(document.getElementById("refdist" + i).value);
+        var expcent = parseFloat(document.getElementById("expcent" + i).value);
+        var explok = parseFloat(document.getElementById("explok" + i).value);
+        var expdist = parseFloat(document.getElementById("expdist" + i).value);
+        var cfolok = parseFloat(document.getElementById("cfolok" + i).value);
+        var intl = parseFloat(document.getElementById("intl" + i).value);
+        var mof = parseFloat(document.getElementById("mof" + i).value);
+
+
+        totalLokalExpenses += explok;
+        totalLokalRefund += reflok;
+        totalAdmthur += admthur;
+        totalAdmsun += admsun;
+        totalCws += cws;
+        totalSol += sol;
+        totalSod += sod;
+        totalAid += aid;
+        totalTxgv += txgv;
+        totalRefcent += refcent;
+        totalExpcent += expcent;
+        totalCfolok += cfolok;
+        totalMof += mof;
+        totalIntl += intl;
+        totalWeekend += admsun + cws + sol + sod + aid + txgv + refcent + refdist + reflok;
+        totalWholeweek += admthur + admsun + cws + sol + sod + aid + txgv + refcent + refdist + reflok;
+        totalRemainder += admthur + admsun + cws + sol + sod + aid + txgv + refcent + refdist + reflok - (expcent + expdist + explok);
+        totalAdmin += admthur + admsun + cws;
+        totalCentral += admthur + admsun + txgv + cws + refcent - expcent;
+        totalCfolokrem += cfolok + intl + mof;
+      }
+      var totalRemittance = totalAdmthur + totalAdmsun + totalCws + totalAid + totalTxgv + totalRefcent - totalExpcent + totalCfolok + totalMof + totalIntl;
+      document.getElementById("total-cfolokrem").value = totalCfolokrem.toFixed(2);
+      document.getElementById("total-central").value = totalCentral.toFixed(2);
+      document.getElementById("total-admin").value = totalAdmin.toFixed(2);
+      document.getElementById("total-remainder").value = totalRemainder.toFixed(2);
+      document.getElementById("total-wholeweek").value = totalWholeweek.toFixed(2);
+      document.getElementById("total-weekend").value = totalWeekend.toFixed(2);
+      document.getElementById("total-admthur").value = totalAdmthur.toFixed(2);
+      document.getElementById("total-admsun").value = totalAdmsun.toFixed(2);
+      document.getElementById("total-cws").value = totalCws.toFixed(2);
+      document.getElementById("total-sol").value = totalSol.toFixed(2);
+      document.getElementById("total-sod").value = totalSod.toFixed(2);
+      document.getElementById("total-aid").value = totalAid.toFixed(2);
+      document.getElementById("total-txgv").value = totalTxgv.toFixed(2);
+      document.getElementById("total-refcent").value = totalRefcent.toFixed(2);
+      document.getElementById("total-expcent").value = totalExpcent.toFixed(2);
+      document.getElementById("total-cfolok").value = totalCfolok.toFixed(2);
+      document.getElementById("total-mof").value = totalMof.toFixed(2);
+      document.getElementById("total-intl").value = totalIntl.toFixed(2);
+      document.getElementById("total-remittance").value = totalRemittance.toFixed(2);
+      document.getElementById("total-lokalexpenses").value = totalLokalExpenses.toFixed(2);
+      document.getElementById("total-lokalrefund").value = totalLokalRefund.toFixed(2);
+    }
+
+
+    function showSetDivs(numSets) {
+      for (var i = 1; i <= 10; i++) {
+        var setDiv = document.getElementById('set' + i);
+        if (setDiv) {
+          if (i <= numSets) {
+            setDiv.style.display = 'block';
+          } else {
+            setDiv.style.display = 'none';
+          }
+        }
+
+        var totalDiv = document.getElementById('set' + i + '-total');
+        if (totalDiv) {
+          if (i <= numSets) {
+            totalDiv.style.display = 'block';
+          } else {
+            totalDiv.style.display = 'none';
+          }
+        }
+      }
+    }
+
+    function calculateCfolokIntl(setNum) {
+      var sol = parseFloat(document.getElementById("sol" + setNum).value);
+      var cfolok = 0.1 * sol;
+      var intl = 0.05 * sol;
+      document.getElementById("cfolok" + setNum).value = cfolok.toFixed(2);
+      document.getElementById("intl" + setNum).value = intl.toFixed(2);
+    }
+
+    // add change event listener to each "sol" field
+    for (var i = 1; i <= 10; i++) {
+      var solField = document.getElementById("sol" + i);
+      if (solField) {
+        solField.addEventListener("change", function () {
+          var setNum = parseInt(this.id.replace("sol", ""));
+          calculateCfolokIntl(setNum);
+          computeTotalRemittance(parseInt(document.getElementById("wscount").value));
+        });
+      }
+    }
+
+
+    // get all input fields
+    document.addEventListener('DOMContentLoaded', function () {
+      // get all input fields
+      var inputs = document.getElementsByTagName("input");
+
+      // set initial focus on first input field
+      inputs[0].focus();
+
+      // add event listener for keydown
+      document.addEventListener("keydown", function (e) {
+        var keyCode = e.keyCode;
+        var active = document.activeElement;
+
+        // move focus to next input field on right arrow key press
+        if (keyCode === 39) {
+          if (active.nextElementSibling) {
+            active.nextElementSibling.focus();
+          }
+        }
+
+        // move focus to previous input field on left arrow key press
+        if (keyCode === 37) {
+          if (active.previousElementSibling) {
+            active.previousElementSibling.focus();
+          }
+        }
+
+        // move focus to input field above on up arrow key press
+        if (keyCode === 38) {
+          var row = active.parentElement.previousElementSibling;
+          if (row) {
+            var col = active.cellIndex;
+            var prevRow = row.previousElementSibling;
+            if (prevRow) {
+              prevRow.children[col].querySelector("input").focus();
+            }
+          }
+        }
+
+        // move focus to input field below on down arrow key press
+        if (keyCode === 40) {
+          var row = active.parentElement.nextElementSibling;
+          if (row) {
+            var col = active.cellIndex;
+            var nextRow = row.nextElementSibling;
+            if (nextRow) {
+              nextRow.children[col].querySelector("input").focus();
+            }
+          }
+        }
+      });
+
+    });
+
 
   </script>
 </body>
