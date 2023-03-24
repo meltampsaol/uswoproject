@@ -22,6 +22,8 @@ public interface LokalRepository extends JpaRepository<Lokal, Integer> {
 
     @Query("SELECT l FROM Lokal l WHERE l.lcode = :lcode")
     Lokal findByLokalCode(@Param("lcode") Integer lcode);
+    
+    Lokal findByLocale(String name);
 
     
 }

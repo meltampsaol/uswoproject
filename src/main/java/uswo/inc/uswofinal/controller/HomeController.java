@@ -43,6 +43,7 @@ import uswo.inc.uswofinal.model.CollectionPermit;
 import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.FundReleaseRequest;
 import uswo.inc.uswofinal.model.FundReleaseRequestForm;
+import uswo.inc.uswofinal.model.FundReleaseSearchCriteria;
 import uswo.inc.uswofinal.model.FundStart;
 import uswo.inc.uswofinal.model.Lokal;
 import uswo.inc.uswofinal.model.Note;
@@ -97,54 +98,21 @@ public class HomeController {
     public Object viewPdf(Model model) {
         return "viewrequest";
     }
+
     @GetMapping("/searchrequest")
     public Object searchRequest(Model model) {
         return "searchrequest";
     }
+    
 
     @GetMapping("/requests")
-public ResponseEntity<byte[]> getRequestBySearch(@RequestParam(required = false) String approvalNumber,
-        @RequestParam(required = false) String locale, @RequestParam(required = false) String particular,
-        HttpServletResponse response) throws IOException {
-
-    List<FundReleaseRequest> requests = null;
-    if (approvalNumber != null && !approvalNumber.isEmpty()) {
-        requests = fundReleaseRequestRepository.findByApprovalNumberContaining(approvalNumber);
-    } else if (locale != null && !locale.isEmpty()) {
-        requests = fundReleaseRequestRepository.findByLokalContaining(locale);
-    } else if (particular != null && !particular.isEmpty()) {
-        requests = fundReleaseRequestRepository.findByParticularsContaining(particular);
-    } else {
-        return ResponseEntity.badRequest().build();
-    }
-
-    if (!requests.isEmpty()) {
-        List<byte[]> pdfBytesList = new ArrayList<>();
-        for (FundReleaseRequest request : requests) {
-            String fileName = request.getFileName();
-            Path pdfPath = Paths.get(UPLOAD_DIR, fileName);
-            byte[] pdfBytes = Files.readAllBytes(pdfPath);
-            pdfBytesList.add(pdfBytes);
-        }
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ZipOutputStream zos = new ZipOutputStream(baos);
-        for (int i = 0; i < pdfBytesList.size(); i++) {
-            ZipEntry entry = new ZipEntry(requests.get(i).getApprovalNumber() + ".pdf");
-            zos.putNextEntry(entry);
-            zos.write(pdfBytesList.get(i));
-            zos.closeEntry();
-        }
-        zos.close();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("attachment", "requests.zip");
-        return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
-    } else {
-        return ResponseEntity.notFound().build();
-    }
+public ResponseEntity<List<FundReleaseRequest>> searchRequests(@RequestParam String search) {
+    List<FundReleaseRequest> requests = fundReleaseRequestRepository.searchRequests(search);
+    return ResponseEntity.ok(requests);
 }
 
 
+    
     @GetMapping("/requests/{approvalNumber}")
     public ResponseEntity<byte[]> getRequestByApprovalNumber(@PathVariable String approvalNumber,
             HttpServletResponse response)
