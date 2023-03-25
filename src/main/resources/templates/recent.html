@@ -27,12 +27,12 @@
                 
                 <td>
                     <form th:action="@{/expenses/delete/{id}(id=${expense.recid})}" method="post" id="deleteExpenseForm">
-                        <button type="button" class="btn btn-danger" data-toggle="modal"
-                            data-target="#deleteModal" th:value="${expense.recid}" data-expense-id="${expense.recid}">Delete <span th:text="${expense.recid}"></span></button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" th:value="${expense.recid}">Delete <span th:text="${expense.recid}"></span></button>
                     </form>
+                    
                 </td>
                 <td>
-                    <button th:value="${expense.recid}" class="btn btn-sm btn-primary edit-btn" data-toggle="modal" data-target="#editExpenseModal" data-expense-id="${expense.recid}">Edit <span th:text="${expense.recid}"></span></button>
+                    <button id="edt-btn" class="btn btn-sm btn-primary edit-btn" data-toggle="modal" data-target="#editExpenseModal" th:value="${expense.recid}">Edit <span th:text="${expense.recid}"></span></button>
                 </td> 
             </tr>
 
