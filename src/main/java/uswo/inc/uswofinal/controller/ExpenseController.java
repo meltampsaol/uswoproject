@@ -43,8 +43,9 @@ public class ExpenseController {
     }
 
     @GetMapping("/{id}")
-    public Expense getExpenseById(@PathVariable("id") int id) {
-        return expenseRepository.findById(id);
+    public Expense getExpenseById(@PathVariable("id") String id) {
+        int newid = Integer.parseInt(id);
+        return expenseRepository.findById(newid);
     }
 
     @PostMapping("/save")
