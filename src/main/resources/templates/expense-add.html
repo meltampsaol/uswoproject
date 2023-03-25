@@ -218,7 +218,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <form th:action="@{/expenses/${expense.recid}}" method="post" id="deleteExpenseForm">
+          <form th:action="@{/expenses/delete/${expense.recid}}" method="post" id="deleteExpenseForm">
             <button type="submit" class="btn btn-danger">Delete</button>
           </form>
         </div>
@@ -374,6 +374,41 @@
         $("#editExpenseForm").submit();
       });
     });
+
+
+    $(document).ready(function() {
+  // Event listener for delete expense button
+  $(document).on("click", ".delete-expense-button", function() {
+    // Get the record ID from the button data attribute
+    var recid = $(this).data("recid");
+
+    // Set the ID of the delete form to the record ID
+    $("#deleteExpenseForm").attr("action", "/expenses/delete/" + recid);
+
+    // Show the delete expense modal
+    $("#deleteModal").modal("show");
+  });
+
+  // Event listener for delete expense form submit
+  $("#deleteExpenseButton").click(function() {
+    // Submit the delete form via AJAX
+    $.ajax({
+      url: $("#deleteExpenseForm").attr("action"),
+      type: "POST",
+      success: function(result) {
+        // Update the page with the new expense list
+        $("#expenseTable").html(result);
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    });
+
+    // Hide the delete expense modal
+    $("#deleteModal").modal("hide");
+  });
+});
+
   </script>
 
 </body>

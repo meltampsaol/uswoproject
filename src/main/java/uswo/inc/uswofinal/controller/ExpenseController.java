@@ -79,7 +79,7 @@ public class ExpenseController {
         return expenseRepository.save(expense);
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete/{id}")
     public void deleteExpense(@PathVariable("id") int id) {
         expenseRepository.deleteById(id);
     }

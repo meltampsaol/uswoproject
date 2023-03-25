@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .requestMatchers("/uploads/*","/file","fragments/*","/requests","/searchrequest","/requestlist","/searchresult/*").permitAll()
                 .requestMatchers("/search/*","/searchpdf/*").permitAll()
                 .requestMatchers("/expenses/expense-add","/expenses/expense-view","/expenses/expense-search").permitAll()
-                .requestMatchers("/expenses/save","/expenses/recent","/expenses/","/expenses/*").permitAll()
+                .requestMatchers("/expenses/save","/expenses/recent","/expenses/","/expenses/*","/expenses/delete/*").permitAll()
                 .requestMatchers("/home").authenticated()
                 .and()
                 .formLogin()
