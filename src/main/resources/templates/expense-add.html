@@ -218,7 +218,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <form th:action="@{/expenses/delete/${expense.recid}}" method="post" id="deleteExpenseForm">
+          <form th:action="@{/expenses/${expense.recid}}" method="post" id="deleteExpenseForm">
             <button type="submit" class="btn btn-danger">Delete</button>
           </form>
         </div>
