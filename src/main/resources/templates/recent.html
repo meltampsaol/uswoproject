@@ -1,0 +1,22 @@
+<table class="table">
+    <thead>
+      <tr>
+        <th>Date Purchased</th>
+        <th>Description</th>
+        <th>Amount Requested</th>
+        <th>Actual Expenses</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Loop through expenses and render table rows -->
+      <tr th:each="expense : ${expenses}">
+        <td th:text="${expense.datePurchased}"></td>
+        <td th:text="${expense.description}"></td>
+        <td th:text="${expense.amountRequested}"></td>
+        <td th:text="${expense.actualExpenses}"></td>
+        <td th:text="${expense.remarks}"></td>
+      </tr>
+    </tbody>
+  </table>
+  

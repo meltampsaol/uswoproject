@@ -42,7 +42,7 @@
                     <td>
                       <div class="form-group">
                         <label for="lokal">Lokal:</label>
-                        <select class="form-control" id="lokal" name="lcode" required>
+                        <select class="form-control" id="lokal" name="lokal" required>
                           <option value="" selected>Select Lokal</option>
                         </select>
                       </div>
@@ -152,60 +152,40 @@
       <tr>
         <th>Date</th>
         <th>Description</th>
-        <th>Amount</th>
+        <th>Amount Requested</th>
+        <th>Actual Expenses</th>
         <th>Remarks</th>
       </tr>
     </thead>
     <tbody id="recentExpensesBody">
+      <div id="recentExpensesTable"></div>
     </tbody>
   </table>
 </div>
 <script>
-    $(document).ready(function() {
-  // Function to update the recent expenses table
-  function updateRecentExpenses() {
-    $.get("/expenses/recent", function(data) { // @GetMapping("/expenses/recent")
-      // Clear the table body
-      $("#recentExpensesBody").empty();
+ // Add an event listener to the form to update the recent expenses after submitting the form
+ $("form").submit(function() {
+  $.ajax({
+    url: $(this).attr("action"),
+    method: $(this).attr("method"),
+    data: $(this).serialize(),
+    success: function(data) {
+      // Replace the contents of the recentExpensesTable div with the updated HTML
+      $("#recentExpensesTable").html(data);
       
-      // Add the new rows
-      $.each(data, function(i, expense) {
-        var row = $("<tr>");
-        row.append($("<td>").text(expense.date));
-        row.append($("<td>").text(expense.description));
-        row.append($("<td>").text(expense.amount));
-        row.append($("<td>").text(expense.remarks));
-        $("#recentExpensesBody").prepend(row);
-      });
-    });
-  }
-  
-  // Call the function initially to load the recent expenses
-  updateRecentExpenses();
-  
-  // Add an event listener to the form to update the recent expenses after submitting the form
-  $("form").submit(function() {
-    $.ajax({
-      url: $(this).attr("action"),
-      method: $(this).attr("method"),
-      data: $(this).serialize(),
-      success: function(data) {
-        // Update the recent expenses table
-        updateRecentExpenses();
-        
-        // Reset the form
-        $("form")[0].reset();
-        $("#district").val("");
-        $("#lokal").empty();
-        $("#lokal").append($("<option>").val("").text("Select Lokal"));
-      }
-    });
-    
-    return false;
+      // Reset the form
+      $("form")[0].reset();
+      $("#district").val("");
+      $("#lokal").empty();
+      $("#lokal").append($("<option>").val("").text("Select Lokal"));
+    }
   });
+  
+  return false;
 });
 
 </script>
+
   <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
 </body>
 

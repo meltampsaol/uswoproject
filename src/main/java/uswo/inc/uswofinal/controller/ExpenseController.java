@@ -46,9 +46,16 @@ public class ExpenseController {
     }
 
     @PostMapping("/save")
-    public Expense createExpense(@ModelAttribute("expense") Expense expense) {
-        return expenseRepository.save(expense);
-    }
+public String createExpense(@ModelAttribute("expense") Expense expense, Model model) {
+  expenseRepository.save(expense);
+  
+  // Retrieve the updated recent expenses list
+  List<Expense> expenses = expenseRepository.findRecentExpenses();
+  model.addAttribute("expenses", expenses);
+  
+  return "recent";
+}
+
 
     @PutMapping("/{id}")
     public Expense updateExpense(@PathVariable("id") int id, @RequestBody Expense expenseData) {
