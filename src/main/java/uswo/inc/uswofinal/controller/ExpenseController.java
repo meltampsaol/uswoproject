@@ -34,10 +34,12 @@ public class ExpenseController {
     private DistrictRepository districtRepository;
 
     @GetMapping("/recent")
-    public List<Expense> getRecentExpenses() {
-        // Retrieve the recent expenses from the database
+    public String getRecentExpenses(Model model) {
+
         List<Expense> expenses = expenseRepository.findRecentExpenses();
-        return expenses;
+        model.addAttribute("expenses", expenses);
+
+        return "recent";
     }
 
     @GetMapping("/{id}")
@@ -46,16 +48,15 @@ public class ExpenseController {
     }
 
     @PostMapping("/save")
-public String createExpense(@ModelAttribute("expense") Expense expense, Model model) {
-  expenseRepository.save(expense);
-  
-  // Retrieve the updated recent expenses list
-  List<Expense> expenses = expenseRepository.findRecentExpenses();
-  model.addAttribute("expenses", expenses);
-  
-  return "recent";
-}
+    public String createExpense(@ModelAttribute("expense") Expense expense, Model model) {
+        expenseRepository.save(expense);
 
+        // Retrieve the updated recent expenses list
+        List<Expense> expenses = expenseRepository.findRecentExpenses();
+        model.addAttribute("expenses", expenses);
+
+        return "recent";
+    }
 
     @PutMapping("/{id}")
     public Expense updateExpense(@PathVariable("id") int id, @RequestBody Expense expenseData) {
