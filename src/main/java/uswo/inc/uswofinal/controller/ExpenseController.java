@@ -99,15 +99,16 @@ public class ExpenseController {
         model.addAttribute("expense", new Expense());
         return "expense-add";
     }
+
     @GetMapping("/espense-search/{searchText}")
     public String search(@PathVariable String searchText, Model model) {
-    List<Expense> expenses = expenseRepository.search(searchText);
-    model.addAttribute("expenses", expenses);
-    return "expense-search-result";
-  }
+        List<Expense> expenses = expenseRepository.search(searchText);
+        model.addAttribute("expenses", expenses);
+        return "expense-search-result";
+    }
 
-  @GetMapping("/expense-search")
+    @GetMapping("/expense-search")
     public String search(Model model) {
-    return "expense-search";
-  }
+        return "expense-search";
+    }
 }

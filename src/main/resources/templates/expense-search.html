@@ -1,12 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Expense Search</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-       
+  <meta charset="UTF-8">
+  <title>Add Expense</title>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Include Bootstrap's JavaScript after jQuery -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Include jquery.dataTables.min.js after jQuery -->
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+ 
+
+
+
 </head>
+
 <body>
+  <div th:replace="~{fragments/navbar :: navbar}"></div>
 <div class="container">
     <h1 class="text-center my-4">Expense Search</h1>
 
@@ -49,7 +67,7 @@
       $("#searchButton").click(function() {
         var searchText = $("#searchInput").val();
         $.ajax({
-          url: "/expenses/search/" + searchText,
+          url: "/expenses/expense-search/" + searchText,
           type: "GET",
           success: function(result) {
             $("#expenseTable").html(result);
@@ -66,6 +84,7 @@
     });
     </script>
     
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        ></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
