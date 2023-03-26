@@ -18,7 +18,7 @@ import lombok.Data;
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long recid;
+    private int recid;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "lcode")

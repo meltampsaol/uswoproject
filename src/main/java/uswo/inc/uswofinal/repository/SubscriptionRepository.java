@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import uswo.inc.uswofinal.model.Subscription;
 
-public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
+public interface SubscriptionRepository extends JpaRepository<Subscription, Integer> {
     @Query("SELECT s FROM Subscription s WHERE s.lokal.locale LIKE %:searchTerm% OR s.district.district LIKE %:searchTerm% OR s.foryear = :value OR s.balance = :value")
     List<Subscription> search(@Param("searchTerm") String searchTerm, @Param("value") BigDecimal value);
 }
