@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import uswo.inc.uswofinal.model.Expense;
@@ -22,16 +23,19 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
   Expense findById(long id);
 
   void deleteById(long id);
+  @Query("SELECT e FROM Expense e " +
+  "LEFT JOIN FETCH e.lokal l " +
+  "LEFT JOIN FETCH e.district d " +
+  "WHERE LOWER(l.locale) LIKE LOWER(CONCAT('%', :searchText, '%')) " +
+  "OR LOWER(d.district) LIKE LOWER(CONCAT('%', :searchText, '%')) " +
+  "OR LOWER(e.description) LIKE LOWER(CONCAT('%', :searchText, '%')) " +
+  "OR LOWER(e.f10) LIKE LOWER(CONCAT('%', :searchText, '%')) " +
+  "OR LOWER(e.remarks) LIKE LOWER(CONCAT('%', :searchText, '%'))")
+List<Expense> findBySearchText(@Param("searchText") String searchText);
 
-  @Query("SELECT e FROM Expense e WHERE " +
-          "LOWER(e.lokal) LIKE LOWER(CONCAT('%', :searchText, '%')) OR " +
-          "LOWER(e.district) LIKE LOWER(CONCAT('%', :searchText, '%')) OR " +
-          "LOWER(e.description) LIKE LOWER(CONCAT('%', :searchText, '%')) OR " +
-          "e.amountRequested = :searchText OR " +
-          "e.actualExpenses = :searchText OR " +
-          "e.f10 = :searchText OR " +
-          "LOWER(e.remarks) LIKE LOWER(CONCAT('%', :searchText, '%'))")
-  List<Expense> search(String searchText);
+
+
+
 
 }
 

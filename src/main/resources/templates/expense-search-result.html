@@ -38,7 +38,8 @@
             <th>Lokal</th>
             <th>District</th>
             <th>Description</th>
-            <th>Amount</th>
+            <th>Requested Amount</th>
+            <th>Actual Expenses</th>
             <th>F10</th>
             <th>Remarks</th>
         </tr>
@@ -46,11 +47,12 @@
         <tbody>
         <tr th:each="expense : ${expenses}">
             <td th:text="${expense.recid}"></td>
-            <td th:text="${expense.expensedate}"></td>
+            <td th:text="${expense.datePurchased}"></td>
             <td th:text="${expense.lokal}"></td>
             <td th:text="${expense.district}"></td>
             <td th:text="${expense.description}"></td>
-            <td th:text="${expense.amount}"></td>
+            <td th:text="${expense.amountRequested}"></td>
+            <td th:text="${expense.actualExpenses}"></td>
             <td th:text="${expense.f10}"></td>
             <td th:text="${expense.remarks}"></td>
         </tr>

@@ -39,7 +39,8 @@ public class Expense {
 
     @Column(name = "wkno")
     private String wkno;
-
+  
+    
     @Column(name = "description")
     private String description;
 
@@ -161,6 +162,10 @@ public class Expense {
     public void setExptype(String exptype) {
         this.exptype = exptype;
     }
+
+   
+
+   
 
     
 }
