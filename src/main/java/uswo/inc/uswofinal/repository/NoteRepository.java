@@ -18,8 +18,6 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 
     void deleteById(Integer id);
 
-    Note save(Note note);
-
     List<Note> findByLokal(String locale);
 
     List<Note> findByDistrict(String district);
