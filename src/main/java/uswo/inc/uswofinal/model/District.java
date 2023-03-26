@@ -32,5 +32,15 @@ public class District {
 
     public District() {
     }
+
     // getters and setters
+
+    @Override
+    public String toString() {
+        return "District{" +
+                "did=" + did +
+                ", dcode='" + dcode + '\'' +
+                ", district='" + district + '\'' +
+                '}';
+    }
 }

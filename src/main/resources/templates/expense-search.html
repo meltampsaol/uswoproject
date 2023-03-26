@@ -17,10 +17,6 @@
   <!-- Include jquery.dataTables.min.js after jQuery -->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
-
-
-
 </head>
 
 <body>
@@ -41,14 +37,12 @@
         </form>
       </div>
     </div>
-
-    <!-- Search Results Table -->
     <div id="searchResultsTable"></div>
 
     <!-- Search Results Modal -->
     <div class="modal fade" id="searchResultsModal" tabindex="-1" role="dialog"
       aria-labelledby="searchResultsModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable w-75" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="searchResultsModalLabel">Search Results</h5>
@@ -62,31 +56,36 @@
         </div>
       </div>
     </div>
-  </div>
-  <script>
-    $(document).ready(function () {
-      $("#searchButton").click(function () {
-        var searchText = $("#searchInput").val();
-        $.ajax({
-          url: "/expenses/expense-search/" + searchText,
-          type: "GET",
-          success: function (result) {
-            $("#expenseTable").html(result);
-            $("#searchModal").modal("show");
-            setTimeout(function () {
-              $("#searchModal").modal("hide");
-            }, 2000);
-          },
-          error: function (error) {
-            console.log(error);
-          }
+
+    <script>
+      $(document).ready(function () {
+        $("#searchButton").click(function () {
+          var searchText = $("#searchInput").val();
+          $.ajax({
+            url: "/expenses/expense-search/" + searchText,
+            type: "GET",
+            success: function (result) {
+              $("#searchResultsModal .modal-body").html(result);
+              var resultCopy = $(result).clone();
+              $("#searchResultsTable").html(resultCopy);
+              $("#searchResultsModal").modal("show");
+            },
+            error: function (error) {
+              console.log(error);
+            }
+          });
+        });
+
+        $("#searchResultsModal").on("hidden.bs.modal", function () {
+          $("#searchResultsModal .modal-body").empty();
         });
       });
-    });
-  </script>
+    </script>
 
 
-  <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
+
+    <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
+
 </body>
 
 </html>

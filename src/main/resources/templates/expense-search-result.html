@@ -17,59 +17,48 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 <body>
-<div class="container">
+
     <h1>Expense Search Result</h1>
 
-    <form th:action="@{/expenses/search}" method="get" class="form-inline">
-        <div class="form-group mr-2">
-            <label for="searchText">Search:</label>
-            <input type="text" class="form-control" id="searchText" name="searchText" placeholder="Search...">
-        </div>
-        <button type="submit" class="btn btn-info">Search</button>
-    </form>
 
-    <br>
-
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Lokal</th>
-            <th>District</th>
-            <th>Description</th>
-            <th>Requested Amount</th>
-            <th>Actual Expenses</th>
-            <th>F10</th>
-            <th>Remarks</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="expense : ${expenses}">
-            <td th:text="${expense.recid}"></td>
-            <td th:text="${expense.datePurchased}"></td>
-            <td th:text="${expense.lokal}"></td>
-            <td th:text="${expense.district}"></td>
-            <td th:text="${expense.description}"></td>
-            <td th:text="${expense.amountRequested}"></td>
-            <td th:text="${expense.actualExpenses}"></td>
-            <td th:text="${expense.f10}"></td>
-            <td th:text="${expense.remarks}"></td>
-        </tr>
-        </tbody>
-    </table>
-
-</div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="btn-info">
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Week</th>
+                    <th>Lokal</th>
+                    <th>District</th>
+                    <th>Description</th>
+                    <th>Requested Amount</th>
+                    <th>Actual Expenses</th>
+                    <th>F10</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="expense : ${expenses}">
+                    <td th:text="${expense.recid}"></td>
+                    <td th:text="${expense.datePurchased}"></td>
+                    <td th:text="${expense.wkno}"></td>
+                    <td th:text="${expense.lokal.locale}"></td>
+                    <td th:text="${expense.district.district}"></td>
+                    <td th:text="${expense.description}"></td>
+                    <td th:text="${expense.amountRequested}"></td>
+                    <td th:text="${expense.actualExpenses}"></td>
+                    <td th:text="${expense.f10}"></td>
+                    <td th:text="${expense.remarks}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
 
 
-<script>
-    // Auto-close the modal after 2 seconds
-    $(document).ready(function () {
-        window.setTimeout(function() {
-            $("#searchResultModal").modal("hide");
-        }, 2000);
-    });
-</script>
+
+
+
 
 </body>
 </html>
