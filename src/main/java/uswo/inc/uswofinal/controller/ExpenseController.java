@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.Expense;
@@ -80,8 +81,10 @@ public class ExpenseController {
     }
 
     @PostMapping("/delete/{id}")
-    public void deleteExpense(@PathVariable("id") int id) {
+    @ResponseBody
+    public String deleteExpense(@PathVariable("id") int id) {
         expenseRepository.deleteById(id);
+        return "Record deleted successfully";
     }
 
     @GetMapping("/expense-add")
@@ -96,4 +99,15 @@ public class ExpenseController {
         model.addAttribute("expense", new Expense());
         return "expense-add";
     }
+    @GetMapping("/search/{searchText}")
+    public String search(@PathVariable String searchText, Model model) {
+    List<Expense> expenses = expenseRepository.search(searchText);
+    model.addAttribute("expenses", expenses);
+    return "expense-search-result";
+  }
+
+  @GetMapping("/search")
+    public String search(Model model) {
+    return "expense-search";
+  }
 }

@@ -23,6 +23,16 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
   void deleteById(long id);
 
+  @Query("SELECT e FROM Expense e WHERE " +
+          "LOWER(e.lokal) LIKE LOWER(CONCAT('%', :searchText, '%')) OR " +
+          "LOWER(e.district) LIKE LOWER(CONCAT('%', :searchText, '%')) OR " +
+          "LOWER(e.description) LIKE LOWER(CONCAT('%', :searchText, '%')) OR " +
+          "e.amountRequested = :searchText OR " +
+          "e.actualExpenses = :searchText OR " +
+          "e.f10 = :searchText OR " +
+          "LOWER(e.remarks) LIKE LOWER(CONCAT('%', :searchText, '%'))")
+  List<Expense> search(String searchText);
+
 }
 
 

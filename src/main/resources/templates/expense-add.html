@@ -55,24 +55,39 @@
                 <select class="form-control" id="wkno" name="wkno" required>
                   <option value="" selected>Select Week Number</option>
                   <script>
-                    var year = moment().year(); // get the current year using moment.js
-                    var startDate = moment(year + "-01-01").add(1, "week"); // start from the second week of the year
-                    var endDate = moment(startDate).endOf("year");
-                    var weeks = [];
+                    $(document).ready(function () {
+                      var currentDate = new Date();
+                      var currentWeek = getWeekNumber(currentDate);
 
-                    while (startDate.isBefore(endDate)) {
-                      var weekNum = startDate.isoWeek();
-                      var weekStr = ("0" + weekNum).slice(-2) + "-" + year;
-                      weeks.push(weekStr);
-                      startDate.add(1, "week");
+                      // Generate the week number dropdown options
+                      var dropdownOptions = "";
+                      for (var i = currentWeek; i >= currentWeek - 11; i--) {
+                        var year = currentDate.getFullYear();
+                        if (i < 1) {
+                          i = 52 + i;
+                          year--;
+                        }
+                        var weekYear = i.toString().padStart(2, '0') + '-' + year.toString();
+                        dropdownOptions += '<option value="' + weekYear + '">' + weekYear + '</option>';
+                      }
+
+                      // Set the dropdown options in the HTML
+                      $("#wkno").html(dropdownOptions);
+                    });
+
+                    // Function to get the week number of a date
+                    function getWeekNumber(date) {
+                      var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+                      var dayNum = d.getUTCDay() || 7;
+                      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+                      var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+                      return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
                     }
 
-                    weeks.forEach(function (week) {
-                      document.write('<option value="' + week + '">' + week + "</option>");
-                    });
                   </script>
 
                 </select>
+
 
 
 
@@ -202,30 +217,30 @@
   </script>
 
   <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
+
   <!-- Delete Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete the record with ID <span id="deleteRecordId"></span>?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <form th:action="@{/expenses/delete/{id}(id=${expense.recid})}" method="post" id="deleteExpenseForm">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+        <div class="modal-body">
+          Are you sure you want to delete the record with ID <span id="deleteRecordId"></span>?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <form th:action="@{/expenses/delete/{id}(id=${expense.recid})}" method="post" id="deleteExpenseForm">
+            <button id="confirmDeleteButton" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+          </form>
+        </div>
+      </div>
     </div>
-</div>
-
+  </div>
 
   <div class="modal fade" id="editExpenseModal" tabindex="-1" role="dialog" aria-labelledby="editExpenseModalLabel"
     aria-hidden="true">
@@ -317,11 +332,11 @@
     $(document).ready(function () {
       // Event listener for edit expense button
       $(document).on("click", ".edit-btn", function () {
-     
+
         // Get the record ID from the button data attribute and convert to integer
         var recid = parseInt($(this).data("expense-id"));
 
-       
+
 
         // Populate the edit expense modal form fields
         $.ajax({
@@ -376,45 +391,53 @@
         $("#editExpenseForm").submit();
       });
     });
-    </script>
-    <script>
-      $(document).ready(function () {
-          // Event listener for delete expense button
-          $(document).on("click", ".delete-expense-button", function () {
-              // Get the record ID from the button data attribute
-              var recid = $(this).data("recid");
-  
-              // Set the record ID in the delete confirmation modal
-              $("#deleteRecordId").text(recid);
-  
-              // Set the ID of the delete form to the record ID
-              $("#deleteExpenseForm").attr("action", "/expenses/delete/" + recid);
-  
-              // Show the delete expense modal
-              $("#deleteModal").modal("show");
-          });
-  
-          // Event listener for delete expense form submit
-          $("#deleteExpenseButton").click(function () {
-              // Submit the delete form via AJAX
-              $.ajax({
-                  url: $("#deleteExpenseForm").attr("action"),
-                  type: "POST",
-                  success: function (result) {
-                      // Update the page with the new expense list
-                      $("#expenseTable").html(result);
-                  },
-                  error: function (error) {
-                      console.log(error);
-                  }
-              });
-  
-              // Hide the delete expense modal
-              $("#deleteModal").modal("hide");
-          });
-      });
   </script>
-  
+  <script>
+    $(document).ready(function () {
+      // Event listener for delete expense button
+      $(document).on("click", "#deleteExpenseButton", function () {
+        // Get the record ID from the button data attribute
+        var recid = $(this).data("recid");
+
+        // Set the record ID in the delete confirmation modal
+        $("#deleteRecordId").text(recid);
+
+        // Set the ID of the delete form to the record ID
+        $("#deleteExpenseForm").attr("action", "/expenses/delete/" + recid);
+
+        // Show the delete expense modal
+        $("#deleteModal").modal("show");
+      });
+
+      // Event listener for confirm delete button
+      $(document).on("click", "#confirmDeleteButton", function () {
+        // Submit the delete form via AJAX
+        $.ajax({
+          url: $("#deleteExpenseForm").attr("action"),
+          type: "POST",
+          success: function (result) {
+            // Update the page with the new expense list
+            $("#expenseTable").html(result);
+
+            // Update the recent expenses table
+            $("#recentExpensesTable").load("/expenses/recent");
+          },
+          error: function (error) {
+            console.log(error);
+          }
+        });
+
+        // Hide the delete expense modal
+        $("#deleteModal").modal("hide");
+      });
+    });
+
+  </script>
+
+
+
+
+
 </body>
 
 </html>
