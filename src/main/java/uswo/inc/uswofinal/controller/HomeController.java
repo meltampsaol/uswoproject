@@ -515,6 +515,8 @@ public class HomeController {
             noteRepository.save(existingNote);
         } else {
             // insert a new note
+            note.getLcode();
+            note.getDid();
             noteRepository.save(note);
         }
         return "redirect:/mynote";
