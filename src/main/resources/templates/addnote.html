@@ -33,7 +33,7 @@
     <form action="#" th:action="@{/addnote/}" th:object="${note}" method="post">
       <div class="form-group">
         <label for="district">District:</label>
-        <select class="form-control" id="did" name="did" required>
+        <select class="form-control" id="district" name="did" required>
           <option value="" selected>Select District</option>
           <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}"></option>
         </select>
@@ -74,7 +74,7 @@
  
   <script>
     $(document).ready(function () {
-      $('#did').change(function () {
+      $('#district').change(function () {
         var did = $(this).val();
         $.get('/getlocales/' + did, function (data) { 
           $('#locale').empty();
