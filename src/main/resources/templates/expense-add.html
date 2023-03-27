@@ -25,419 +25,125 @@
   <div th:replace="~{fragments/navbar :: navbar}"></div>
   <div class="container my-8">
     <div class="row">
-      <div class="col-md-6">
-        <h1>Add Expense</h1>
-        <form th:action="@{/expenses/save}" th:object="${expense}" method="post">
-          <table class="table table-striped">
-            <tr>
-              <td>
-                <div class="form-group">
-                  <label for="district">District:</label>
-                  <select class="form-control" id="district" name="district.did" required>
-                    <option value="" selected>Select District</option>
-                    <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}">
-                    </option>
-                  </select>
-                </div>
-              </td>
+        <div class="col-md-6">
+            <h1>Add Project Share</h1>
+            <form th:action="@{/projectshares/save}" th:object="${projectshare}" method="post">
+              <table class="table table-striped">
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="district">District:</label>
+                            <select class="form-control" id="district" name="district.did" required>
+                                <option value="" selected>Select District</option>
+                                <!-- Add the options for the District dropdown -->
+                                <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}"></option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="lokal">Lokal:</label>
+                            <select class="form-control" id="lokal" name="lokal.lcode" required>
+                                <option value="" selected>Select Lokal</option>
+                                <!-- Add the options for the Lokal dropdown -->
+                                <option th:each="lokal : ${lokals}" th:value="${lokal.lcode}" th:text="${lokal.lokal}"></option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="wkno">Week Number:</label>
+                            <select class="form-control" id="wkno" name="wkno" required>
+                                <option value="" selected>Select Week Number</option>
+                                <script>
+                                    $(document).ready(function () {
+                                        var currentDate = new Date();
+                                        var currentWeek = getWeekNumber(currentDate);
+                                        // Generate the week number dropdown options
+                                        var dropdownOptions = "";
+                                        for (var i = currentWeek; i >= currentWeek - 11; i--) {
+                                            var year = currentDate.getFullYear();
+                                            if (i < 1) {
+                                                i = 52 + i;
+                                                year--;
+                                            }
+                                            var weekYear = i.toString().padStart(2, '0') + '-' + year.toString();
+                                            dropdownOptions += '<option value="' + weekYear + '">' + weekYear + '</option>';
+                                        }
+            
+                                        // Set the dropdown options in the HTML
+                                        $("#wkno").html(dropdownOptions);
+                                    });
+            
+                                    // Function to get the week number of a date
+                                    function getWeekNumber(date) {
+                                        var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+                                        var dayNum = d.getUTCDay() || 7;
+                                        d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+                                        var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+                                        return Math.ceil((((d - yearStart) / 86400000) + 1) / 7));
+                                    }
+                                </script>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="item">Item:</label>
+                            <input type="text" class="form-control" id="item" name="item" required>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="form-group">
+                            <label for="share">Share:</label>
+                            <input type="number" class="form-control" id="share" name="share" min="0" required>
+                        </div>
+                    </td>
+                </tr>
+              
+              </table>
 
-              <td>
-                <div class="form-group">
-                  <label for="lokal">Lokal:</label>
-                  <select class="form-control" id="lokal" name="lokal" required>
-                    <option value="" selected>Select Lokal</option>
-                  </select>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <select class="form-control" id="wkno" name="wkno" required>
-                  <option value="" selected>Select Week Number</option>
-                  <script>
-                    $(document).ready(function () {
-                      var currentDate = new Date();
-                      var currentWeek = getWeekNumber(currentDate);
-
-                      // Generate the week number dropdown options
-                      var dropdownOptions = "";
-                      for (var i = currentWeek; i >= currentWeek - 11; i--) {
-                        var year = currentDate.getFullYear();
-                        if (i < 1) {
-                          i = 52 + i;
-                          year--;
-                        }
-                        var weekYear = i.toString().padStart(2, '0') + '-' + year.toString();
-                        dropdownOptions += '<option value="' + weekYear + '">' + weekYear + '</option>';
-                      }
-
-                      // Set the dropdown options in the HTML
-                      $("#wkno").html(dropdownOptions);
-                    });
-
-                    // Function to get the week number of a date
-                    function getWeekNumber(date) {
-                      var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-                      var dayNum = d.getUTCDay() || 7;
-                      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-                      var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-                      return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-                    }
-
-                  </script>
-
-                </select>
-
-
-
-
-
-              </td>
-              <td>
-                <div class="form-group">
-                  <label for="description">Description:</label>
-                  <textarea class="form-control" id="description" name="description" required></textarea>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="4">
-                <div class="form-group">
-                  <label for="f10">F10:</label>
-                  <input type="text" class="form-control" id="f10" name="f10" required>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="form-group">
-                  <label for="amountRequested">Amount Requested:</label>
-                  <input type="number" class="form-control" id="amountRequested" name="amountRequested" min="0"
-                    required>
-                </div>
-              </td>
-              <td>
-                <div class="form-group">
-                  <label for="actualExpenses">Amount:</label>
-                  <input type="number" class="form-control" id="actualExpenses" name="actualExpenses" min="0" required>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="form-group">
-                  <label for="datePurchased">Date Purchased:</label>
-                  <input type="date" class="form-control" id="datePurchased" name="datePurchased" required>
-                </div>
-              </td>
-              <td>
-                <div class="form-group">
-                  <label for="remarks">Remarks:</label>
-                  <textarea class="form-control" id="remarks" name="remarks"></textarea>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="form-group">
-                  <label for="qty">Quantity:</label>
-                  <input type="number" class="form-control" id="qty" name="qty" min="0" required>
-                </div>
-              </td>
-              <td>
-                <div class="form-group">
-                  <label for="exptype">Expense Type:</label>
-                  <select class="form-control" id="exptype" name="exptype" required>
-                    <option value="" selected>Select Expense Type</option>
-                    <option value="Locale">Locale</option>
-                    <option value="Central">Central</option>
-                  </select>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="4" class="text-center">
-                <button type="submit" class="btn btn-primary btn-lg">Add Expense</button>
-              </td>
-            </tr>
-          </table>
-        </form>
-
-      </div>
-
-      <div class="col-md-6">
-        <h2>Recent Expenses</h2>
-        <table class="table table-striped">
-
-          <tbody id="recentExpensesBody">
-            <div id="recentExpensesTable"></div>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-  </div>
-
-  <script>
-    $(document).ready(function () {
-      $('#district').change(function () {
-        var did = $(this).val();
-        $.get('/getlocales/' + did, function (data) {  // @GetMapping("/getlocales/{districtId}")
-          $('#lokal').empty();
-          $('#lokal').append($('<option>').val('').text('Select Lokal'));
-          $.each(data, function (i, lokal) {
-            $('#lokal').append($('<option>').val(lokal.lcode).text(lokal.locale));
-          });
-        });
-      });
-    });
-  </script>
-  <script>
-    // Add an event listener to the form to update the recent expenses after submitting the form
-    $("form").submit(function () {
-      $.ajax({
-        url: $(this).attr("action"),
-        method: $(this).attr("method"),
-        data: $(this).serialize(),
-        success: function (data) {
-          // Replace the contents of the recentExpensesTable div with the updated HTML
-          $("#recentExpensesTable").html(data);
-
-          // Reset the form
-          $("form")[0].reset();
-          $("#district").val("");
-          $("#lokal").empty();
-          $("#lokal").append($("<option>").val("").text("Select Lokal"));
-        }
-      });
-
-      return false;
-    });
-
-  </script>
-
-  <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
-
-  <!-- Delete Modal -->
-  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Are you sure you want to delete the record with ID <span id="deleteRecordId"></span>?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <form th:action="@{/expenses/delete/{id}(id=${expense.recid})}" method="post" id="deleteExpenseForm">
-            <button id="confirmDeleteButton" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="editExpenseModal" tabindex="-1" role="dialog" aria-labelledby="editExpenseModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editExpenseModalLabel">Edit Expense</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="editExpenseForm" th:action="@{/expenses/update}" method="post">
-            <input type="hidden" id="editExpenseId" name="recid" th:value="${expense.recid}">
-            <div class="form-group">
-              <label for="editDistrict">District:</label>
-              <select class="form-control" id="editDistrict" name="district.did" required>
-                <option value="" selected>Select District</option>
-                <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}">
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="editLokal">Lokal:</label>
-              <select class="form-control" id="editLokal" name="lokal" required>
-                <option value="" selected>Select Lokal</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="editWkno">Week Number:</label>
-              <input type="text" class="form-control" id="editWkno" name="wkno" pattern="[0-9]{2}-[0-9]{4}"
-                th:value="${expense.wkno}" required>
-              <div class="invalid-feedback">
-                Please enter a valid week number (week-yyyy).
+              <div class="form-group">
+                  <button type="submit" class="btn btn-primary">Save</button>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="editDescription">Description:</label>
-              <textarea class="form-control" id="editDescription" name="description" required
-                th:text="${expense.description}"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="editF10">F10:</label>
-              <input type="text" class="form-control" id="editF10" name="f10" required th:value="${expense.f10}">
-            </div>
-            <div class="form-group">
-              <label for="editAmountRequested">Amount Requested:</label>
-              <input type="number" class="form-control" id="editAmountRequested" name="amountRequested" min="0" required
-                th:value="${expense.amountRequested}">
-            </div>
-            <div class="form-group">
-              <label for="editActualExpenses">Amount:</label>
-              <input type="number" class="form-control" id="editActualExpenses" name="actualExpenses" min="0" required
-                th:value="${expense.actualExpenses}">
-            </div>
-            <div class="form-group">
-              <label for="editDatePurchased">Date Purchased:</label>
-              <input type="date" class="form-control" id="editDatePurchased" name="datePurchased" required
-                th:value="${expense.datePurchased}">
-            </div>
-            <div class="form-group">
-              <label for="editRemarks">Remarks:</label>
-              <textarea class="form-control" id="editRemarks" name="remarks" th:text="${expense.remarks}"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="editQty">Quantity:</label>
-              <input type="number" class="form-control" id="editQty" name="qty" min="0" required
-                th:value="${expense.qty}">
-            </div>
-            <div class="form-group">
-              <label for="editExpenseType">Expense Type:</label>
-              <select class="form-control" id="editExpenseType" name="exptype" required>
-                <option value="" selected>Select Expense Type</option>
-                <option value="Locale" th:selected="${expense.exptype == 'Locale'}">Locale</option>
-                <option value="Central" th:selected="${expense.exptype == 'Central'}">Central</option>
-              </select>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="editExpenseButton">Save Changes</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <script>
-    $(document).ready(function () {
-      // Event listener for edit expense button
-      $(document).on("click", ".edit-btn", function () {
-
-        // Get the record ID from the button data attribute and convert to integer
-        var recid = parseInt($(this).data("expense-id"));
-
-
-
-        // Populate the edit expense modal form fields
-        $.ajax({
-          url: "/expenses/" + recid,
-          type: "GET",
-          success: function (expense) {
-            $("#editExpenseId").val(expense.recid);
-            $("#editDistrict").val(expense.district.did);
-            populateLocaleDropdownList(expense.district.did, expense.lokal);
-            $("#editWkno").val(expense.wkno);
-            $("#editDescription").val(expense.description);
-            $("#editF10").val(expense.f10);
-            $("#editAmountRequested").val(expense.amountRequested);
-            $("#editActualExpenses").val(expense.actualExpenses);
-            $("#editDatePurchased").val(expense.datePurchased);
-            $("#editRemarks").val(expense.remarks);
-            $("#editQty").val(expense.qty);
-            $("#editExpenseType").val(expense.exptype);
-          }
-        });
-
-        // Show the edit expense modal
-        $("#editExpenseModal").modal("show");
-      });
-
-      // Event listener for district change
-      $("#editDistrict").change(function () {
-        var districtId = $(this).val();
-        populateLocaleDropdownList(districtId, "");
-      });
-
-      // Function to populate the locale dropdown list based on district
-      function populateLocaleDropdownList(districtId, selectedLocale) {
-        var url = "/locales/" + districtId;
-
-        $.get(url, function (data) {
-          var options = "";
-          $.each(data, function (index, locale) {
-            if (selectedLocale != "" && selectedLocale == locale) {
-              options += '<option value="' + locale + '" selected>' + locale + '</option>';
-            } else {
-              options += '<option value="' + locale + '">' + locale + '</option>';
-            }
-          });
-
-          $("#editLokal").html(options);
-        });
-      }
-
-      // Event listener for edit expense form submit
-      $("#editExpenseButton").click(function () {
-        $("#editExpenseForm").submit();
-      });
-    });
-  </script>
-  <script>
-    $(document).ready(function () {
-      // Event listener for delete expense button
-      $(document).on("click", "#deleteExpenseButton", function () {
-        // Get the record ID from the button data attribute
-        var recid = $(this).data("recid");
-
-        // Set the record ID in the delete confirmation modal
-        $("#deleteRecordId").text(recid);
-
-        // Set the ID of the delete form to the record ID
-        $("#deleteExpenseForm").attr("action", "/expenses/delete/" + recid);
-
-        // Show the delete expense modal
-        $("#deleteModal").modal("show");
-      });
-
-      // Event listener for confirm delete button
-      $(document).on("click", "#confirmDeleteButton", function () {
-        // Submit the delete form via AJAX
-        $.ajax({
-          url: $("#deleteExpenseForm").attr("action"),
-          type: "POST",
-          success: function (result) {
-            // Update the page with the new expense list
-            $("#expenseTable").html(result);
-
-            // Update the recent expenses table
-            $("#recentExpensesTable").load("/expenses/recent");
-          },
-          error: function (error) {
-            console.log(error);
-          }
-        });
-
-        // Hide the delete expense modal
-        $("#deleteModal").modal("hide");
-      });
-    });
-
-  </script>
-
-
-
-
-
+              
+              </form>
+              
+              </div>
+              </div>
+              </div>
+              
+              <div th:replace="~{fragments/footer :: footer}"></div>
+              
+              <script th:inline="javascript">
+                  $(document).ready(function () {
+                      $('#district').on('change', function () {
+                          var districtId = $(this).val();
+                          if (districtId) {
+                              $.ajax({
+                                  type: 'GET',
+                                  url: '/projectshares/locales/' + districtId,
+                                  success: function (locales) {
+                                      $('#lokal').empty();
+                                      $('#lokal').append($('<option>').val('').text('Select Lokal'));
+                                      $.each(locales, function (i, lokal) {
+                                          $('#lokal').append($('<option>').val(lokal.lcode).text(lokal.lokal));
+                                      });
+                                  },
+                                  error: function () {
+                                      console.log('Error occurred while getting the locales!');
+                                  }
+                              });
+                          } else {
+                              $('#lokal').empty();
+                              $('#lokal').append($('<option>').val('').text('Select Lokal'));
+                          }
+                      });
+                  });
+              </script>
 </body>
-
-</html>
+</html>              

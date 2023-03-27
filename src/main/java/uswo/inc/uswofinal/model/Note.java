@@ -35,7 +35,7 @@ public class Note {
     private Lokal lokal;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "did", referencedColumnName = "did", insertable = false, updatable = false)
+    @JoinColumn(name = "did", referencedColumnName = "did")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private District district;
 

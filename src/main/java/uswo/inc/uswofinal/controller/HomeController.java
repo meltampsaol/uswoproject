@@ -514,10 +514,27 @@ public class HomeController {
             // update any other fields as necessary
             noteRepository.save(existingNote);
         } else {
-            // insert a new note
-            note.getLcode();
-            note.getDid();
-            noteRepository.save(note);
+           
+            try {
+                // insert a new note
+        District district = districtRepository.findBydid(note.getDistrict().getDid());
+        
+
+        Note newNote = new Note();
+        newNote.setDistrict(district);
+        newNote.setLcode(note.getLcode());
+        //newNote.setDid(note.getDistrict().getDid());
+        newNote.setWkno(note.getWkno());
+        newNote.setConcerns(note.getConcerns());
+        newNote.setAction(note.getAction());
+        newNote.setActionDate(note.getActionDate());
+        logger.error("Failed to set district ID: " + note.getDistrict().getDid());
+        noteRepository.save(newNote);
+            } catch (NullPointerException e) {
+                logger.error("Failed to set district ID: " + e.getMessage());
+                // handle the exception gracefully, e.g. by returning an error message to the user
+            }
+            
         }
         return "redirect:/mynote";
     }

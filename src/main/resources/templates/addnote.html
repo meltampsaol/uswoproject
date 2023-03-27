@@ -33,10 +33,11 @@
     <form action="#" th:action="@{/addnote/}" th:object="${note}" method="post">
       <div class="form-group">
         <label for="district">District:</label>
-        <select class="form-control" id="district" name="did" required>
+        <select class="form-control" id="district" name="district.did" required>
           <option value="" selected>Select District</option>
           <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}"></option>
-        </select>
+      </select>
+      
       </div>
       <div class="form-group">
         <label for="locale">Locale:</label>
