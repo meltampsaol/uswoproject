@@ -31,6 +31,7 @@ public class Projectshare {
     private District district;
 
     private String item;
+    private String asofwkno;
 
     private BigDecimal share;
 

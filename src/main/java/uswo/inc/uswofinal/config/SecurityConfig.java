@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .requestMatchers("/expenses/expense-add","/expenses/expense-view","/expenses/expense-search").permitAll()
                 .requestMatchers("/expenses/save","/expenses/recent","/expenses/","/expenses/*","/expenses/delete/*").permitAll()
                 .requestMatchers("/expenses/expense-search","/expenses/expense-search/*").permitAll()
+                .requestMatchers("/f2b/**").permitAll()
                 .requestMatchers("/home").authenticated()
                 .and()
                 .formLogin()

@@ -46,6 +46,8 @@ public class FundReleaseRequest {
 
     @Column(name = "particulars")
     private String particulars;
+    @Column(name = "remarks")
+    private String remarks;
 
     @Column(name = "lcode")
     private Integer lcode;
@@ -123,6 +125,14 @@ public class FundReleaseRequest {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     

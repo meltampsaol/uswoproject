@@ -5,6 +5,7 @@ public class FundReleaseSearchCriteria {
     private String localeName;
     private String districtName;
     private String particulars;
+    private String remarks;
     public String getApprovalNumber() {
         return approvalNumber;
     }
@@ -29,7 +30,11 @@ public class FundReleaseSearchCriteria {
     public void setParticulars(String particulars) {
         this.particulars = particulars;
     }
-
-    // getter and setter methods
+    public String getRemarks() {
+        return remarks;
+    }
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
     
 }

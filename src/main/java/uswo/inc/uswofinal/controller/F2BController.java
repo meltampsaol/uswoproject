@@ -17,13 +17,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.Expense;
 import uswo.inc.uswofinal.model.Lokal;
+import uswo.inc.uswofinal.model.Projectshare;
 import uswo.inc.uswofinal.repository.DistrictRepository;
 import uswo.inc.uswofinal.repository.ExpenseRepository;
 import uswo.inc.uswofinal.repository.LokalRepository;
+import uswo.inc.uswofinal.repository.ProjectshareRepository;
 
 @Controller
-@RequestMapping("/expenses")
-public class ExpenseController {
+@RequestMapping("/f2b")
+public class F2BController {
 
     @Autowired
     private ExpenseRepository expenseRepository;
@@ -32,6 +34,9 @@ public class ExpenseController {
 
     @Autowired
     private DistrictRepository districtRepository;
+
+    @Autowired
+    private ProjectshareRepository projectshareRepository;
 
     @GetMapping("/recent")
     public String getRecentExpenses(Model model) {
@@ -48,9 +53,9 @@ public class ExpenseController {
         return expenseRepository.findById(newid);
     }
 
-    @PostMapping("/save")
-    public String createExpense(@ModelAttribute("expense") Expense expense, Model model) {
-        expenseRepository.save(expense);
+    @PostMapping("/projectshare/save")
+    public String createExpense(@ModelAttribute("projectshare") Projectshare projectshare, Model model) {
+        projectshareRepository.save(projectshare);
 
         // Retrieve the updated recent expenses list
         List<Expense> expenses = expenseRepository.findRecentExpenses();
@@ -86,7 +91,7 @@ public class ExpenseController {
         return "Record deleted successfully";
     }
 
-    @GetMapping("/expense-add")
+    @GetMapping("/projectshare-add")
     public String addNoteForm(Model model) {
         // Add the District and Lokal models to the attributes
         List<District> districts = districtRepository.findAll();
@@ -95,8 +100,8 @@ public class ExpenseController {
         model.addAttribute("locales", locales);
 
         // Add other attributes and return the view
-        model.addAttribute("expense", new Expense());
-        return "expense-add";
+        model.addAttribute("projectshare", new Projectshare());
+        return "share-add";
     }
 
     @GetMapping("/expense-search/{searchText}")
