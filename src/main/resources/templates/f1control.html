@@ -72,6 +72,7 @@ function search_locales(districtId)
       // Add an event listener to the table that listens for button clicks even from the <div>
       $("#lokalTable").on("click", ".btn.btn-primary", handleButtonClick2);
       $("#lokalTable").on("click", ".btn.btn-success", handleButtonClick3);
+      $("#lokalTable").on("click", ".btn.btn-info", handleButtonClick4);
       
   });
 
@@ -113,11 +114,11 @@ xhr.send(JSON.stringify({ wscount: wscount}));
 
 function handleButtonClick4(event) {
   console.log("Button clicked!");
-  if ($(event.target).hasClass("btn") && $(event.target).hasClass("btn-success")) {
+  if ($(event.target).hasClass("btn") && $(event.target).hasClass("btn-info")) {
     const buttonId = $(event.target).attr("id");
     const lcode = buttonId.split('-')[1];
     console.log("Lcode: " + lcode);
-    window.open("/f1auditor/" + lcode, "_blank");
+    window.open("/newnote/" + lcode, "_blank");
   }
 }
 //below is the code for f1auditor.html

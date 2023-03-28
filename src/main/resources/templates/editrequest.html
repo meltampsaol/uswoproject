@@ -22,8 +22,8 @@
 
         <!-- Add a form to edit the request -->
         <form id="edit-form" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="id" th:value="${request.id}">
-          <div class="form-group">
+            <input type="hidden" id="id" name="id" th:value="${request.id}">
+            <div class="form-group">
             <label for="approval-number">Approval Number:</label>
             <input type="text" id="approval-number" name="approvalNumber" class="form-control" th:value="${request.approvalNumber}">
           </div>
@@ -31,12 +31,15 @@
             <label for="district">District:</label>
             <select id="district" name="district" class="form-control">
               <!-- Iterate over the list of districts and create an option for each -->
-              <option th:each="district : ${districts}" th:value="${district.id}" th:selected="${district.id == request.district.id}" th:text="${district.district}"></option>
+              <option th:each="district : ${districts}" th:value="${district.did}" th:selected="${district.did == request.did}" th:text="${district.district}"></option>
             </select>
           </div>
           <div class="form-group">
             <label for="locale">Locale:</label>
-            <input type="text" id="locale" name="locale" class="form-control" th:value="${request.lokal.locale}">
+            <select class="form-control" id="locale" name="locale" required>
+                <!-- Iterate over the list of districts and create an option for each -->
+                <option th:each="locale : ${locales}" th:value="${locale.lcode}" th:selected="${locale.lcode == request.lcode}" th:text="${locale.locale}"></option>
+              </select>
           </div>
           <div class="form-group">
             <label for="particulars">Particulars:</label>
@@ -65,11 +68,12 @@
             var formData = new FormData(event.target);
             var xhr = new XMLHttpRequest();
             var id = document.getElementById('id').value;
-            xhr.open("PUT", "/requests/update/" + id);
+            xhr.open("POST", "/requests/update/" + id);
             xhr.onload = function () {
               if (xhr.status === 200) {
                 document.getElementById("update-success").style.display =
                 "";
+                window.location.href = "/requestslist";
           } else {
             console.log("Error:", xhr.status);
           }
@@ -77,6 +81,20 @@
         xhr.send(formData);
       });
     </script>
+    <script>
+        $(document).ready(function () {
+          $('#district').change(function () {
+            var did = $(this).val();
+            $.get('/getlocales/' + did, function (data) { 
+              $('#locale').empty();
+              $('#locale').append($('<option>').val('').text('Select Locale'));
+              $.each(data, function (i, locale) {
+                $('#locale').append($('<option>').val(locale.lcode).text(locale.locale));
+              });
+            });
+          });
+        });
+      </script>
   </div>
 </div>
 </div>

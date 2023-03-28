@@ -26,12 +26,12 @@ public class FundReleaseRequest {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "lcode", referencedColumnName = "lcode", insertable = false, updatable = false)
+    @JoinColumn(name = "lcode", referencedColumnName = "lcode", insertable=false, updatable=false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Lokal lokal;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "did", referencedColumnName = "did", insertable = false, updatable = false)
+    @JoinColumn(name = "did", referencedColumnName = "did",insertable=false, updatable=false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private District district;
 

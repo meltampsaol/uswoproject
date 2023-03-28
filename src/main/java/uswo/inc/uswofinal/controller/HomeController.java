@@ -371,50 +371,52 @@ public class HomeController {
     }
 
     @PostMapping("/requests/update/{id}")
-    public String updateRequest(@PathVariable Long id, @RequestParam("file") MultipartFile file, 
-    @RequestParam String approvalNumber, @RequestParam Long district, 
-    @RequestParam String locale, @RequestParam String particulars, 
-    @RequestParam String remarks,Model model) throws IOException {
-    
-    // Find the request to update
-    Optional<FundReleaseRequest> optionalRequest = fundReleaseRequestRepository.findById(id);
-    if (!optionalRequest.isPresent()) {
+    public String updateRequest(@PathVariable Long id, @RequestParam("file") MultipartFile file,
+            @RequestParam String approvalNumber, @RequestParam Long district,
+            @RequestParam String locale, @RequestParam String particulars,
+            @RequestParam String remarks, Model model) throws IOException {
+
+        // Find the request to update
+        Optional<FundReleaseRequest> optionalRequest = fundReleaseRequestRepository.findById(id);
+        if (!optionalRequest.isPresent()) {
+            return "redirect:/requestslist";
+        }
+        FundReleaseRequest request = optionalRequest.get();
+
+        // Update the fields
+        request.setApprovalNumber(approvalNumber);
+        Optional<District> optionalDistrict = districtRepository.findById(district);
+        if (optionalDistrict.isPresent()) {
+            request.setDistrict(optionalDistrict.get());
+        }
+        Lokal lokal = request.getLokal();
+        lokal.setLocale(locale);
+        request.setLokal(lokal);
+        request.setParticulars(particulars);
+        request.setRemarks(remarks);
+
+        // If a new file was selected, upload it and update the filename
+        if (!file.isEmpty()) {
+            // Generate a unique filename to prevent overwriting existing files
+            String filename = UUID.randomUUID().toString() + "."
+                    + FilenameUtils.getExtension(file.getOriginalFilename());
+            // Set the filename on the request
+            request.setFileName(filename);
+            // Save the file to disk
+            Files.write(Paths.get(UPLOAD_DIR, filename), file.getBytes());
+        }
+
+        // Save the updated request to the database
+        fundReleaseRequestRepository.save(request);
+
         return "redirect:/requestslist";
     }
-    FundReleaseRequest request = optionalRequest.get();
-    
-    // Update the fields
-    request.setApprovalNumber(approvalNumber);
-    Optional<District> optionalDistrict = districtRepository.findById(district);
-    if (optionalDistrict.isPresent()) {
-        request.setDistrict(optionalDistrict.get());
+    @GetMapping("/requestslist")
+    public String requestsList(Model model) {
+        List<FundReleaseRequest> reqlist = fundReleaseRequestRepository.findAll();
+        model.addAttribute("requests", reqlist);
+        return "requestslist";
     }
-    Lokal lokal = request.getLokal();
-    lokal.setLocale(locale);
-    request.setLokal(lokal);
-    request.setParticulars(particulars);
-    request.setRemarks(remarks);
-    
-    // If a new file was selected, upload it and update the filename
-    if (!file.isEmpty()) {
-        // Generate a unique filename to prevent overwriting existing files
-        String filename = UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-        // Set the filename on the request
-        request.setFileName(filename);
-        // Save the file to disk
-        Files.write(Paths.get(UPLOAD_DIR, filename), file.getBytes());
-    }
-    
-    // Save the updated request to the database
-    fundReleaseRequestRepository.save(request);
-    
-    // Redirect back to the list of requests
-    List<FundReleaseRequest> reqlist = fundReleaseRequestRepository.findAll();
-    model.addAttribute("requests", reqlist);
-    return "redirect:/requestslist";
-}
-
-
     @GetMapping("/getlocales3/{districtId}")
     public String lokalList(Model model, @PathVariable Integer districtId) {
         List<Lokal> locales = lokalRepository.findAll();
@@ -512,6 +514,18 @@ public class HomeController {
         return "mynote";
     }
 
+    @GetMapping("/newnote/{lcode}")
+    public String newNoteForm(Model model,@PathVariable("lcode") Integer lcode) {
+        // Add the District and Lokal models to the attributes
+        List<District> districts = districtRepository.findAll();
+        Lokal lokal = lokalRepository.findByLokalCode(lcode);
+        model.addAttribute("districts", districts);
+        // Add other attributes and return the view
+        model.addAttribute("note", new Note());
+        model.addAttribute("districtName", lokal.getDistrict());
+        model.addAttribute("locale", lokal.getLocale());
+        return "newnote";
+    }
     @GetMapping("/addnote")
     public String addNoteForm(Model model) {
         // Add the District and Lokal models to the attributes
@@ -524,7 +538,6 @@ public class HomeController {
         model.addAttribute("note", new Note());
         return "addnote";
     }
-
     @PostMapping("/update-note/")
     public String updateNote(Note updatedNote) {
         Optional<Note> noteOptional = noteRepository.findById(updatedNote.getId());
