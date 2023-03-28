@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Request of Fund Release List</title>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Include Bootstrap's JavaScript after jQuery -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!-- Include jquery.dataTables.min.js after jQuery -->
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+  <div th:replace="~{fragments/navbar :: navbar}"></div>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-12">
+        <div th:if="${welcomeMessage}">
+          <p th:text="${welcomeMessage}"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container my-8">
+    <div class="row">
+      <div class="col-md-8">
+        <h1>Edit Request</h1>
+<table id="results-table" class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Approval Number</th>
+        <th>District</th>
+        <th>Locale</th>
+        <th>Particular</th>
+        <th>Remarks</th>
+        <th>File</th>
+        <th>Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Iterate over the list of requests and create a row for each -->
+      <tr th:each="request : ${requests}">
+        <td th:text="${request.id}"></td>
+        <td th:text="${request.approvalNumber}"></td>
+        <td th:text="${request.district.district}"></td>
+        <td th:text="${request.lokal.locale}"></td>
+        <td th:text="${request.particulars}"></td>
+        <td th:text="${request.remarks}"></td>
+        <td><a href="#" onclick="openPdfWindow('/searchpdf/' + '${request.id}')">View PDF</a></td>
+        <td><a href="/requests/edit/${request.id}">Edit</a></td>
+      </tr>
+    </tbody>
+  </table>
+      </div>
+    </div></div>
+    <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

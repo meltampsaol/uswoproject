@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
-  <title>Lokal List - Edit</title>
+  <title>Lokal List</title>
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
   <!-- Include Bootstrap's JavaScript after jQuery -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+
   <!-- Include jquery.dataTables.min.js after jQuery -->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+
+
+
+
 </head>
+
 <body>
   <div th:replace="~{fragments/navbar :: navbar}"></div>
   <div class="container mt-4">
@@ -27,129 +41,96 @@
   <div class="container my-8">
     <div class="row">
       <div class="col-md-8">
-        <h1>Edit Request</h1>
-            <!-- Add a form to edit the request -->
-    <form id="edit-form">
-        <div class="form-group">
-          <label for="approval-number">Approval Number:</label>
-          <input type="text" id="approval-number" name="approvalNumber" class="form-control" th:value="${request.approvalNumber}">
-        </div>
-        <div class="form-group">
-          <label for="district">District:</label>
-          <select id="district" name="district" class="form-control">
-            <!-- Iterate over the list of districts and create an option for each -->
-            <option th:each="district : ${districts}" th:value="${district.id}" th:selected="${district.id == request.district.id}" th:text="${district.district}"></option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="locale">Locale:</label>
-          <input type="text" id="locale" name="locale" class="form-control" th:value="${request.lokal.locale}">
-        </div>
-        <div class="form-group">
-          <label for="particulars">Particulars:</label>
-          <textarea id="particulars" name="particulars" class="form-control" rows="3" th:text="${request.particulars}"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="remarks">Remarks:</label>
-          <textarea id="remarks" name="remarks" class="form-control" rows="3" th:text="${request.remarks}"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Update Request</button>
-      </form>
-  
-      <!-- Display a message if the request was successfully updated -->
-      <div class="alert alert-success mt-3" role="alert" style="display:none;" id="update-success">
-        Request updated successfully.
-      </div>
-  
-      <hr>
-  
-      <h1>Search Request</h1>
-  
-  
-      <form id="search-form">
-        <div class="form-group">
-          <label for="search">Search:</label>
-          <input type="text" id="search" name="search" class="form-control"
-          placeholder="Enter approval number, locale name, district name, or particular" value="${searchQuery}">
-      </div>
-      <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-
-    <table id="results-table" class="table table-striped mt-3">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Approval Number</th>
-          <th>District</th>
-          <th>Locale</th>
-          <th>Particular</th>
-          <th>Remarks</th>
-          <th>File</th>
-          <th>Edit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Iterate over the list of requests and create a row for each -->
-        <tr th:each="request : ${requests}">
-          <td th:text="${request.id}"></td>
-          <td th:text="${request.approvalNumber}"></td>
-          <td th:text="${request.district.district}"></td>
-          <td th:text="${request.lokal.locale}"></td>
-          <td th:text="${request.particulars}"></td>
-          <td th:text="${request.remarks}"></td>
-          <td><a href="#" onclick="openPdfWindow('/searchpdf/' + ${request.id})">View PDF</a></td>
-          <td><a href="/requests/edit/${request.id}">Edit</a></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function (event) {
-        document.getElementById("update-success").style.display = "none";
-      });
+        <h1>Search Request</h1>
 
 
-      var pdfWindow = null;
+        <form id="search-form">
+          <div class="form-group">
+            <label for="search">Search:</label>
+            <input type="text" id="search" name="search" class="form-control"
+              placeholder="Enter approval number, locale name, district name, or particular">
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
 
-      function openPdfWindow(url) {
-        if (pdfWindow != null && !pdfWindow.closed) {
-          pdfWindow.close();
-        }
+        <table id="results-table" class="table table-striped mt-3" style="display:none;">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Approval Number</th>
+              <th>District</th>
+              <th>Locale</th>
+              <th>Particular</th>
+              <th>Remarks</th>
+              <th>File</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
 
-        var width = 800;
-        var height = 600;
-        var left = (screen.width - width) / 2;
-        var top = (screen.height - height) / 2;
-
-        pdfWindow = window.open(url, "_blank", "left=" + left + ",top=" + top + ",width=" + width + ",height=" + height);
-      }
 
 
-      document.getElementById("search-form").addEventListener("submit", function (event) {
-        event.preventDefault();
-        var search = document.getElementById("search").value;
-        window.location.href = "/requests?search=" + search;
-      });
+        <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
 
-      document.getElementById("edit-form").addEventListener("submit", function (event) {
-        event.preventDefault();
-        var formData = new FormData(event.target);
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/requests/edit/" + ${request.id});
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            document.getElementById("update-success").style.display = "";
-          } else {
-            console.log("Error:", xhr.status);
+        <script>
+          document.addEventListener("DOMContentLoaded", function (event) {
+            document.getElementById("results-table").style.display = "none";
+          });
+
+
+          var pdfWindow = null;
+
+          function openPdfWindow(url) {
+            if (pdfWindow != null && !pdfWindow.closed) {
+              pdfWindow.close();
+            }
+
+            var width = 800;
+            var height = 600;
+            var left = (screen.width - width) / 2;
+            var top = (screen.height - height) / 2;
+
+            pdfWindow = window.open(url, "_blank", "left=" + left + ",top=" + top + ",width=" + width + ",height=" + height);
           }
-        };
-        xhr.send(formData);
-      });
-    </script>
-</div>
-    </div>
-    </div>
+
+
+          document.getElementById("search-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            var search = document.getElementById("search").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/requests?search=" + search);
+            xhr.responseType = "json";
+            xhr.onload = function () {
+              if (xhr.status === 200) {
+                var requests = xhr.response;
+                var tbody = document.getElementById("results-table").getElementsByTagName("tbody")[0];
+                tbody.innerHTML = "";
+                for (var i = 0; i < requests.length; i++) {
+                  var request = requests[i];
+                  var tr = document.createElement("tr");
+                  tr.innerHTML = "<td>" + request.id + "</td>" +
+                    "<td>" + request.approvalNumber + "</td>" +
+                    "<td>" + request.district.district + "</td>" +
+                    "<td>" + request.lokal.locale + "</td>" +
+                    "<td>" + request.particulars + "</td>" +
+                    "<td>" + request.remarks + "</td>" +
+                    "<td><a href='#' onclick=openPdfWindow('/searchpdf/" + request.id + "')>View PDF</a></td>"+
+                    "<td><a href='/requests/edit/"+ request.id +"'>Edit</a></td>";
+                  tbody.appendChild(tr);
+                }
+                document.getElementById("results-table").style.display = "";
+              } else {
+                console.log("Error:", xhr.status);
+              }
+            };
+            xhr.send();
+          });
+        </script>
+
+
+
 </body>
-</html>  
+
+</html>

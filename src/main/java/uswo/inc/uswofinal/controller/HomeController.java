@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
+
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -356,6 +359,62 @@ public class HomeController {
         }
     }
 
+    @GetMapping("/requests/edit/{id}")
+    public String updateRequest(Model model, @PathVariable("id") Integer id) {
+        FundReleaseRequest requests = fundReleaseRequestRepository.findById(id);
+        model.addAttribute("request", requests);
+        List<District> districts = districtRepository.findAll();
+        List<Lokal> locales = lokalRepository.findAll();
+        model.addAttribute("districts", districts);
+        model.addAttribute("locales", locales);
+        return "editrequest";
+    }
+
+    @PostMapping("/requests/update/{id}")
+    public String updateRequest(@PathVariable Long id, @RequestParam("file") MultipartFile file, 
+    @RequestParam String approvalNumber, @RequestParam Long district, 
+    @RequestParam String locale, @RequestParam String particulars, 
+    @RequestParam String remarks,Model model) throws IOException {
+    
+    // Find the request to update
+    Optional<FundReleaseRequest> optionalRequest = fundReleaseRequestRepository.findById(id);
+    if (!optionalRequest.isPresent()) {
+        return "redirect:/requestslist";
+    }
+    FundReleaseRequest request = optionalRequest.get();
+    
+    // Update the fields
+    request.setApprovalNumber(approvalNumber);
+    Optional<District> optionalDistrict = districtRepository.findById(district);
+    if (optionalDistrict.isPresent()) {
+        request.setDistrict(optionalDistrict.get());
+    }
+    Lokal lokal = request.getLokal();
+    lokal.setLocale(locale);
+    request.setLokal(lokal);
+    request.setParticulars(particulars);
+    request.setRemarks(remarks);
+    
+    // If a new file was selected, upload it and update the filename
+    if (!file.isEmpty()) {
+        // Generate a unique filename to prevent overwriting existing files
+        String filename = UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+        // Set the filename on the request
+        request.setFileName(filename);
+        // Save the file to disk
+        Files.write(Paths.get(UPLOAD_DIR, filename), file.getBytes());
+    }
+    
+    // Save the updated request to the database
+    fundReleaseRequestRepository.save(request);
+    
+    // Redirect back to the list of requests
+    List<FundReleaseRequest> reqlist = fundReleaseRequestRepository.findAll();
+    model.addAttribute("requests", reqlist);
+    return "redirect:/requestslist";
+}
+
+
     @GetMapping("/getlocales3/{districtId}")
     public String lokalList(Model model, @PathVariable Integer districtId) {
         List<Lokal> locales = lokalRepository.findAll();
@@ -514,27 +573,27 @@ public class HomeController {
             // update any other fields as necessary
             noteRepository.save(existingNote);
         } else {
-           
+
             try {
                 // insert a new note
-        District district = districtRepository.findBydid(note.getDistrict().getDid());
-        
+                District district = districtRepository.findBydid(note.getDistrict().getDid());
 
-        Note newNote = new Note();
-        newNote.setDistrict(district);
-        newNote.setLcode(note.getLcode());
-        //newNote.setDid(note.getDistrict().getDid());
-        newNote.setWkno(note.getWkno());
-        newNote.setConcerns(note.getConcerns());
-        newNote.setAction(note.getAction());
-        newNote.setActionDate(note.getActionDate());
-        logger.error("Failed to set district ID: " + note.getDistrict().getDid());
-        noteRepository.save(newNote);
+                Note newNote = new Note();
+                newNote.setDistrict(district);
+                newNote.setLcode(note.getLcode());
+                // newNote.setDid(note.getDistrict().getDid());
+                newNote.setWkno(note.getWkno());
+                newNote.setConcerns(note.getConcerns());
+                newNote.setAction(note.getAction());
+                newNote.setActionDate(note.getActionDate());
+                logger.error("Failed to set district ID: " + note.getDistrict().getDid());
+                noteRepository.save(newNote);
             } catch (NullPointerException e) {
                 logger.error("Failed to set district ID: " + e.getMessage());
-                // handle the exception gracefully, e.g. by returning an error message to the user
+                // handle the exception gracefully, e.g. by returning an error message to the
+                // user
             }
-            
+
         }
         return "redirect:/mynote";
     }
