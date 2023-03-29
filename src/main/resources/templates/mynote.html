@@ -72,7 +72,7 @@
                 <button type="button" class="btn btn-primary" th:id="'edit-' + ${note.id}"
                   th:attr="data-id=${note.id}, data-lcode=${note.lcode}">Edit</button>
 
-                <button type="button" class="btn btn-success" th:id="'audit-' + ${note.id}"
+                <button type="button" class="btn btn-success" th:id="'delete-' + ${note.id}"
                   th:attr="data-id=${note.id}">Delete</button>
               </td>
             </tr>
@@ -86,7 +86,10 @@
       var id = $(this).data('id');
       window.location.href = '/updatenote/' + id;
     });
-
+    $(document).on('click', '[id^="delete-"]', function () {
+      var id = $(this).data('id');
+      window.location.href = '/deletenote/' + id;
+    });
   </script>
   <h2>My Notes</h2>
   <div id="notes-list"></div>

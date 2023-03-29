@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Payment Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-8">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Make Payment</h1>
+            <form th:action="@{/payments/save}" th:object="${payment}" method="post">
+                <table class="table table-striped">
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label for="account">Account Type:</label>
+                                <select class="form-control" id="account" name="accountType" required>
+                                    <option value="" selected>Select Account Type</option>
+                                    <option value="LOCALE">Locale</option>
+                                    <option value="DISTRICT">District</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="accountid">Account ID:</label>
+                                <input type="text" class="form-control" id="accountid" name="account.id" required>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label for="wkno">Week Number:</label>
+                                <select class="form-control" id="wkno" name="wkno" required>
+                                    <option value="" selected>Select Week Number</option>
+                                    <script>
+                                        $(document).ready(function () {
+                                            var currentDate = new Date();
+                                            var currentWeek = getWeekNumber(currentDate);
+                                            // Generate the week number dropdown options
+                                            var dropdownOptions = "";
+                                            for (var i = currentWeek; i >= currentWeek - 11; i--) {
+                                                var year = currentDate.getFullYear();
+                                                if (i < 1) {
+                                                    i = 52 + i;
+                                                    year--;
+                                                }
+                                                var weekYear = i.toString().padStart(2, '0') + '-' + year.toString();
+                                                dropdownOptions += '<option value="' + weekYear + '">' + weekYear + '</option>';
+                                            }
+
+                                            // Set the dropdown options in the HTML
+                                            $("#wkno").html(dropdownOptions);
+                                        });
+
+                                        // Function to get the week number of a date
+                                        function getWeekNumber(date) {
+                                            var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+                                            var dayNum = d.getUTCDay() || 7;
+                                            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+                                            var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+                                            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7));
+                                        }
+                                    </script>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="amount">Amount:</label>
+                                <input type="number" class="form-control" id="amount" name="amount" min="0" required>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="form-group">
+                                <label for="paymentType">Payment Type:</label>
+                                <select class="form-control" id="paymentType" name="paymentType" required>
+                                    <option value="" selected>Select Payment Type</option>
+                                    <option value="PROJECTSHARE">Project Share</option>
+                                    <option value="SUBSCRIPTION">Subscription</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label for="f2bnumber">F2B Number:</label>
+                                <input type="text" class="form-control" id="f2bnumber" name="f2bnumber" required>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="date">Date:</label>
+                                <input type="date" class="form-control" id="date" name="date" required>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="form-group">
+                                <label for="project">Project:</label>
+                                <input type="text" class="form-control" id="project" name="project" required>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" class="btn btn-primary">Save Payment</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Include Bootstrap's JavaScript after jQuery -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>    

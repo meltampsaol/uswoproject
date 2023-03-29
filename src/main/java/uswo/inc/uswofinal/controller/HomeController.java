@@ -519,11 +519,14 @@ public class HomeController {
         // Add the District and Lokal models to the attributes
         List<District> districts = districtRepository.findAll();
         Lokal lokal = lokalRepository.findByLokalCode(lcode);
+        List<Lokal> locales = lokalRepository.findAll();
         model.addAttribute("districts", districts);
         // Add other attributes and return the view
-        model.addAttribute("note", new Note());
-        model.addAttribute("districtName", lokal.getDistrict());
-        model.addAttribute("locale", lokal.getLocale());
+        Note note = new Note();
+        note.setLcode(lcode);
+        note.setDid(lokal.getDid());
+        model.addAttribute("note", note);
+        model.addAttribute("locales", locales);
         return "newnote";
     }
     @GetMapping("/addnote")
