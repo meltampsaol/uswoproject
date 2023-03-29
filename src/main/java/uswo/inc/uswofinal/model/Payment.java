@@ -47,6 +47,7 @@ public class Payment {
     private PaymentType paymentType;
 
     private String project;
+    private String foryear;
 
     // getters and setters
 }

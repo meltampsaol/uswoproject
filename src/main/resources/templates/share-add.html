@@ -65,40 +65,39 @@
     <td>
       <div class="form-group">
           <label for="wkno">Week Number:</label>
-          <select class="form-control" id="asofwkno" name="asofwkno" required>
-              <option value="" selected>Select Week Number</option>
-              <script>
-                  $(document).ready(function () {
-                      var currentDate = new Date();
-                      var currentWeek = getWeekNumber(currentDate);
-                      // Generate the week number dropdown options
-                      var dropdownOptions = "";
-                      for (var i = currentWeek; i >= currentWeek - 11; i--) {
-                          var year = currentDate.getFullYear();
-                          if (i < 1) {
-                              i = 52 + i;
-                              year--;
-                          }
-                          var weekYear = i.toString().padStart(2, '0') + '-' + year.toString();
-                          dropdownOptions += '<option value="' + weekYear + '">' + weekYear + '</option>';
+          <input type="text" class="form-control" id="wkno" name="wkno" pattern="\d{2}-\d{4}" required>
+          <script>
+              $(document).ready(function () {
+                  var currentDate = new Date();
+                  var currentWeek = getWeekNumber(currentDate);
+                  // Generate the week number dropdown options
+                  var dropdownOptions = "";
+                  for (var i = currentWeek; i >= currentWeek - 11; i--) {
+                      var year = currentDate.getFullYear();
+                      if (i < 1) {
+                          i = 52 + i;
+                          year--;
                       }
-
-                      // Set the dropdown options in the HTML
-                      $("#asofwkno").html(dropdownOptions);
-                  });
-
-                  // Function to get the week number of a date
-                  function getWeekNumber(date) {
-                      var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-                      var dayNum = d.getUTCDay() || 7;
-                      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-                      var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-                      return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+                      var weekYear = i.toString().padStart(2, '0') + '-' + year.toString();
+                      dropdownOptions += '<option value="' + weekYear + '">' + weekYear + '</option>';
                   }
-              </script>
-          </select>
+  
+                  // Set the dropdown options in the HTML
+                  $("#wkno").append(dropdownOptions);
+              });
+  
+              // Function to get the week number of a date
+              function getWeekNumber(date) {
+                  var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+                  var dayNum = d.getUTCDay() || 7;
+                  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+                  var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+                  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7));
+              }
+          </script>
       </div>
   </td>
+  
       <td>
           <div class="form-group">
               <label for="item">Item:</label>
@@ -110,7 +109,7 @@
     <td colspan="2">
         <div class="form-group">
             <label for="share">Share:</label>
-            <input type="number" class="form-control" id="share" name="share" min="0" required>
+            <input type="number" class="form-control" id="share" name="share" step=".01" required>
         </div>
     </td>
 </tr>
