@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-8">
+    <h1>Share List</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>RecID</th>
+            <th>Locale</th>
+            <th>District</th>
+            <th>Item</th>
+            <th>Week Number</th>
+            <th>Share</th>
+            <th>Account</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="share : ${shares}">
+            <td th:text="${share.getRecid()}"></td>
+            <td th:text="${share.getLokal().getName()}"></td>
+            <td th:text="${share.getDistrict().getName()}"></td>
+            <td th:text="${share.getItem()}"></td>
+            <td th:text="${share.getAsofwkno()}"></td>
+            <td th:text="${share.getShare()}"></td>
+            <td th:text="${share.getAccount()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Include Bootstrap's JavaScript after jQuery -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

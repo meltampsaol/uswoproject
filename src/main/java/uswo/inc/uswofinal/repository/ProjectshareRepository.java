@@ -10,8 +10,11 @@ import org.springframework.data.repository.query.Param;
 import uswo.inc.uswofinal.model.AccountType;
 import uswo.inc.uswofinal.model.Projectshare;
 
-public interface ProjectshareRepository extends JpaRepository<Projectshare, Long> {
+public interface ProjectshareRepository extends JpaRepository<Projectshare, Integer> {
     @Query("SELECT p FROM Projectshare p WHERE p.lokal.locale LIKE %:searchTerm% OR p.district.district LIKE %:searchTerm% OR p.item LIKE %:searchTerm% OR p.share = :value OR p.account = :accountType")
     List<Projectshare> search(@Param("searchTerm") String searchTerm, @Param("value") BigDecimal value, @Param("accountType") AccountType accountType);
+
+    
+
 }
 
