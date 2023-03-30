@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container my-6">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Add Withdrawal</h2>
+            <form th:action="@{/wlfr/withdrawal/save}" th:object="${withdrawal}" method="post">
+                <table class="table table-striped">
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label for="district">District:</label>
+                                <select class="form-control" id="district" name="district.did" required>
+                                    <option value="" selected>Select District</option>
+                                    <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}">
+                                    </option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="lokal">Lokal:</label>
+                                <select class="form-control" id="lokal" name="lokal" required>
+                                    <option value="" selected>Select Lokal</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                          <select class="form-control" id="wkno" name="wkno" required>
+                            <option value="" selected>Select Week Number</option>
+                            <script>
+                              $(document).ready(function () {
+                                var currentDate = new Date();
+                                var currentWeek = getWeekNumber(currentDate);
+            
+                                // Generate the week number dropdown options
+                                var dropdownOptions = "";
+                                for (var i = currentWeek; i >= currentWeek - 11; i--) {
+                                  var year = currentDate.getFullYear();
+                                  if (i < 1) {
+                                    i = 52 + i;
+                                    year--;
+                                  }
+                                  var weekYear = i.toString().padStart(2, '0') + '-' + year.toString();
+                                  dropdownOptions += '<option value="' + weekYear + '">' + weekYear + '</option>';
+                                }
+            
+                                // Set the dropdown options in the HTML
+                                $("#wkno").html(dropdownOptions);
+                              });
+            
+                              // Function to get the week number of a date
+                              function getWeekNumber(date) {
+                                var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+                                var dayNum = d.getUTCDay() || 7;
+                                d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+                                var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+                                return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+                              }
+            
+                            </script>
+            
+                          </select>
+            
+                        </td>
+                      
+                        <td>
+                            <div class="form-group">
+                                <label for="amount">Amount:</label>
+                                <input type="number" class="form-control" id="amount" name="amount" step=".01" required>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script>
+    $(document).ready(function () {
+        $('#district').change(function () {
+            var did = $(this).val();
+            $.get('/getlocales/' + did, function (data) {  // @GetMapping("/getlocales/{districtId}")
+                $('#lokal').empty();
+                $('#lokal').append($('<option>').val('').text('Select Lokal'));
+                $.each(data, function (i, lokal) {
+                    $('#lokal').append($('<option>').val(lokal.lcode).text(lokal.locale));
+                });
+            });
+        });
+    });
+</script>
+</body>
+</html>
+
+
+

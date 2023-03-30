@@ -513,7 +513,13 @@ public class HomeController {
         model.addAttribute("notes", notes);
         return "mynote";
     }
-
+    @GetMapping("/note/delete/{id}")
+    public String deleteNote(@PathVariable("id") int id, Model model) {
+        noteRepository.deleteById(id);
+        List<Note> notes = noteRepository.findAll();
+        model.addAttribute("notes", notes);
+        return "mynote";
+    }
     @GetMapping("/newnote/{lcode}")
     public String newNoteForm(Model model,@PathVariable("lcode") Integer lcode) {
         // Add the District and Lokal models to the attributes

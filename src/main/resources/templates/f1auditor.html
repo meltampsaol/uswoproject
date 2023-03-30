@@ -22,13 +22,27 @@
 
   <!-- Include jquery.dataTables.min.js after jQuery -->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
   <style>
     .first-set {
-  background-color: #38B2AC;
+  background-color: #58B2AC;
 }
 
 .second-set {
-  background-color: #319795;
+  background-color: #519795;
+}
+.third-set {
+  background-color:#81E6D9; 
+}
+.fourth-set {
+  background-color:#48BB78;
+}
+
+.total-css {
+  background-color: #2F855A;
+}
+.total-rem {
+  background-color:#C55050;
 }
     .btn-midnight-blue {
   background-color: #191970;
@@ -46,7 +60,7 @@
       display: none;
     }
 
-    #set3-total {
+    #set5-total {
       display: none;
     }
 
@@ -93,9 +107,14 @@
     }
 
     .blue-100 {
-      color: hsl(210, 30%, 60%);
+      color: hsl(210, 50%, 60%);
       /* additional styles... */
     }
+    .table {
+  font-size: 14px;
+  padding: 10px;
+  margin-right: 20px;
+}
   </style>
 
 </head>
@@ -121,430 +140,469 @@
     </table>
   </div>
   <!-- Set 1 -->
-  <div id="set1" style="display: none;" class="table table-bordered btn-info first-set">
-    <label for="admthur1">ADMTHUR:</label>
-    <input type="text" id="admthur1" name="admthur1" value="0.00" />
-
-    <label for="admsun1">ADMSUN:</label>
-    <input type="text" id="admsun1" name="admsun1" value="0.00" />
-
-    <label for="cws1">CWS:</label>
-    <input type="text" id="cws1" name="cws1" value="0.00" />
-
-    <label for="sol1">SOL:</label>
-    <input type="text" id="sol1" name="sol1" value="0.00" />
-
-    <label for="sod1">SOD:</label>
-    <input type="text" id="sod1" name="sod1" value="0.00" />
-
-    <label for="aid1">AID:</label>
-    <input type="text" id="aid1" name="aid1" value="0.00" />
-    <label for="txgv1">TXGV:</label>
-    <input type="text" id="txgv1" name="txgv1" value="0.00" />
-
-    <label for="reflok1">REFLOK:</label>
-    <input type="text" id="reflok1" name="reflok1" value="0.00" />
-
-    <label for="refdist1">REFDIST:</label>
-    <input type="text" id="refdist1" name="refdist1" value="0.00" />
-
-    <label for="refcent1">REFCENT:</label>
-    <input type="text" id="refcent1" name="refcent1" value="0.00" />
-    <label for="explok1">EXPLOK:</label>
-    <input type="text" id="explok1" name="explok1" value="0.00" />
-
-    <label for="expdist1">EXPDIST:</label>
-    <input type="text" id="expdist1" name="expdist1" value="0.00" />
-
-    <label for="expcent1">EXPCENT:</label>
-    <input type="text" id="expcent1" name="expcent1" value="0.00" />
-
-    <label for="mof1">MOF:</label>
-    <input type="text" id="mof1" name="mof1" value="0.00" />
-
-    <label for="cfolok1">CFOLOK:</label>
-    <input type="text" id="cfolok1" name="cfolok1" value="0.00" />
-    <label for="intl1">INTL:</label>
-    <input type="text" id="intl1" name="intl1" value="0.00" />
-
-
-    <!-- Add an empty div after each set -->
-    <div id="set1-total" class="set-total"></div>
+  <form method="post" th:action="@{/f1/save}">
+    <div class="table-responsive">
+    <table id="set1" style="display:none;" class="table first-set">
+      <tr>
+        <td><label for="admthur1">ADMTHUR:</label></td>
+        <td><input type="text" id="admthur1" name="admthur1" value="0.00" /></td>
+        <td><label for="admsun1">ADMSUN:</label></td>
+        <td><input type="text" id="admsun1" name="admsun1" value="0.00" /></td>
+        <td><label for="cws1">CWS:</label></td>
+        <td><input type="text" id="cws1" name="cws1" value="0.00" /></td>
+      
+        <td><label for="sol1">SOL:</label></td>
+        <td><input type="text" id="sol1" name="sol1" value="0.00" /></td>
+        <td><label for="sod1">SOD:</label></td>
+        <td><input type="text" id="sod1" name="sod1" value="0.00" /></td>
+        <td><label for="aid1">AID:</label></td>
+        <td><input type="text" id="aid1" name="aid1" value="0.00" /></td>
+         
+        <td><label for="txgv1">TXGV:</label></td>
+        <td><input type="text" id="txgv1" name="txgv1" value="0.00" /></td>
+        <td><label for="reflok1">REFLOK:</label></td>
+        <td><input type="text" id="reflok1" name="reflok1" value="0.00" /></td>
+        <td><label for="refdist1">REFDIST:</label></td>
+        <td><input type="text" id="refdist1" name="refdist1" value="0.00" /></td>
+      
+        <td><label for="refcent1">REFCENT:</label></td>
+        <td><input type="text" id="refcent1" name="refcent1" value="0.00" /></td>
+        <td><label for="explok1">EXPLOK:</label></td>
+        <td><input type="text" id="explok1" name="explok1" value="0.00" /></td>
+        <td><label for="expdist1">EXPDIST:</label></td>
+        <td><input type="text" id="expdist1" name="expdist1" value="0.00" /></td>
+      
+        <td><label for="expcent1">EXPCENT:</label></td>
+        <td><input type="text" id="expcent1" name="expcent1" value="0.00" /></td>
+        <td><label for="mof1">MOF:</label></td>
+        <td><input type="text" id="mof1" name="mof1" value="0.00" /></td>
+        <td><label for="cfolok1">CFOLOK:</label></td>
+        <td><input type="text" id="cfolok1" name="cfolok1" value="0.00" /></td>
+        <td><label for="intl1">INTL:</label></td>
+        <td><input type="text" id="intl1" name="intl1" value="0.00" /></td>
+      </tr>
+   
+    </table>            
   </div>
-
   <!-- Set 2 -->
-  <div id="set2" style="display: none;" class="table table-bordered btn second-set">
-    <label for="admthur2">ADMTHUR:</label>
-    <input type="text" id="admthur2" name="admthur2" value="0.00" />
+  <div class="table-responsive">
+  <table id="set2" style="display: none;" class="table second-set">
+    <tr>
+      <td><label for="admthur2">ADMTHUR:</label></td>
+      <td><input type="text" id="admthur2" name="admthur2" value="0.00" /></td>
+  
+      <td><label for="admsun2">ADMSUN:</label></td>
+      <td><input type="text" id="admsun2" name="admsun2" value="0.00" /></td>
+  
+      <td><label for="cws2">CWS:</label></td>
+      <td><input type="text" id="cws2" name="cws2" value="0.00" /></td>
+    
+      <td><label for="sol2">SOL:</label></td>
+      <td><input type="text" id="sol2" name="sol2" value="0.00" /></td>
+  
+      <td><label for="sod2">SOD:</label></td>
+      <td><input type="text" id="sod2" name="sod2" value="0.00" /></td>
+  
+      <td><label for="aid2">AID:</label></td>
+      <td><input type="text" id="aid2" name="aid2" value="0.00" /></td>
+    
+      <td><label for="txgv2">TXGV:</label></td>
+      <td><input type="text" id="txgv2" name="txgv2" value="0.00" /></td>
+  
+      <td><label for="reflok2">REFLOK:</label></td>
+      <td><input type="text" id="reflok2" name="reflok2" value="0.00" /></td>
+  
+      <td><label for="refdist2">REFDIST:</label></td>
+      <td><input type="text" id="refdist2" name="refdist2" value="0.00" /></td>
+   
+      <td><label for="refcent2">REFCENT:</label></td>
+      <td><input type="text" id="refcent2" name="refcent2" value="0.00" /></td>
+  
+      <td><label for="explok2">EXPLOK:</label></td>
+      <td><input type="text" id="explok2" name="explok2" value="0.00" /></td>
+  
+      <td><label for="expdist2">EXPDIST:</label></td>
+      <td><input type="text" id="expdist2" name="expdist2" value="0.00" /></td>
+    
+      <td><label for="expcent2">EXPCENT:</label></td>
+      <td><input type="text" id="expcent2" name="expcent2" value="0.00" /></td>
+  
+      <td><label for="mof2">MOF:</label></td>
+      <td><input type="text" id="mof2" name="mof2" value="0.00" /></td>
+  
+      <td><label for="cfolok2">CFOLOK:</label></td>
+      <td><input type="text" id="cfolok2" name="cfolok2" value="0.00" /></td>
+      <td><label for="intl2">INTL:</label></td>
+      <td><input type="text" id="intl2" name="intl2" value="0.00" /></td>
+    </tr>
+    <!-- Add an empty row after each set -->
+    
+  </table>
+</div>
+<div class="table-responsive">
+  <table id="set3" style="display: none;" class="table third-set">
+    <tr>
+      <td><label for="admthur3">ADMTHUR:</label></td>
+      <td><input type="text" id="admthur3" name="admthur3" value="0.00" /></td>
+  
+      <td><label for="admsun3">ADMSUN:</label></td>
+      <td><input type="text" id="admsun3" name="admsun3" value="0.00" /></td>
+  
+      <td><label for="cws3">CWS:</label></td>
+      <td><input type="text" id="cws3" name="cws3" value="0.00" /></td>
+    
+      <td><label for="sol3">SOL:</label></td>
+      <td><input type="text" id="sol3" name="sol3" value="0.00" /></td>
+  
+      <td><label for="sod3">SOD:</label></td>
+      <td><input type="text" id="sod3" name="sod3" value="0.00" /></td>
+  
+      <td><label for="aid3">AID:</label></td>
+      <td><input type="text" id="aid3" name="aid3" value="0.00" /></td>
+    
+      <td><label for="txgv3">TXGV:</label></td>
+      <td><input type="text" id="txgv3" name="txgv3" value="0.00" /></td>
+  
+      <td><label for="reflok3">REFLOK:</label></td>
+      <td><input type="text" id="reflok3" name="reflok3" value="0.00" /></td>
+  
+      <td><label for="refdist3">REFDIST:</label></td>
+      <td><input type="text" id="refdist3" name="refdist3" value="0.00" /></td>
+    
+      <td><label for="refcent3">REFCENT:</label></td>
+      <td><input type="text" id="refcent3" name="refcent3" value="0.00" /></td>
+  
+      <td><label for="explok3">EXPLOK:</label></td>
+      <td><input type="text" id="explok3" name="explok3" value="0.00" /></td>
+  
+      <td><label for="expdist3">EXPDIST:</label></td>
+      <td><input type="text" id="expdist3" name="expdist3" value="0.00" /></td>
+    
+      <td><label for="expcent3">EXPCENT:</label></td>
+      <td><input type="text" id="expcent3" name="expcent3" value="0.00" /></td>
+  
+      <td><label for="mof3">MOF:</label></td>
+      <td><input type="text" id="mof3" name="mof3" value="0.00" /></td>
+  
+      <td><label for="cfolok3">CFOLOK:</label></td>
+      <td><input type="text" id="cfolok3" name="cfolok3" value="0.00" /></td>
+      <td><label for="intl3">INTL:</label></td>
+      <td><input type="text" id="intl3" name="intl3" value="0.00" /></td>
+    </tr>
+    <!-- Add an empty row after each set -->
+   
+  </table>
+</div>
 
-    <label for="admsun2">ADMSUN:</label>
-    <input type="text" id="admsun2" name="admsun2" value="0.00" />
-
-    <label for="cws2">CWS:</label>
-    <input type="text" id="cws2" name="cws2" value="0.00" />
-
-    <label for="sol2">SOL:</label>
-    <input type="text" id="sol2" name="sol2" value="0.00" />
-
-    <label for="sod2">SOD:</label>
-    <input type="text" id="sod2" name="sod2" value="0.00" />
-
-    <label for="aid2">AID:</label>
-    <input type="text" id="aid2" name="aid2" value="0.00" />
-    <label for="txgv2">TXGV:</label>
-    <input type="text" id="txgv2" name="txgv2" value="0.00" />
-
-    <label for="reflok2">REFLOK:</label>
-    <input type="text" id="reflok2" name="reflok2" value="0.00" />
-
-    <label for="refdist2">REFDIST:</label>
-    <input type="text" id="refdist2" name="refdist2" value="0.00" />
-
-    <label for="refcent2">REFCENT:</label>
-    <input type="text" id="refcent2" name="refcent2" value="0.00" />
-
-    <label for="explok2">EXPLOK:</label>
-    <input type="text" id="explok2" name="explok2" value="0.00" />
-
-    <label for="expdist2">EXPDIST:</label>
-    <input type="text" id="expdist2" name="expdist2" value="0.00" />
-
-    <label for="expcent2">EXPCENT:</label>
-    <input type="text" id="expcent2" name="expcent2" value="0.00" />
-
-    <label for="mof2">MOF:</label>
-    <input type="text" id="mof2" name="mof2" value="0.00" />
-
-    <label for="cfolok2">CFOLOK:</label>
-    <input type="text" id="cfolok2" name="cfolok2" value="0.00" />
-    <label for="intl2">INTL:</label>
-    <input type="text" id="intl2" name="intl2" value="0.00" />
-
-
-    <!-- Add an empty div after each set -->
-    <div id="set2-total" class="set-total"></div>
-  </div>
-
-  <div id="set3" style="display: none;" class="table table-bordered btn btn-info">
-    <label for="admthur3">ADMTHUR:</label>
-    <input type="text" id="admthur3" name="admthur3" value="0.00" />
-
-    <label for="admsun3">ADMSUN:</label>
-    <input type="text" id="admsun3" name="admsun3" value="0.00" />
-
-    <label for="cws3">CWS:</label>
-    <input type="text" id="cws3" name="cws3" value="0.00" />
-
-    <label for="sol3">SOL:</label>
-    <input type="text" id="sol3" name="sol3" value="0.00" />
-
-    <label for="sod3">SOD:</label>
-    <input type="text" id="sod3" name="sod3" value="0.00" />
-
-    <label for="aid3">AID:</label>
-    <input type="text" id="aid3" name="aid3" value="0.00" />
-    <label for="txgv3">TXGV:</label>
-    <input type="text" id="txgv3" name="txgv3" value="0.00" />
-
-    <label for="reflok3">REFLOK:</label>
-    <input type="text" id="reflok3" name="reflok3" value="0.00" />
-
-    <label for="refdist3">REFDIST:</label>
-    <input type="text" id="refdist3" name="refdist3" value="0.00" />
-
-    <label for="refcent3">REFCENT:</label>
-    <input type="text" id="refcent3" name="refcent3" value="0.00" />
-    <label for="explok3">EXPLOK:</label>
-    <input type="text" id="explok3" name="explok3" value="0.00" />
-
-    <label for="expdist3">EXPDIST:</label>
-    <input type="text" id="expdist3" name="expdist3" value="0.00" />
-
-    <label for="expcent3">EXPCENT:</label>
-    <input type="text" id="expcent3" name="expcent3" value="0.00" />
-
-    <label for="mof3">MOF:</label>
-    <input type="text" id="mof3" name="mof3" value="0.00" />
-
-    <label for="cfolok3">CFOLOK:</label>
-    <input type="text" id="cfolok3" name="cfolok3" value="0.00" />
-    <label for="intl3">INTL:</label>
-    <input type="text" id="intl3" name="intl3" value="0.00" />
-
-
-    <!-- Add an empty div after each set -->
-    <div id="set3-total" class="set-total"></div>
-  </div>
-
+  
   <!-- Set 4 -->
-  <div id="set4" style="display: none;" class="table table-bordered btn btn-primary">
-    <label for="admthur4">ADMTHUR:</label>
-    <input type="text" id="admthur4" name="admthur4" value="0.00" />
+  <table id="set4" style="display: none;" class="table-responsive text-center table-bordered fourth-set">
+    <tr>
+      <td><label for="admthur4">ADMTHUR:</label></td>
+      <td><input type="text" id="admthur4" name="admthur4" value="0.00" /></td>
+  
+      <td><label for="admsun4">ADMSUN:</label></td>
+      <td><input type="text" id="admsun4" name="admsun4" value="0.00" /></td>
+  
+      <td><label for="cws4">CWS:</label></td>
+      <td><input type="text" id="cws4" name="cws4" value="0.00" /></td>
+    
+      <td><label for="sol4">SOL:</label></td>
+      <td><input type="text" id="sol4" name="sol4" value="0.00" /></td>
+  
+      <td><label for="sod4">SOD:</label></td>
+      <td><input type="text" id="sod4" name="sod4" value="0.00" /></td>
+  
+      <td><label for="aid4">AID:</label></td>
+      <td><input type="text" id="aid4" name="aid4" value="0.00" /></td>
+   
+      <td><label for="txgv4">TXGV:</label></td>
+      <td><input type="text" id="txgv4" name="txgv4" value="0.00" /></td>
+  
+      <td><label for="reflok4">REFLOK:</label></td>
+      <td><input type="text" id="reflok4" name="reflok4" value="0.00" /></td>
+  
+      <td><label for="refdist4">REFDIST:</label></td>
+      <td><input type="text" id="refdist4" name="refdist4" value="0.00" /></td>
+   
+      <td><label for="refcent4">REFCENT:</label></td>
+      <td><input type="text" id="refcent4" name="refcent4" value="0.00" /></td>
+  
+      <td><label for="explok4">EXPLOK:</label></td>
+      <td><input type="text" id="explok4" name="explok4" value="0.00" /></td>
+  
+      <td><label for="expdist4">EXPDIST:</label></td>
+      <td><input type="text" id="expdist4" name="expdist4" value="0.00" /></td>
+    
+      <td><label for="expcent4">EXPCENT:</label></td>
+      <td><input type="text" id="expcent4" name="expcent4" value="0.00" /></td>
+  
+      <td><label for="mof4">MOF:</label></td>
+      <td><input type="text" id="mof4" name="mof4" value="0.00" /></td>
+  
+      <td><label for="cfolok4">CFOLOK:</label></td>
+      <td><input type="text" id="cfolok4" name="cfolok4" value="0.00" /></td>
+      <td><label for="intl4">INTL:</label></td>
+      <td><input type="text" id="intl4" name="intl4" value="0.00" /></td>
+    </tr>
+    <!-- Add an empty row after each set -->
+    
+  </table>
 
-    <label for="admsun4">ADMSUN:</label>
-    <input type="text" id="admsun4" name="admsun4" value="0.00" />
+  <table id="set5" style="display: none;" class="table-responsive text-center table-bordered fifth-set">
+    <tr>
+      <td><label for="admthur5">ADMTHUR:</label></td>
+      <td><input type="text" id="admthur5" name="admthur5" value="0.00" /></td>
+  
+      <td><label for="admsun5">ADMSUN:</label></td>
+      <td><input type="text" id="admsun5" name="admsun5" value="0.00" /></td>
+  
+      <td><label for="cws5">CWS:</label></td>
+      <td><input type="text" id="cws5" name="cws5" value="0.00" /></td>
+    
+      <td><label for="sol5">SOL:</label></td>
+      <td><input type="text" id="sol5" name="sol5" value="0.00" /></td>
+  
+      <td><label for="sod5">SOD:</label></td>
+      <td><input type="text" id="sod5" name="sod5" value="0.00" /></td>
+  
+      <td><label for="aid5">AID:</label></td>
+      <td><input type="text" id="aid5" name="aid5" value="0.00" /></td>
+    
+      <td><label for="txgv5">TXGV:</label></td>
+      <td><input type="text" id="txgv5" name="txgv5" value="0.00" /></td>
+  
+      <td><label for="reflok5">REFLOK:</label></td>
+      <td><input type="text" id="reflok5" name="reflok5" value="0.00" /></td>
+  
+      <td><label for="refdist5">REFDIST:</label></td>
+      <td><input type="text" id="refdist5" name="refdist5" value="0.00" /></td>
+    
+      <td><label for="refcent5">REFCENT:</label></td>
+      <td><input type="text" id="refcent5" name="refcent5" value="0.00" /></td>
+  
+      <td><label for="explok5">EXPLOK:</label></td>
+      <td><input type="text" id="explok5" name="explok5" value="0.00" /></td>
+  
+      <td><label for="expdist5">EXPDIST:</label></td>
+      <td><input type="text" id="expdist5" name="expdist5" value="0.00" /></td>
+   
+      <td><label for="expcent5">EXPCENT:</label></td>
+      <td><input type="text" id="expcent5" name="expcent5" value="0.00" /></td>
+  
+      <td><label for="mof2">MOF:</label></td>
+      <td><input type="text" id="mof5" name="mof5" value="0.00" /></td>
+  
+      <td><label for="cfolok5">CFOLOK:</label></td>
+      <td><input type="text" id="cfolok5" name="cfolok5" value="0.00" /></td>
+      <td><label for="intl5">INTL:</label></td>
+      <td><input type="text" id="intl5" name="intl5" value="0.00" /></td>
+    </tr>
+    <!-- Add an empty row after each set -->
+    
+  </table>
 
-    <label for="cws4">CWS:</label>
-    <input type="text" id="cws4" name="cws4" value="0.00" />
-
-    <label for="sol4">SOL:</label>
-    <input type="text" id="sol4" name="sol4" value="0.00" />
-
-    <label for="sod4">SOD:</label>
-    <input type="text" id="sod4" name="sod4" value="0.00" />
-
-    <label for="aid4">AID:</label>
-    <input type="text" id="aid4" name="aid4" value="0.00" />
-    <label for="txgv4">TXGV:</label>
-    <input type="text" id="txgv4" name="txgv4" value="0.00" />
-
-    <label for="reflok4">REFLOK:</label>
-    <input type="text" id="reflok4" name="reflok4" value="0.00" />
-
-    <label for="refdist4">REFDIST:</label>
-    <input type="text" id="refdist4" name="refdist4" value="0.00" />
-
-    <label for="refcent4">REFCENT:</label>
-    <input type="text" id="refcent4" name="refcent4" value="0.00" />
-
-    <label for="explok4">EXPLOK:</label>
-    <input type="text" id="explok4" name="explok4" value="0.00" />
-
-    <label for="expdist4">EXPDIST:</label>
-    <input type="text" id="expdist4" name="expdist4" value="0.00" />
-
-    <label for="expcent4">EXPCENT:</label>
-    <input type="text" id="expcent4" name="expcent4" value="0.00" />
-
-    <label for="mof4">MOF:</label>
-    <input type="text" id="mof4" name="mof4" value="0.00" />
-
-    <label for="cfolok4">CFOLOK:</label>
-    <input type="text" id="cfolok4" name="cfolok4" value="0.00" />
-    <label for="intl4">INTL:</label>
-    <input type="text" id="intl4" name="intl4" value="0.00" />
-
-
-    <!-- Add an empty div after each set -->
-    <div id="set4-total" class="set-total"></div>
-  </div>
-
-  <div id="set5" style="display: none;" class="table table-bordered btn btn-success">
-
-    <label for="admthur5">ADMTHUR:</label>
-    <input type="text" id="admthur5" name="admthur5" value="0.00" />
-
-    <label for="admsun5">ADMSUN:</label>
-    <input type="text" id="admsun5" name="admsun5" value="0.00" />
-
-    <label for="cws5">CWS:</label>
-    <input type="text" id="cws5" name="cws5" value="0.00" />
-
-    <label for="sol5">SOL:</label>
-    <input type="text" id="sol5" name="sol5" value="0.00" />
-
-    <label for="sod5">SOD:</label>
-    <input type="text" id="sod5" name="sod5" value="0.00" />
-
-    <label for="aid5">AID:</label>
-    <input type="text" id="aid5" name="aid5" value="0.00" />
-    <label for="txgv5">TXGV:</label>
-    <input type="text" id="txgv5" name="txgv5" value="0.00" />
-
-    <label for="reflok5">REFLOK:</label>
-    <input type="text" id="reflok5" name="reflok5" value="0.00" />
-
-    <label for="refdist5">REFDIST:</label>
-    <input type="text" id="refdist5" name="refdist5" value="0.00" />
-
-    <label for="refcent5">REFCENT:</label>
-    <input type="text" id="refcent5" name="refcent5" value="0.00" />
-    <label for="explok5">EXPLOK:</label>
-    <input type="text" id="explok5" name="explok5" value="0.00" />
-
-    <label for="expdist5">EXPDIST:</label>
-    <input type="text" id="expdist5" name="expdist5" value="0.00" />
-
-    <label for="expcent5">EXPCENT:</label>
-    <input type="text" id="expcent5" name="expcent5" value="0.00" />
-
-    <label for="mof5">MOF:</label>
-    <input type="text" id="mof5" name="mof5" value="0.00" />
-
-    <label for="cfolok5">CFOLOK:</label>
-    <input type="text" id="cfolok5" name="cfolok5" value="0.00" />
-    <label for="intl5">INTL:</label>
-    <input type="text" id="intl5" name="intl5" value="0.00" />
-
-
-    <!-- Add an empty div after each set -->
-    <div id="set5-total" class="set-total"></div>
-  </div>
-
-  <!-- Set 6 -->
-  <div id="set6" style="display: none;" class="table table-bordered btn btn-primary">
-    <label for="admthur6">ADMTHUR:</label>
-    <input type="text" id="admthur6" name="admthur6" value="0.00" />
-
-    <label for="admsun6">ADMSUN:</label>
-    <input type="text" id="admsun6" name="admsun6" value="0.00" />
-
-    <label for="cws6">CWS:</label>
-    <input type="text" id="cws6" name="cws6" value="0.00" />
-
-    <label for="sol6">SOL:</label>
-    <input type="text" id="sol6" name="sol6" value="0.00" />
-
-    <label for="sod6">SOD:</label>
-    <input type="text" id="sod6" name="sod6" value="0.00" />
-
-    <label for="aid6">AID:</label>
-    <input type="text" id="aid6" name="aid6" value="0.00" />
-    <label for="txgv6">TXGV:</label>
-    <input type="text" id="txgv6" name="txgv6" value="0.00" />
-
-    <label for="reflok6">REFLOK:</label>
-    <input type="text" id="reflok6" name="reflok6" value="0.00" />
-
-    <label for="refdist6">REFDIST:</label>
-    <input type="text" id="refdist6" name="refdist6" value="0.00" />
-
-    <label for="refcent6">REFCENT:</label>
-    <input type="text" id="refcent6" name="refcent6" value="0.00" />
-
-    <label for="explok6">EXPLOK:</label>
-    <input type="text" id="explok6" name="explok6" value="0.00" />
-
-    <label for="expdist6">EXPDIST:</label>
-    <input type="text" id="expdist6" name="expdist6" value="0.00" />
-
-    <label for="expcent6">EXPCENT:</label>
-    <input type="text" id="expcent6" name="expcent6" value="0.00" />
-
-    <label for="mof6">MOF:</label>
-    <input type="text" id="mof6" name="mof6" value="0.00" />
-
-    <label for="cfolok6">CFOLOK:</label>
-    <input type="text" id="cfolok6" name="cfolok6" value="0.00" />
-
-    <label for="intl6">INTL:</label>
-    <input type="text" id="intl6" name="intl6" value="0.00" />
-
-    <!-- Add an empty div after each set -->
-    <div id="set6-total" class="set-total"></div>
-  </div>
-
-
+  <table id="set6" style="display: none;" class="table-responsive text-center table-bordered sixth-set">
+    <tr>
+      <td><label for="admthur6">ADMTHUR:</label></td>
+      <td><input type="text" id="admthur6" name="admthur6" value="0.00" /></td>
+  
+      <td><label for="admsun6">ADMSUN:</label></td>
+      <td><input type="text" id="admsun6" name="admsun6" value="0.00" /></td>
+  
+      <td><label for="cws6">CWS:</label></td>
+      <td><input type="text" id="cws6" name="cws6" value="0.00" /></td>
+    
+      <td><label for="sol6">SOL:</label></td>
+      <td><input type="text" id="sol6" name="sol6" value="0.00" /></td>
+  
+      <td><label for="sod6">SOD:</label></td>
+      <td><input type="text" id="sod6" name="sod6" value="0.00" /></td>
+  
+      <td><label for="aid6">AID:</label></td>
+      <td><input type="text" id="aid6" name="aid6" value="0.00" /></td>
+   
+      <td><label for="txgv6">TXGV:</label></td>
+      <td><input type="text" id="txgv6" name="txgv6" value="0.00" /></td>
+  
+      <td><label for="reflok6">REFLOK:</label></td>
+      <td><input type="text" id="reflok6" name="reflok6" value="0.00" /></td>
+  
+      <td><label for="refdist6">REFDIST:</label></td>
+      <td><input type="text" id="refdist6" name="refdist6" value="0.00" /></td>
+    
+      <td><label for="refcent6">REFCENT:</label></td>
+      <td><input type="text" id="refcent6" name="refcent6" value="0.00" /></td>
+  
+      <td><label for="explok6">EXPLOK:</label></td>
+      <td><input type="text" id="explok6" name="explok6" value="0.00" /></td>
+  
+      <td><label for="expdist6">EXPDIST:</label></td>
+      <td><input type="text" id="expdist6" name="expdist6" value="0.00" /></td>
+    
+      <td><label for="expcent6">EXPCENT:</label></td>
+      <td><input type="text" id="expcent6" name="expcent6" value="0.00" /></td>
+  
+      <td><label for="mof6">MOF:</label></td>
+      <td><input type="text" id="mof6" name="mof6" value="0.00" /></td>
+  
+      <td><label for="cfolok6">CFOLOK:</label></td>
+      <td><input type="text" id="cfolok6" name="cfolok6" value="0.00" /></td>
+      <td><label for="intl6">INTL:</label></td>
+      <td><input type="text" id="intl6" name="intl6" value="0.00" /></td>
+    </tr>
+    <!-- Add an empty row after each set -->
+    
+  </table>
 
   <div class="empty"></div>
   <!-- Total Row -->
 
-  <div class="table table-bordered btn btn-info">
-    <label for="total-admin">Total Admin:</label>
-    <input type="text" id="total-admin" name="total-admin" value="0.00" readonly />
-    <label for="total-weekend">Total Weekend:</label>
-    <input type="text" id="total-weekend" name="total-weekend" value="0.00" readonly />
-    <label for="total-wholeweek">Total WholeWeek:</label>
-    <input type="text" id="total-wholeweek" name="total-wholeweek" value="0.00" readonly />
-    <label for="total-remainder">Total Remainder:</label>
-    <input type="text" id="total-remainder" name="total-remainder" value="0.00" readonly />
-    <label for="total-central">Total Central:</label>
-    <input type="text" id="total-central" name="total-central" value="0.00" readonly />
-    <label for="total-cfolokrem">Total CFO & Locale Remittance :</label>
-    <input type="text" id="total-cfolokrem" name="total-cfolokrem" value="0.00" readonly />
-
-    <label for="total-lokalexpenses">Total Lokal Expenses:</label>
-    <input type="text" id="total-lokalexpenses" name="total-lokalexpenses" value="0.00" readonly />
-
-    <label for="total-lokalrefund">Total Lokal Refund:</label>
-    <input type="text" id="total-lokalrefund" name="total-lokalrefund" value="0.00" readonly />
-  </div>
+  <table class="table-responsive table-bordered btn-info total-css" align="center">
+    <tr>
+      <td><label for="total-admin">Total Admin:</label></td>
+      <td><input type="text" id="total-admin" name="total-admin" value="0.00" readonly /></td>
+      <td><label for="total-weekend">Total Weekend:</label></td>
+      <td><input type="text" id="total-weekend" name="total-weekend" value="0.00" readonly /></td>
+      <td><label for="total-wholeweek">Total WholeWeek:</label></td>
+      <td><input type="text" id="total-wholeweek" name="total-wholeweek" value="0.00" readonly /></td>
+    
+      <td><label for="total-remainder">Total Remainder:</label></td>
+      <td><input type="text" id="total-remainder" name="total-remainder" value="0.00" readonly /></td>
+      <td><label for="total-central">Total Central:</label></td>
+      <td><input type="text" id="total-central" name="total-central" value="0.00" readonly /></td>
+      <td><label for="total-cfolokrem">Total CFO & Locale Remittance :</label></td>
+      <td><input type="text" id="total-cfolokrem" name="total-cfolokrem" value="0.00" readonly /></td>
+    
+      <td><label for="total-lokalexpenses">Total Lokal Expenses:</label></td>
+      <td><input type="text" id="total-lokalexpenses" name="total-lokalexpenses" value="0.00" readonly /></td>
+      <td><label for="total-lokalrefund">Total Lokal Refund:</label></td>
+      <td><input type="text" id="total-lokalrefund" name="total-lokalrefund" value="0.00" readonly /></td>
+    </tr>
+  </table>
+  
   <div class="empty"></div>
-  <div id="total" style="display: none;" class="table table-bordered btn btn-info">
-    <label for="total-admthur">ADMTHUR:</label>
-    <input type="text" id="total-admthur" name="total-admthur" value="0.00" readonly />
-    <label for="total-admsun">ADMSUN:</label>
-    <input type="text" id="total-admsun" name="total-admsun" value="0.00" readonly />
-
-    <label for="total-cws">CWS:</label>
-    <input type="text" id="total-cws" name="total-cws" value="0.00" readonly />
-    <labelfor="total-sol">SOL:</label>
-      <input type="text" id="total-sol" name="total-sol" value="0.00" readonly />
-      <labelfor="total-sod">SOD:</label>
-        <input type="text" id="total-sod" name="total-sod" value="0.00" readonly />
-
-        <label for="total-aid">AID:</label>
-        <input type="text" id="total-aid" name="total-aid" value="0.00" readonly />
-
-        <label for="total-txgv">TXGV:</label>
-        <input type="text" id="total-txgv" name="total-txgv" value="0.00" readonly />
-
-        <label for="total-refcent">REFCENT:</label>
-        <input type="text" id="total-refcent" name="total-refcent" value="0.00" readonly />
-
-        <label for="total-expcent">EXPCENT:</label>
-        <input type="text" id="total-expcent" name="total-expcent" value="0.00" readonly />
-
-        <label for="total-cfolok">CFOLOK:</label>
-        <input type="text" id="total-cfolok" name="total-cfolok" value="0.00" readonly />
-
-        <label for="total-mof">MOF:</label>
-        <input type="text" id="total-mof" name="total-mof" value="0.00" readonly />
-
-        <label for="total-intl">INTL:</label>
-        <input type="text" id="total-intl" name="total-intl" value="0.00" readonly />
-
-        <label for="total-remittance">Remittance:</label>
-        <input type="text" id="total-remittance" name="total-remittance" value="0.00" readonly />
-
-  </div>
+  <table id="total" style="display: none;" align="center" class="table table-bordered btn-primary total-rem">
+    <tr>
+      <th><label for="total-admthur">ADMTHUR:</label></th>
+      <td><input type="text" id="total-admthur" name="total-admthur" value="0.00" readonly /></td>
+    
+      <th><label for="total-admsun">ADMSUN:</label></th>
+      <td><input type="text" id="total-admsun" name="total-admsun" value="0.00" readonly /></td>
+    
+      <th><label for="total-cws">CWS:</label></th>
+      <td><input type="text" id="total-cws" name="total-cws" value="0.00" readonly /></td>
+   
+      <th><label for="total-sol">SOL:</label></th>
+      <td><input type="text" id="total-sol" name="total-sol" value="0.00" readonly /></td>
+    
+      <th><label for="total-sod">SOD:</label></th>
+      <td><input type="text" id="total-sod" name="total-sod" value="0.00" readonly /></td>
+   
+      <th><label for="total-aid">AID:</label></th>
+      <td><input type="text" id="total-aid" name="total-aid" value="0.00" readonly /></td>
+    
+      <th><label for="total-txgv">TXGV:</label></th>
+      <td><input type="text" id="total-txgv" name="total-txgv" value="0.00" readonly /></td>
+   
+      <th><label for="total-refcent">REFCENT:</label></th>
+      <td><input type="text" id="total-refcent" name="total-refcent" value="0.00" readonly /></td>
+    
+      <th><label for="total-expcent">EXPCENT:</label></th>
+      <td><input type="text" id="total-expcent" name="total-expcent" value="0.00" readonly /></td>
+   
+      <th><label for="total-cfolok">CFOLOK:</label></th>
+      <td><input type="text" id="total-cfolok" name="total-cfolok" value="0.00" readonly /></td>
+    
+      <th><label for="total-mof">MOF:</label></th>
+      <td><input type="text" id="total-mof" name="total-mof" value="0.00" readonly /></td>
+   
+      <th><label for="total-intl">INTL:</label></th>
+      <td><input type="text" id="total-intl" name="total-intl" value="0.00" readonly /></td>
+    
+      <th><label for="total-remittance">Remittance:</label></th>
+      <td><input type="text" id="total-remittance" name="total-remittance" value="0.00" readonly /></td>
+      
+    </tr>
+      </table>  
+  
+  <table class="table-bordered" align="center"><tr><td colspan="15" class="text-center"><input type="submit" value="Save" class="btn btn-success"></td></tr></table>
+</form>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var wscountField = document.getElementById('wscount');
-      var numSets = parseInt(wscountField.value);
+document.addEventListener('DOMContentLoaded', function () {
+  var wscountField = document.getElementById('wscount');
+  var numSets = parseInt(wscountField.value);
 
-      updateSets();
-      computeTotalRemittance(numSets);
-      showSetDivs(numSets);
+  updateSets();
+  computeTotalRemittance(numSets);
+  showSetTables(numSets);
 
-      $('input:not(#total input)').on('change', function () {
-        computeTotalRemittance(numSets);
-      });
-      $('input:not(#total input)').on('keyup', function () {
-        computeTotalRemittance(numSets);
-      });
-      $('input:not(#total input)').on('keydown', function () {
-        computeTotalRemittance(numSets);
-      });
+  $('input:not(#total input)').on('change', function () {
+    computeTotalRemittance(numSets);
+  });
+  $('input:not(#total input)').on('keyup', function () {
+    computeTotalRemittance(numSets);
+  });
+  $('input:not(#total input)').on('keydown', function () {
+    computeTotalRemittance(numSets);
+  });
 
-    });
+});
 
-    function updateSets() {
-      // get the current value of wscount
-      var wscount = parseInt(document.getElementById('wscount').value);
+function updateSets() {
+  // get the current value of wscount
+  var wscount = parseInt(document.getElementById('wscount').value);
 
-      // show or hide the set divs based on wscount
-      for (var i = 1; i <= 10; i++) {
-        var setDiv = document.getElementById('set' + i);
-        if (setDiv) {
-          if (i <= wscount) {
-            setDiv.style.display = 'block';
-          } else {
-            setDiv.style.display = 'none';
-          }
-        }
-      }
-
-      // show or hide the total row based on wscount
-      var totalRow = document.getElementById('total');
-      if (totalRow) {
-        if (wscount > 0) {
-          totalRow.style.display = 'block';
-        } else {
-          totalRow.style.display = 'none';
-        }
+  // show or hide the set tables based on wscount
+  for (var i = 1; i <= 10; i++) {
+    var setTable = document.getElementById('set' + i);
+    if (setTable) {
+      if (i <= wscount) {
+        setTable.style.display = 'table';
+      } else {
+        setTable.style.display = 'none';
       }
     }
+  }
+
+  // show or hide the total row based on wscount
+  var totalRow = document.getElementById('total');
+  if (totalRow) {
+    if (wscount > 0) {
+      totalRow.style.display = 'table-row';
+    } else {
+      totalRow.style.display = 'none';
+    }
+  }
+}
+
+function showSetTables(numSets) {
+  for (var i = 1; i <= 10; i++) {
+    var setTable = document.getElementById('set' + i);
+    if (setTable) {
+      if (i <= numSets) {
+        setTable.style.display = 'table';
+      } else {
+        setTable.style.display = 'none';
+      }
+    }
+
+    var totalRow = document.getElementById('set' + i + '-total');
+    if (totalRow) {
+      if (i <= numSets) {
+        totalRow.style.display = 'table-row';
+      } else {
+        totalRow.style.display = 'none';
+      }
+    }
+  }
+}
+
+
+    
+
+  
+
 
     function computeTotalRemittance(numSets) {
       var totalLokalExpenses = 0, totalLokalRefund = 0, totalCfolokrem = 0, totalCentral = 0, totalAdmin = 0, totalRemainder = 0, totalWholeweek = 0, totalWeekend = 0, totalAdmthur = 0, totalAdmsun = 0, totalCws = 0, totalSol = 0, totalSod = 0, totalAid = 0, totalTxgv = 0, totalRefcent = 0, totalExpcent = 0, totalCfolok = 0, totalMof = 0, totalIntl = 0;
@@ -613,28 +671,7 @@
     }
 
 
-    function showSetDivs(numSets) {
-      for (var i = 1; i <= 10; i++) {
-        var setDiv = document.getElementById('set' + i);
-        if (setDiv) {
-          if (i <= numSets) {
-            setDiv.style.display = 'block';
-          } else {
-            setDiv.style.display = 'none';
-          }
-        }
-
-        var totalDiv = document.getElementById('set' + i + '-total');
-        if (totalDiv) {
-          if (i <= numSets) {
-            totalDiv.style.display = 'block';
-          } else {
-            totalDiv.style.display = 'none';
-          }
-        }
-      }
-    }
-
+   
     function calculateCfolokIntl(setNum) {
       var sol = parseFloat(document.getElementById("sol" + setNum).value);
       var cfolok = 0.1 * sol;
@@ -656,60 +693,7 @@
     }
 
 
-    // get all input fields
-    document.addEventListener('DOMContentLoaded', function () {
-      // get all input fields
-      var inputs = document.getElementsByTagName("input");
-
-      // set initial focus on first input field
-      inputs[0].focus();
-
-      // add event listener for keydown
-      document.addEventListener("keydown", function (e) {
-        var keyCode = e.keyCode;
-        var active = document.activeElement;
-
-        // move focus to next input field on right arrow key press
-        if (keyCode === 39) {
-          if (active.nextElementSibling) {
-            active.nextElementSibling.focus();
-          }
-        }
-
-        // move focus to previous input field on left arrow key press
-        if (keyCode === 37) {
-          if (active.previousElementSibling) {
-            active.previousElementSibling.focus();
-          }
-        }
-
-        // move focus to input field above on up arrow key press
-        if (keyCode === 38) {
-          var row = active.parentElement.previousElementSibling;
-          if (row) {
-            var col = active.cellIndex;
-            var prevRow = row.previousElementSibling;
-            if (prevRow) {
-              prevRow.children[col].querySelector("input").focus();
-            }
-          }
-        }
-
-        // move focus to input field below on down arrow key press
-        if (keyCode === 40) {
-          var row = active.parentElement.nextElementSibling;
-          if (row) {
-            var col = active.cellIndex;
-            var nextRow = row.nextElementSibling;
-            if (nextRow) {
-              nextRow.children[col].querySelector("input").focus();
-            }
-          }
-        }
-      });
-
-    });
-
+ 
 
   </script>
 </body>

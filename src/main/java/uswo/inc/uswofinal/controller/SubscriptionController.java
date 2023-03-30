@@ -19,13 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.Expense;
 import uswo.inc.uswofinal.model.Lokal;
-import uswo.inc.uswofinal.model.Payment;
-import uswo.inc.uswofinal.model.Projectshare;
+
 import uswo.inc.uswofinal.model.Subscription;
 import uswo.inc.uswofinal.repository.DistrictRepository;
 import uswo.inc.uswofinal.repository.ExpenseRepository;
 import uswo.inc.uswofinal.repository.LokalRepository;
-import uswo.inc.uswofinal.repository.ProjectshareRepository;
 import uswo.inc.uswofinal.repository.SubscriptionRepository;
 
 @Controller

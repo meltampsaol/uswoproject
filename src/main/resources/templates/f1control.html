@@ -137,15 +137,15 @@ function handleButtonClick3(event) {
 }
 
 function initializePage() {
-  // Add the col-md-12 class to the lokalTable div
-  $("#lokalTable").addClass("col-md-12");
+  // Add the table class to the lokalTable table
+  $("#lokalTable").addClass("table");
 
   var wscountField = document.getElementById('wscount');
   var numSets = parseInt(wscountField.value);
 
   updateSets();
   computeTotalRemittance(numSets);
-  showSetDivs(numSets);
+  showSetTables(numSets);
 
   $('input:not(#total input)').on('change', function () {
     computeTotalRemittance(numSets);
@@ -159,9 +159,9 @@ function initializePage() {
 
   // Remove the col-md-4 class from each set of fields
   for (var i = 1; i <= numSets; i++) {
-    var setDiv = document.getElementById('set' + i);
-    if (setDiv) {
-      setDiv.classList.remove("col-md-4");
+    var setRow = document.getElementById('set' + i);
+    if (setRow) {
+      setRow.classList.remove("col-md-4");
     }
   }
 }
