@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .requestMatchers("/requests/edit/*","/requests/update/*","/requestslist").permitAll()
                 .requestMatchers("/payment/payment-add","/payment/payment/save").permitAll()
                 .requestMatchers("/share/projectshare-add","/share/projectshare/save","/share/sharelist").permitAll()
-                .requestMatchers("/pasugo/subscription-add","/pasugo/subscription/save").permitAll()
+                .requestMatchers("/pasugo/subscription-add","/pasugo/subscription/save","/pasugo/pasugolist").permitAll()
                 .requestMatchers("/home").authenticated()
                 .and()
                 .formLogin()

@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head}"></head>
-<body>
-<div th:replace="~{fragments/navbar :: navbar}"></div>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<div class="container my-8">
+<head th:replace="~{fragments/head :: head}">
+  <meta charset="UTF-8">
+  <title>Lokal List</title>
+</head>
+<body>
+  <div th:replace="~{fragments/navbar :: navbar}"></div>
+  <div class="container my-8">
+    <div class="row">
+      <div class="col-md-6">
     <h1>Share List</h1>
     <table class="table table-striped">
         <thead>
@@ -19,21 +24,21 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="share : ${shares}">
-            <td th:text="${share.getRecid()}"></td>
-            <td th:text="${share.getLokal().getName()}"></td>
-            <td th:text="${share.getDistrict().getName()}"></td>
-            <td th:text="${share.getItem()}"></td>
-            <td th:text="${share.getAsofwkno()}"></td>
-            <td th:text="${share.getShare()}"></td>
-            <td th:text="${share.getAccount()}"></td>
-        </tr>
+           
+            <tr th:each="share : ${shares}">
+                <td th:text="${share.recid}"></td>
+                <td th:text="${share.lokal.locale}"></td>
+                <td th:text="${share.district.district}"></td>
+                <td th:text="${share.item}"></td>
+                <td th:text="${share.asofwkno}"></td>
+                <td th:text="${share.share}"></td>
+                <td th:text="${share.account}"></td>
+            </tr>
         </tbody>
     </table>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Include Bootstrap's JavaScript after jQuery -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}">
+  <title>Subscription Balance</title>
+</head>
+<body>
+  <div th:replace="~{fragments/navbar :: navbar}"></div>
+  <div class="container my-8">
+    <h1>Subscription Balance</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>RecID</th>
+          <th>Lokal</th>
+          <th>District</th>
+          <th>For Year</th>
+          <th>Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="subscription : ${pasugo}">
+          <td th:text="${subscription.Recid}"></td>
+          <td th:text="${subscription.lokal.locale}"></td>
+          <td th:text="${subscription.district.district}"></td>
+          <td th:text="${subscription.foryear}"></td>
+          <td th:text="${subscription.balance}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div th:replace="~{fragments/footer :: footer}"></div>
+  
+  
+</body>
+</html>

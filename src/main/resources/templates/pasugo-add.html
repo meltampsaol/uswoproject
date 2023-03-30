@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-8">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Add Subscription Balance</h2>
+            <table class="table table-striped">
+                <tbody id="recentSubscriptionBalancesBody">
+                    <!-- Recent subscription balances table data goes here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container my-6">
+    <div class="row">
+        <div class="col-md-6">
+            <form th:action="@{/pasugo/subscription/save}" th:object="${pasugo}" method="post">
+                <table class="table table-striped">
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label for="district">District:</label>
+                                <select class="form-control" id="district" name="district.did" required>
+                                    <option value="" selected>Select District</option>
+                                    <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}">
+                                    </option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="lokal">Lokal:</label>
+                                <select class="form-control" id="lokal" name="lokal" required>
+                                    <option value="" selected>Select Lokal</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label for="foryear">Year:</label>
+                                <input type="number" class="form-control" id="foryear" name="foryear" min="1900" max="9999" required>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="balance">Balance:</label>
+                                <input type="number" class="form-control" id="balance" name="balance" step=".01" required>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script>
+    $(document).ready(function () {
+        $('#district').change(function () {
+            var did = $(this).val();
+            $.get('/getlocales/' + did, function (data) {  // @GetMapping("/getlocales/{districtId}")
+                $('#lokal').empty();
+                $('#lokal').append($('<option>').val('').text('Select Lokal'));
+                $.each(data, function (i, lokal) {
+                    $('#lokal').append($('<option>').val(lokal.lcode).text(lokal.locale));
+                });
+            });
+        });
+        $('#district').keyup(function () {
+            var did = $(this).val();
+            $.get('/getlocales/' + did, function (data) {  // @GetMapping("/getlocales/{districtId}")
+                $('#lokal').empty();
+                $('#lokal').append($('<option>').val('').text('Select Lokal'));
+                $.each(data, function (i, lokal) {
+                    $('#lokal').append($('<option>').val(lokal.lcode).text(lokal.locale));
+                });
+            });
+        });
+    });
+</script>
+</body>
+</html>

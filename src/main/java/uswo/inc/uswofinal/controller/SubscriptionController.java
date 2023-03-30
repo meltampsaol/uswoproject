@@ -2,7 +2,9 @@ package uswo.inc.uswofinal.controller;
 
 import java.util.List;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +21,19 @@ import uswo.inc.uswofinal.model.Expense;
 import uswo.inc.uswofinal.model.Lokal;
 import uswo.inc.uswofinal.model.Payment;
 import uswo.inc.uswofinal.model.Projectshare;
+import uswo.inc.uswofinal.model.Subscription;
 import uswo.inc.uswofinal.repository.DistrictRepository;
 import uswo.inc.uswofinal.repository.ExpenseRepository;
 import uswo.inc.uswofinal.repository.LokalRepository;
 import uswo.inc.uswofinal.repository.ProjectshareRepository;
+import uswo.inc.uswofinal.repository.SubscriptionRepository;
 
 @Controller
 @RequestMapping("/pasugo")
 public class SubscriptionController {
+
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
 
     @Autowired
     private ExpenseRepository expenseRepository;
@@ -36,8 +43,7 @@ public class SubscriptionController {
     @Autowired
     private DistrictRepository districtRepository;
 
-    @Autowired
-    private ProjectshareRepository projectshareRepository;
+    
 
     @GetMapping("/recent")
     public String getRecentExpenses(Model model) {
@@ -54,16 +60,28 @@ public class SubscriptionController {
         return expenseRepository.findById(newid);
     }
 
-    @PostMapping("/projectshare/save")
-    public String createExpense(@ModelAttribute("projectshare") Projectshare projectshare, Model model) {
-        projectshareRepository.save(projectshare);
-
-        // Retrieve the updated recent expenses list
-        List<Expense> expenses = expenseRepository.findRecentExpenses();
-        model.addAttribute("expenses", expenses);
-
-        return "recent";
+    @PostMapping("/subscription/save")
+public String createSubscription(@ModelAttribute("pasugo") Subscription pasugo, Model model) {
+    try {
+        subscriptionRepository.save(pasugo);
+    } catch (DataIntegrityViolationException e) {
+        if (e.getCause() instanceof ConstraintViolationException) {
+            ConstraintViolationException cve = (ConstraintViolationException) e.getCause();
+            if (cve.getConstraintName().equals("subscription_lcode_foryear_idx")) {
+                // Unique index violation occurred on lcode and foryear
+                Lokal lokal = lokalRepository.findByLokalCode(pasugo.getLokal().getLcode());
+                Subscription existingPasugo = subscriptionRepository.findByLokalAndForyear(lokal, pasugo.getForyear());
+                existingPasugo.setBalance(pasugo.getBalance()); // Update the balance
+                subscriptionRepository.save(existingPasugo); // Save the updated row
+            }
+        }
     }
+    List<Subscription> psg = subscriptionRepository.findAll();
+    model.addAttribute("pasugo", psg);
+    return "pasugolist";
+}
+
+    
 
     @PutMapping("/{id}")
     public Expense updateExpense(@PathVariable("id") int id, @RequestBody Expense expenseData) {
@@ -92,8 +110,8 @@ public class SubscriptionController {
         return "Record deleted successfully";
     }
 
-    @GetMapping("/payment-add")
-    public String addPayment(Model model) {
+    @GetMapping("/subscription-add")
+    public String addSubscription(Model model) {
         // Add the District and Lokal models to the attributes
         List<District> districts = districtRepository.findAll();
         List<Lokal> locales = lokalRepository.findAll();
@@ -101,21 +119,16 @@ public class SubscriptionController {
         model.addAttribute("locales", locales);
 
         // Add other attributes and return the view
-        model.addAttribute("payment", new Payment());
-        return "payment-add";
+        model.addAttribute("psg", new Subscription());
+        return "pasugo-add";
     }
 
-    @GetMapping("/expense-search/{searchText}")
-    public String search(@PathVariable String searchText, Model model) {
-        List<Expense> expenses = expenseRepository.findBySearchText(searchText);
-        model.addAttribute("expenses", expenses);
-        return "expense-search-result";
-    }
+    @GetMapping("/pasugolist")
+    public String allPasugo(Model model) {
+        List<Subscription> psg = subscriptionRepository.findAll();
+        model.addAttribute("pasugo", psg);
 
-    @GetMapping("/expense-search")
-    public String search(Model model) {
-        return "expense-search";
+        return "pasugolist";
     }
-
     
 }

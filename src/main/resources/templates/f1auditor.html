@@ -23,6 +23,13 @@
   <!-- Include jquery.dataTables.min.js after jQuery -->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <style>
+    .first-set {
+  background-color: #38B2AC;
+}
+
+.second-set {
+  background-color: #319795;
+}
     .btn-midnight-blue {
   background-color: #191970;
   color: #fff;
@@ -114,7 +121,7 @@
     </table>
   </div>
   <!-- Set 1 -->
-  <div id="set1" style="display: none;" class="table table-bordered btn-info">
+  <div id="set1" style="display: none;" class="table table-bordered btn-info first-set">
     <label for="admthur1">ADMTHUR:</label>
     <input type="text" id="admthur1" name="admthur1" value="0.00" />
 
@@ -166,7 +173,7 @@
   </div>
 
   <!-- Set 2 -->
-  <div id="set2" style="display: none;" class="table table-bordered btn btn-light">
+  <div id="set2" style="display: none;" class="table table-bordered btn second-set">
     <label for="admthur2">ADMTHUR:</label>
     <input type="text" id="admthur2" name="admthur2" value="0.00" />
 
