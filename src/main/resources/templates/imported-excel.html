@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Locale Data Table</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+			text-align: center;
+		}
+		th, td {
+			border: 1px solid black;
+			padding: 8px;
+			font-size: 14px;
+		}
+		th {
+			background-color: #F8F8F8;
+		}
+		tr:nth-child(even) {
+			background-color: #F0F0F0;
+		}
+	</style>
+</head>
+<body>
+	<h1>Locale Data Table</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Locale</th>
+				<th>Thursday</th>
+				<th>Sunday</th>
+				<th>CWS</th>
+				<th>Total Offering</th>
+				<th>TH Locale</th>
+				<th>TH District</th>
+				<th>Lingap</th>
+				<th>Thanksgiving</th>
+				<th>Ref Locale</th>
+				<th>Ref District</th>
+				<th>Ref Central</th>
+				<th>Week Number</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="localeData : ${localeDataList}">
+				<td th:text="${localeData.locale}"></td>
+				<td th:text="${localeData.thursday}"></td>
+				<td th:text="${localeData.sunday}"></td>
+				<td th:text="${localeData.cws}"></td>
+				<td th:text="${localeData.totalOffering}"></td>
+				<td th:text="${localeData.thLocale}"></td>
+				<td th:text="${localeData.thDistrict}"></td>
+				<td th:text="${localeData.lingap}"></td>
+				<td th:text="${localeData.thanksgiving}"></td>
+				<td th:text="${localeData.refLocale}"></td>
+				<td th:text="${localeData.refDistrict}"></td>
+				<td th:text="${localeData.refCentral}"></td>
+				<td th:text="${localeData.weekNumber}"></td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<p>Data imported successfully from week 6 to week 12.</p>
+</body>
+</html>

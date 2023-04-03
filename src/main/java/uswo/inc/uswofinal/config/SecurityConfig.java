@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .requestMatchers("/share/projectshare-add","/share/projectshare/save","/share/sharelist").permitAll()
                 .requestMatchers("/pasugo/subscription-add","/pasugo/subscription/save","/pasugo/pasugolist").permitAll()
                 .requestMatchers("/wlfr/withdrawal","/wlfr/withdrawal/save","/wlfr/withdrawal/list").permitAll()
+                .requestMatchers("/excel-import","/imported-excel").permitAll()
                 .requestMatchers("/home").authenticated()
                 .and()
                 .formLogin()
