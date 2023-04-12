@@ -53,10 +53,12 @@ public class ExpenseController {
         expenseRepository.save(expense);
 
         // Retrieve the updated recent expenses list
-        List<Expense> expenses = expenseRepository.findRecentExpenses();
+        //List<Expense> expenses = expenseRepository.findRecentExpenses();
+        int lcode = expense.getLokal().getLcode();
+        List<Expense> expenses = expenseRepository.findRecentPerLokal(lcode);
         model.addAttribute("expenses", expenses);
 
-        return "recent";
+        return "recent_perlokal";
     }
 
     @PutMapping("/{id}")

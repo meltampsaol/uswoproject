@@ -53,7 +53,7 @@ public class Expense {
     @Column(name = "actual_expenses")
     private double actualExpenses;
 
-    @Column(name = "date_purchased")
+    @Column(name = "date_reported")
     private LocalDate datePurchased;
 
     @Column(name = "remarks")

@@ -9,7 +9,7 @@ import uswo.inc.uswofinal.model.District;
 
 import java.util.List;
 
-public interface DistrictRepository extends JpaRepository<District, Long> {
+public interface DistrictRepository extends JpaRepository<District, Integer> {
 
     
 

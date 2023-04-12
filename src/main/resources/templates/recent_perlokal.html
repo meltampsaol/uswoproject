@@ -47,7 +47,8 @@
                     </form>
                   </td>
                 <td>
-                    <button id="edt-btn" class="btn btn-sm btn-primary edit-btn" data-toggle="modal" data-target="#editExpenseModal" th:value="${expense.recid}">Edit <span th:text="${expense.recid}"></span></button>
+                    <button class="btn btn-sm btn-primary edit-btn" data-toggle="modal" data-target="#editExpenseModal" data-expense-id="${expense.recid}">Edit</button>
+
                 </td> 
             </tr>
 

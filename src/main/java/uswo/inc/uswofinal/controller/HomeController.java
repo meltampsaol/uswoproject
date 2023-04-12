@@ -372,7 +372,7 @@ public class HomeController {
 
     @PostMapping("/requests/update/{id}")
     public String updateRequest(@PathVariable Long id, @RequestParam("file") MultipartFile file,
-            @RequestParam String approvalNumber, @RequestParam Long district,
+            @RequestParam String approvalNumber, @RequestParam int district,
             @RequestParam String locale, @RequestParam String particulars,
             @RequestParam String remarks, Model model) throws IOException {
 

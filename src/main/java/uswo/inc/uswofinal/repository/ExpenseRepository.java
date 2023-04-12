@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import uswo.inc.uswofinal.model.Expense;
 
 @Repository
-public interface ExpenseRepository extends JpaRepository<Expense, Long> {
+public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
 
   // get a list of expenses sorted by date in descending order
   List<Expense> findAllByOrderByDateEncodedDesc();
@@ -20,15 +20,20 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
   @Query("SELECT e FROM Expense e ORDER BY e.dateEncoded DESC")
   List<Expense> findRecentExpenses();
 
-  Expense findById(long id);
+  @Query("SELECT e FROM Expense e WHERE e.lokal.lcode = :lcode ORDER BY e.dateEncoded DESC")
+  List<Expense> findRecentPerLokal(@Param("lcode") int lcode);
 
-  void deleteById(long id);
+
+  Expense findById(int id);
+
+  void deleteById(int id);
   @Query("SELECT e FROM Expense e " +
   "LEFT JOIN FETCH e.lokal l " +
   "LEFT JOIN FETCH e.district d " +
   "WHERE LOWER(l.locale) LIKE LOWER(CONCAT('%', :searchText, '%')) " +
   "OR LOWER(d.district) LIKE LOWER(CONCAT('%', :searchText, '%')) " +
   "OR LOWER(e.description) LIKE LOWER(CONCAT('%', :searchText, '%')) " +
+  "OR LOWER(e.remarks) LIKE LOWER(CONCAT('%', :searchText, '%')) " +
   "OR LOWER(e.f10) LIKE LOWER(CONCAT('%', :searchText, '%')) " +
   "OR LOWER(e.remarks) LIKE LOWER(CONCAT('%', :searchText, '%'))")
 List<Expense> findBySearchText(@Param("searchText") String searchText);

@@ -1,7 +1,10 @@
 package uswo.inc.uswofinal.controller;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.math3.exception.NullArgumentException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpServletRequest;
 import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.Expense;
 import uswo.inc.uswofinal.model.Lokal;
@@ -25,10 +29,14 @@ import uswo.inc.uswofinal.repository.DistrictRepository;
 import uswo.inc.uswofinal.repository.ExpenseRepository;
 import uswo.inc.uswofinal.repository.LokalRepository;
 import uswo.inc.uswofinal.repository.SubscriptionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping("/pasugo")
 public class SubscriptionController {
+
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @Autowired
     private SubscriptionRepository subscriptionRepository;
@@ -40,8 +48,6 @@ public class SubscriptionController {
 
     @Autowired
     private DistrictRepository districtRepository;
-
-    
 
     @GetMapping("/recent")
     public String getRecentExpenses(Model model) {
@@ -59,27 +65,26 @@ public class SubscriptionController {
     }
 
     @PostMapping("/subscription/save")
-public String createSubscription(@ModelAttribute("pasugo") Subscription pasugo, Model model) {
-    try {
-        subscriptionRepository.save(pasugo);
-    } catch (DataIntegrityViolationException e) {
-        if (e.getCause() instanceof ConstraintViolationException) {
-            ConstraintViolationException cve = (ConstraintViolationException) e.getCause();
-            if (cve.getConstraintName().equals("subscription_lcode_foryear_idx")) {
-                // Unique index violation occurred on lcode and foryear
-                Lokal lokal = lokalRepository.findByLokalCode(pasugo.getLokal().getLcode());
-                Subscription existingPasugo = subscriptionRepository.findByLokalAndForyear(lokal, pasugo.getForyear());
-                existingPasugo.setBalance(pasugo.getBalance()); // Update the balance
-                subscriptionRepository.save(existingPasugo); // Save the updated row
+    public String createSubscription(@ModelAttribute("pasugo") Subscription pasugo, Model model) {
+        try {
+            subscriptionRepository.save(pasugo);
+        } catch (DataIntegrityViolationException e) {
+            if (e.getCause() instanceof ConstraintViolationException) {
+                ConstraintViolationException cve = (ConstraintViolationException) e.getCause();
+                if (cve.getConstraintName().equals("subscription_lcode_foryear_idx")) {
+                    // Unique index violation occurred on lcode and foryear
+                    Lokal lokal = lokalRepository.findByLokalCode(pasugo.getLokal().getLcode());
+                    Subscription existingPasugo = subscriptionRepository.findByLokalAndForyear(lokal,
+                            pasugo.getForyear());
+                    existingPasugo.setBalance(pasugo.getBalance()); // Update the balance
+                    subscriptionRepository.save(existingPasugo); // Save the updated row
+                }
             }
         }
+        List<Subscription> psg = subscriptionRepository.findAll();
+        model.addAttribute("pasugo", psg);
+        return "pasugolist";
     }
-    List<Subscription> psg = subscriptionRepository.findAll();
-    model.addAttribute("pasugo", psg);
-    return "pasugolist";
-}
-
-    
 
     @PutMapping("/{id}")
     public Expense updateExpense(@PathVariable("id") int id, @RequestBody Expense expenseData) {
@@ -121,6 +126,15 @@ public String createSubscription(@ModelAttribute("pasugo") Subscription pasugo, 
         return "pasugo-add";
     }
 
+    @GetMapping("/encode-mass")
+    public String addMassBalance(Model model) {
+        // Add the District and Lokal models to the attributes
+        List<District> districts = districtRepository.findAll();
+        model.addAttribute("districts", districts);
+
+        return "pasugo_encode_mass";
+    }
+
     @GetMapping("/pasugolist")
     public String allPasugo(Model model) {
         List<Subscription> psg = subscriptionRepository.findAll();
@@ -128,5 +142,52 @@ public String createSubscription(@ModelAttribute("pasugo") Subscription pasugo, 
 
         return "pasugolist";
     }
-    
+
+    @PostMapping("/save-mass")
+    public String subscribe(HttpServletRequest request, Model model) {
+    String[] lcodes = request.getParameterValues("lokal.lcode");
+    String[] years = request.getParameterValues("foryear");
+    String[] balances = request.getParameterValues("balance");
+    logger.info("Entering save-mass method lcodes: {}", lcodes != null ? lcodes[0] : null);
+    logger.info("Entering save-mass method years: {}", years != null ? years[0] : null);
+    logger.info("Entering save-mass method balances: {}", balances != null ? balances[0] : null);
+    if (lcodes != null && years != null && balances != null && lcodes.length == years.length && lcodes.length == balances.length) {
+        for (int i = 0; i < lcodes.length; i++) {
+            Lokal lokal = lokalRepository.findById(Integer.parseInt(lcodes[i])).orElse(null);
+            if (lokal != null && years[i] != null && balances[i] != null && !years[i].isEmpty() && !balances[i].isEmpty()) {
+                District district = lokal.getDistrict(); // Retrieve the district from the lokal object
+                Subscription subscription = new Subscription();
+                subscription.setLokal(lokal);
+                subscription.setDistrict(district);
+                subscription.setForyear(Integer.parseInt(years[i]));
+                subscription.setBalance(new BigDecimal(balances[i]));
+                try {
+                    subscriptionRepository.save(subscription);
+                } catch (DataIntegrityViolationException e) {
+                    if (e.getCause() instanceof ConstraintViolationException) {
+                        ConstraintViolationException cve = (ConstraintViolationException) e.getCause();
+                        logger.info("trying to save-mass", e.getMessage());
+                        if (cve.getConstraintName().equals("subscription_lcode_foryear_idx")) {
+                            // Unique index violation occurred on lcode and foryear
+                            Subscription existingSubscription = subscriptionRepository.findByLokalAndForyear(lokal, subscription.getForyear());
+                            existingSubscription.setBalance(subscription.getBalance()); // Update the balance
+                            subscriptionRepository.save(existingSubscription); // Save the updated row
+                            logger.info("save-mass");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    List<Subscription> psg = subscriptionRepository.findAll();
+    model.addAttribute("pasugo", psg);
+
+    return "pasugolist";
 }
+
+
+}
+
+
+

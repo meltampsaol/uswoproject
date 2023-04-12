@@ -149,10 +149,7 @@
                   <select class="form-control" id="exptype" name="exptype" required>
                     <option value="" selected>Select Expense Type</option>
                     <option value="Locale">Locale</option>
-                    <option value="Cfo-Locale">CFO-Locale</option>
                     <option value="Central">Central</option>
-                    <option value="Donation">Donation</option>
-                    <option value="Subsidize">Half-half(District and Local)</option>
                   </select>
                 </div>
               </td>
@@ -318,8 +315,6 @@
                 <option value="" selected>Select Expense Type</option>
                 <option value="Locale" th:selected="${expense.exptype == 'Locale'}">Locale</option>
                 <option value="Central" th:selected="${expense.exptype == 'Central'}">Central</option>
-                <option value="Cfo-locale" th:selected="${expense.exptype == 'Cfo-locale'}">CFO-Locale</option>
-                <option value="Donation" th:selected="${expense.exptype == 'Donation'}">Donation</option>
               </select>
             </div>
           </form>
@@ -333,27 +328,68 @@
     </div>
   </div>
   <script>
-$(document).on("click", ".edit-btn", function () {
-  var recid = $(this).data("expense-id");
-  var url = "/expenses/" + recid;
-  $.get(url, function (data) {
-    $("#editExpenseId").val(data.recid);
-    $("#editDistrict").val(data.district.did);
-    populateLocaleDropdownList(data.district.did, data.lokal);
-    $("#editWkno").val(data.wkno);
-    $("#editDescription").val(data.description);
-    $("#editF10").val(data.f10);
-    $("#editAmountRequested").val(data.amountRequested);
-    $("#editActualExpenses").val(data.actualExpenses);
-    $("#editDatePurchased").val(data.datePurchased);
-    $("#editRemarks").val(data.remarks);
-    $("#editQty").val(data.qty);
-    $("#editExpenseType").val(data.exptype);
+    $(document).ready(function () {
+      // Event listener for edit expense button
+      $(document).on("click", ".edit-btn", function () {
 
-    // Show the edit expense modal
-    $("#editExpenseModal").modal("show");
-  });
-});
+        // Get the record ID from the button data attribute and convert to integer
+        var recid = parseInt($(this).data("expense-id"));
+
+
+
+        // Populate the edit expense modal form fields
+        $.ajax({
+          url: "/expenses/" + recid,
+          type: "GET",
+          success: function (expense) {
+            $("#editExpenseId").val(expense.recid);
+            $("#editDistrict").val(expense.district.did);
+            populateLocaleDropdownList(expense.district.did, expense.lokal);
+            $("#editWkno").val(expense.wkno);
+            $("#editDescription").val(expense.description);
+            $("#editF10").val(expense.f10);
+            $("#editAmountRequested").val(expense.amountRequested);
+            $("#editActualExpenses").val(expense.actualExpenses);
+            $("#editDatePurchased").val(expense.datePurchased);
+            $("#editRemarks").val(expense.remarks);
+            $("#editQty").val(expense.qty);
+            $("#editExpenseType").val(expense.exptype);
+          }
+        });
+
+        // Show the edit expense modal
+        $("#editExpenseModal").modal("show");
+      });
+
+      // Event listener for district change
+      $("#editDistrict").change(function () {
+        var districtId = $(this).val();
+        populateLocaleDropdownList(districtId, "");
+      });
+
+      // Function to populate the locale dropdown list based on district
+      function populateLocaleDropdownList(districtId, selectedLocale) {
+        var url = "/locales/" + districtId;
+
+        $.get(url, function (data) {
+          var options = "";
+          $.each(data, function (index, locale) {
+            if (selectedLocale != "" && selectedLocale == locale) {
+              options += '<option value="' + locale + '" selected>' + locale + '</option>';
+            } else {
+              options += '<option value="' + locale + '">' + locale + '</option>';
+            }
+          });
+
+          $("#editLokal").html(options);
+        });
+      }
+
+      // Event listener for edit expense form submit
+      $("#editExpenseButton").click(function () {
+        $("#editExpenseForm").submit();
+      });
+    });
   </script>
   <script>
     $(document).ready(function () {

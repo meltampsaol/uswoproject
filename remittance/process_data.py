@@ -37,7 +37,7 @@ for week in range(6, 13):
 
 
     # Delete rows where rtotal is 0 or 0.00
-    df = df[df['rtotal'] != Decimal('0.00')]
+    #df = df[df['rtotal'] != Decimal('0.00')]
 
     # Use the pandas DataFrame method "to_sql" to encode the data into a MySQL table
     df.to_sql("f4detail", engine, if_exists="append", index=False, chunksize=1000)
@@ -52,7 +52,7 @@ conn.close()
 
 
     # Remove rows where rtotal is 0 or 0.00
-conn = engine.connect()
-query = text(f"DELETE FROM f4detail WHERE rtotal = 0")
-conn.execute(query)
-conn.close()
+#conn = engine.connect()
+#query = text(f"DELETE FROM f4detail WHERE rtotal = 0")
+#conn.execute(query)
+#conn.close()
