@@ -27,12 +27,9 @@ import uswo.inc.uswofinal.repository.LocaleDataRepository;
 @Controller
 public class LocaleDataController {
 
-    private final LocaleDataProcessor localeDataProcessor;
+   
 
-    @Autowired
-    public LocaleDataController(LocaleDataProcessor localeDataProcessor) {
-        this.localeDataProcessor = localeDataProcessor;
-    }
+   
 
     @Autowired
     LocaleDataRepository localeDataRepository;
