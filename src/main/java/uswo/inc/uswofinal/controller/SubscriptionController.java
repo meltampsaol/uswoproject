@@ -1,21 +1,14 @@
 package uswo.inc.uswofinal.controller;
 
 import java.math.BigDecimal;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.math3.exception.NullArgumentException;
 import org.hibernate.exception.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.CallableStatementCreator;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,15 +25,12 @@ import uswo.inc.uswofinal.model.Balances;
 import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.Expense;
 import uswo.inc.uswofinal.model.Lokal;
-
 import uswo.inc.uswofinal.model.Subscription;
 import uswo.inc.uswofinal.repository.BalancesRepository;
 import uswo.inc.uswofinal.repository.DistrictRepository;
 import uswo.inc.uswofinal.repository.ExpenseRepository;
 import uswo.inc.uswofinal.repository.LokalRepository;
 import uswo.inc.uswofinal.repository.SubscriptionRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping("/pasugo")
