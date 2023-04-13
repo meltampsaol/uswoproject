@@ -2,7 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Payment Page</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+    <!-- Include Bootstrap's JavaScript after jQuery -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  
+    <!-- Include jquery.dataTables.min.js after jQuery -->
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -11,7 +22,7 @@
     <div class="row">
         <div class="col-md-6">
             <h1>Make Payment</h1>
-            <form th:action="@{/payments/save}" th:object="${payment}" method="post">
+            <form th:action="@{/payment/save}" th:object="${payment}" method="post">
                 <table class="table table-striped">
                     <tr>
                     <td>
@@ -26,7 +37,7 @@
             
                 <td><div class="form-group">
                         <label for="locale">Locale:</label>
-                        <select class="form-control" id="locale" name="lcode" required>
+                        <select class="form-control" id="lokal" name="lokal" required>
                           <option value="" selected>Select Locale</option>
                         </select>
                       </div>
@@ -116,8 +127,8 @@
                         </td>
                         <td>
                             <div class="form-group">
-                                <label for="date">Date:</label>
-                                <input type="date" class="form-control" id="date" name="date" required>
+                                <label for="date">Report Date:</label>
+                                <input type="date" class="form-control" id="report_date" name="report_date" required>
                             </div>
                         </td>
                     </tr>
@@ -132,8 +143,16 @@
                     <tr>
                         <td colspan="2">
                             <div class="form-group">
-                                <label for="foryear">Project:</label>
-                                <select id="foryear">
+                                <label for="remarks">Particulars:</label>
+                                <input type="text" class="form-control" id="remarks" name="remarks">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="form-group">
+                                <label for="foryear">For What Year?</label>
+                                <select id="foryear" name="foryear">
                                     <option value="" selected>Select Year</option>
                                     <script>
                                       var currentYear = new Date().getFullYear();
@@ -164,10 +183,10 @@
       $('#district').change(function () {
         var did = $(this).val();
         $.get('/getlocales/' + did, function (data) { 
-          $('#locale').empty();
-          $('#locale').append($('<option>').val('').text('Select Locale'));
+          $('#lokal').empty();
+          $('#lokal').append($('<option>').val('').text('Select Locale'));
           $.each(data, function (i, locale) {
-            $('#locale').append($('<option>').val(locale.lcode).text(locale.locale));
+            $('#lokal').append($('<option>').val(locale.lcode).text(locale.locale));
           });
         });
       });

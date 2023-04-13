@@ -1,13 +1,21 @@
 package uswo.inc.uswofinal.controller;
 
 import java.math.BigDecimal;
+import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.math3.exception.NullArgumentException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.CallableStatementCreator;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +28,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
+import uswo.inc.uswofinal.model.Balances;
 import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.Expense;
 import uswo.inc.uswofinal.model.Lokal;
 
 import uswo.inc.uswofinal.model.Subscription;
+import uswo.inc.uswofinal.repository.BalancesRepository;
 import uswo.inc.uswofinal.repository.DistrictRepository;
 import uswo.inc.uswofinal.repository.ExpenseRepository;
 import uswo.inc.uswofinal.repository.LokalRepository;
@@ -35,7 +45,11 @@ import org.slf4j.LoggerFactory;
 @Controller
 @RequestMapping("/pasugo")
 public class SubscriptionController {
+    private JdbcTemplate jdbcTemplate;
 
+    public SubscriptionController(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @Autowired
@@ -43,6 +57,10 @@ public class SubscriptionController {
 
     @Autowired
     private ExpenseRepository expenseRepository;
+
+    @Autowired
+    private BalancesRepository balancesRepository;
+    
     @Autowired
     private LokalRepository lokalRepository;
 
@@ -184,6 +202,21 @@ public class SubscriptionController {
     model.addAttribute("pasugo", psg);
 
     return "pasugolist";
+}
+
+@GetMapping("/search")
+    public String search(Model model) {
+        return "pasugo-search";
+    }
+
+
+
+
+    @GetMapping("/search/{searchText}")
+public String search(@PathVariable String searchText, Model model) {
+    List<Balances> balances = balancesRepository.getBalances2(searchText);
+    model.addAttribute("balances", balances);
+    return "pasugo-search-result";
 }
 
 

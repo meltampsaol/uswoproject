@@ -20,8 +20,8 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int recid;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "lcode")
+    @ManyToOne
+    @JoinColumn(name = "lcode", referencedColumnName = "lcode")
     private Lokal lokal;
 
     @ManyToOne(fetch = FetchType.EAGER)

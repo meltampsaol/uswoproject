@@ -2,7 +2,11 @@ package uswo.inc.uswofinal.controller;
 
 import java.util.List;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +26,7 @@ import uswo.inc.uswofinal.model.Projectshare;
 import uswo.inc.uswofinal.repository.DistrictRepository;
 import uswo.inc.uswofinal.repository.ExpenseRepository;
 import uswo.inc.uswofinal.repository.LokalRepository;
+import uswo.inc.uswofinal.repository.PaymentRepository;
 import uswo.inc.uswofinal.repository.ProjectshareRepository;
 
 @Controller
@@ -29,7 +34,13 @@ import uswo.inc.uswofinal.repository.ProjectshareRepository;
 public class PaymentController {
 
     @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
     private ExpenseRepository expenseRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
     @Autowired
     private LokalRepository lokalRepository;
 
@@ -64,6 +75,31 @@ public class PaymentController {
 
         return "recent";
     }
+    @PostMapping("/save")
+public String savePayment(@ModelAttribute("payment") Payment payment, Model model, Authentication authentication) {
+    payment.setUserid(authentication.getName());
+    try {
+        paymentRepository.save(payment);
+    } catch (DataIntegrityViolationException e) {
+        if (e.getCause() instanceof ConstraintViolationException) {
+            ConstraintViolationException cve = (ConstraintViolationException) e.getCause();
+            if (cve.getConstraintName().equals("payment_idx")) {
+                // Unique index violation occurred on lcode, wkno, f2bnumber, and payment_type
+                Payment existingPayment = paymentRepository.findByLokalAndWknoAndF2bnumberAndPaymentType(
+                payment.getLokal(), payment.getWkno(), payment.getF2bnumber(), payment.getPaymentType());
+                existingPayment.setAmount(payment.getAmount()); // Update the amount
+                existingPayment.setRemarks(payment.getRemarks()); // Update the remarks
+                paymentRepository.save(existingPayment); // Save the updated row
+            }
+        }
+    }
+
+    // Retrieve the updated recent expenses list
+    List<Payment> pmt = paymentRepository.findRecentPayments();
+    model.addAttribute("payments", pmt);
+
+    return "recent_payment_perlokal";
+}
 
     @PutMapping("/{id}")
     public Expense updateExpense(@PathVariable("id") int id, @RequestBody Expense expenseData) {

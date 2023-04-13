@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Include Bootstrap's JavaScript after jQuery -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Include jquery.dataTables.min.js after jQuery -->
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Local</th>
+                <th>Year</th>
+                <th>Balance</th>
+                <th>Total Payment</th>
+                <th>Current Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="sb : ${subscriptionBalances}">
+                <td th:text="${sb.lokal.locale}"></td>
+                <td th:text="${sb.forYear}"></td>
+                <td th:text="${sb.balance}"></td>
+                <td th:text="${sb.totalPayment}"></td>
+                <td th:text="${sb.currentBalance}"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+  
+                 
+</body>
+
+</html>

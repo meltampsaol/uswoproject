@@ -24,13 +24,7 @@
             <div class="col-md-6">
                 <form method="post" action="/pasugo/save-mass">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Lokal</th>
-                                <th>Year</th>
-                                <th>Balance</th>
-                            </tr>
-                        </thead>
+                        
                         <tbody>
                             <tr>
                                 <td>
@@ -45,10 +39,10 @@
                                     </div>
                                 </td>
                             </tr>
-                        <tbody id="lokal-list">
-                        </tbody>
+                               
+                        <tr><td><div id="lokal-list"></div></td></tr>
                         <tr>
-                            <td colspan="3" class="text-center"><button type="submit" class="btn btn-primary">Save
+                            <td colspan="4" class="text-center"><button type="submit" class="btn btn-primary">Save
                                     All</button></td>
                         </tr>
                         </tbody>
@@ -67,6 +61,7 @@
                 $.get('/getlocales/' + did, function (data) {
                     var tableBody = $('#lokal-list');
                     tableBody.empty();
+                    tableBody.append('<tr><td></td><td>Lokal</td><td>Year</td><td>Balance</td></tr>'); // Added row for Lokal and Balance
                     $.each(data, function (i, lokal) {
                         var tr = $('<tr>');
                         tr.append($('<td>').append($('<input>').attr('type', 'hidden').attr('name', 'lokal.lcode').val(lokal.lcode)));
@@ -79,6 +74,6 @@
             });
         });
     </script>
+    
 </body>
-
 </html>

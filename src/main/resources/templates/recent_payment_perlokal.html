@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Include Bootstrap's JavaScript after jQuery -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Include jquery.dataTables.min.js after jQuery -->
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</head>
+
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Local</th>
+                <th>District</th>
+                <th>Wkno</th>
+                <th>Remarks</th>
+                <th>Amount</th>
+                <th>F2B#</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr th:each="payment : ${payments}">
+                <td th:text="${payment.lokal.locale}"></td>
+                <td th:text="${payment.district.district}"></td>
+                <td th:text="${payment.wkno}"></td>
+                <td th:text="${payment.remarks}"></td>
+                <td th:text="${payment.amount}"></td>
+                <td th:text="${payment.f2bnumber}"></td>
+                
+                
+                <td>
+                    <form th:action="@{/payment/delete/{id}(id=${payment.id})}" method="post" id="deletePaymentForm">
+                      <button type="button" id="deletePaymentButton" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" th:data-recid="${payment.id}">Delete <span th:text="${payment.id}"></span></button>
+                    </form>
+                  </td>
+                <td>
+                    <button id="edt-btn" class="btn btn-sm btn-primary edit-btn" data-toggle="modal" data-target="#editExpenseModal" th:value="${payment.id}">Edit <span th:text="${payment.id}"></span></button>
+                </td> 
+            </tr>
+
+
+
+        </tbody>
+    </table>
+  
+                 
+</body>
+
+</html>

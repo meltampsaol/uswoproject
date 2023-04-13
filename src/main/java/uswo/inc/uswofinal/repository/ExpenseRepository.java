@@ -27,6 +27,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
   Expense findById(int id);
 
   void deleteById(int id);
+  
   @Query("SELECT e FROM Expense e " +
   "LEFT JOIN FETCH e.lokal l " +
   "LEFT JOIN FETCH e.district d " +

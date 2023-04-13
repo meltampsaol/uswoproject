@@ -1,8 +1,10 @@
 package uswo.inc.uswofinal.model;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import java.util.Date;
 
 @Entity
 @Data
@@ -23,23 +26,23 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lcode")
+    @ManyToOne
+    @JoinColumn(name = "lcode", referencedColumnName = "lcode")
     private Lokal lokal;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "did")
     private District district;
-
     private String wkno;
 
     private BigDecimal amount;
 
     private String f2bnumber;
 
-    private LocalDate date;
+    private Timestamp date_encoded;
+    private LocalDate report_date;
 
-    private Integer userid;
+    private String userid;
 
     private Integer deleted;
 
@@ -47,7 +50,8 @@ public class Payment {
     private PaymentType paymentType;
 
     private String project;
-    private String foryear;
+    private Integer foryear;
+    private String remarks;
 
     // getters and setters
 }

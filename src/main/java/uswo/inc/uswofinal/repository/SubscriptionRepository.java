@@ -16,5 +16,12 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Inte
 
    Subscription findByLokalAndForyear(Lokal lokal, int foryear);
 
+   @Query("SELECT e FROM Subscription e " +
+  "LEFT JOIN FETCH e.lokal l " +
+  "LEFT JOIN FETCH e.district d " +
+  "WHERE LOWER(l.locale) LIKE LOWER(CONCAT('%', :searchText, '%')) " +
+  "OR LOWER(d.district) LIKE LOWER(CONCAT('%', :searchText, '%')) ")
+List<Subscription> findBySearchText(@Param("searchText") String searchText);
+
 }
 
