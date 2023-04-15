@@ -342,7 +342,8 @@
             </div>
             <div class="form-group">
               <label for="editDatePurchased">Date Purchased:</label>
-              <input type="date" class="form-control" id="editDatePurchased" name="datePurchased" th:value="${#dates.format(expense.datePurchased, 'yyyy-MM-dd')}" required>
+              <input type="text" class="form-control" id="editDatePurchased" name="datePurchased" th:value="${#dates.format(expense.datePurchased, 'yyyy-MM-dd')}" required>
+
 
 
             </div>
