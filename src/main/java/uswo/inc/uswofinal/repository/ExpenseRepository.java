@@ -17,7 +17,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
   List<Expense> findAllByOrderByDateEncodedDesc();
 
   // get the most recent expenses (limited to the top 10)
-  @Query("SELECT e FROM Expense e ORDER BY e.dateEncoded DESC")
+  @Query("SELECT e FROM Expense e ORDER BY e.dateEncoded DESC limit 10")
   List<Expense> findRecentExpenses();
 
   @Query("SELECT e FROM Expense e WHERE e.lokal.lcode = :lcode ORDER BY e.dateEncoded DESC")

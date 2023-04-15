@@ -193,6 +193,19 @@
         });
       });
     });
+
+    $(document).ready(function () {
+  $('#editDistrict').change(function () {
+    var did = $(this).val();
+    $.get('/getlocales/' + did, function (data) { // @GetMapping("/getlocales/{districtId}")
+      $('#editLokal').empty();
+      $('#editLokal').append($('<option>').val('').text('Select Lokal'));
+      $.each(data, function (i, lokal) {
+        $('#editLokal').append($('<option>').val(lokal.lcode).text(lokal.locale));
+      });
+    });
+  });
+});
   </script>
   <script>
     // Add an event listener to the form to update the recent expenses after submitting the form
@@ -217,7 +230,34 @@
     });
 
   </script>
-
+  <script>
+    $(document).ready(function() {
+      // Load recent expenses on page load
+      $("#recentExpensesTable").load("/expenses/loadrecent");
+  
+      // Add an event listener to the form to update the recent expenses after submitting the form
+      $("form").submit(function() {
+        $.ajax({
+          url: $(this).attr("action"),
+          method: $(this).attr("method"),
+          data: $(this).serialize(),
+          success: function(data) {
+            // Replace the contents of the recentExpensesTable div with the updated HTML
+            $("#recentExpensesTable").html(data);
+  
+            // Reset the form
+            $("form")[0].reset();
+            $("#district").val("");
+            $("#lokal").empty();
+            $("#lokal").append($("<option>").val("").text("Select Lokal"));
+          }
+        });
+  
+        return false;
+      });
+    });
+  </script>
+  
   <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
 
   <!-- Delete Modal -->
@@ -261,7 +301,9 @@
               <label for="editDistrict">District:</label>
               <select class="form-control" id="editDistrict" name="district.did" required>
                 <option value="" selected>Select District</option>
-                <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}">
+                <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}" th:selected="${district.did == selectedDistrict}">
+                </option>
+                
                 </option>
               </select>
             </div>
@@ -300,8 +342,9 @@
             </div>
             <div class="form-group">
               <label for="editDatePurchased">Date Purchased:</label>
-              <input type="date" class="form-control" id="editDatePurchased" name="datePurchased" required
-                th:value="${expense.datePurchased}">
+              <input type="date" class="form-control" id="editDatePurchased" name="datePurchased" th:value="${#dates.format(expense.datePurchased, 'yyyy-MM-dd')}" required>
+
+
             </div>
             <div class="form-group">
               <label for="editRemarks">Remarks:</label>
@@ -333,28 +376,74 @@
     </div>
   </div>
   <script>
-$(document).on("click", ".edit-btn", function () {
-  var recid = $(this).data("expense-id");
-  var url = "/expenses/" + recid;
-  $.get(url, function (data) {
-    $("#editExpenseId").val(data.recid);
-    $("#editDistrict").val(data.district.did);
-    populateLocaleDropdownList(data.district.did, data.lokal);
-    $("#editWkno").val(data.wkno);
-    $("#editDescription").val(data.description);
-    $("#editF10").val(data.f10);
-    $("#editAmountRequested").val(data.amountRequested);
-    $("#editActualExpenses").val(data.actualExpenses);
-    $("#editDatePurchased").val(data.datePurchased);
-    $("#editRemarks").val(data.remarks);
-    $("#editQty").val(data.qty);
-    $("#editExpenseType").val(data.exptype);
+    var expenseId; // declare expenseId variable outside of $.get function
+    $(document).on("click", ".edit-btn", function () {
+      var recid = $(this).data("expense-id");
+      var url = "/expenses/" + recid; // Update the URL to include the recid value
+      $.get(url, function (data) {
+        console.log(data); // add this line to log the data to the console
+        // Update the form fields with the expense record data
+        $("#editExpenseId").val(data.recid);
+        $("#editDistrict").val(data.district.did);
+        $('#editLokal').val(data.lokal.lcode);
+        populateLocaleDropdownList(data.district.did, data.lokal.lcode);
+        $("#editWkno").val(data.wkno);
+        $("#editDescription").val(data.description);
+        $("#editF10").val(data.f10);
+        $("#editAmountRequested").val(data.amountRequested);
+        $("#editActualExpenses").val(data.actualExpenses);
+        $("#editDatePurchased").val(data.datePurchased);
+        $("#editRemarks").val(data.remarks);
+        $("#editQty").val(data.qty);
+        $("#editExpenseType").val(data.exptype);
+        
+        expenseId = data.recid; // assign value to expenseId
+        // Show the edit expense modal
+        $("#editExpenseModal").modal("show");
+      });
+    });
+    
+    function populateLocaleDropdownList(districtId, lokalLcode) {
+      $.get('/getlocales/' + districtId, function (locales) {
+        $('#editLokal').empty();
+        $('#editLokal').append($('<option>').val('').text('Select Lokal'));
+        $.each(locales, function (i, lokal) {
+          var selected = '';
+          if (lokal.lcode === lokalLcode) {
+            selected = 'selected';
+          }
+          $('#editLokal').append($('<option ' + selected + '>').val(lokal.lcode).text(lokal.locale));
+        });
+      });
+    }
+    
+    $(document).on("click", "#editExpenseButton", function () {
+  // Get the form data
+  var formData = $("#editExpenseForm").serialize();
 
-    // Show the edit expense modal
-    $("#editExpenseModal").modal("show");
+  // Submit the form data to the server using AJAX
+  $.ajax({
+    url: '/expenses/update/' + expenseId,
+    type: "POST",
+    data: formData,
+    success: function () {
+      // Reload the expense table
+      $("#expenseTableDiv").load("/expenses/loadrecent");
+      
+      // Hide the edit expense modal
+      $("#editExpenseModal").modal("hide");
+
+      console.log("Expense record updated successfully");
+    },
+    error: function () {
+      console.log("Error updating expense record");
+    }
   });
 });
-  </script>
+
+
+    </script>
+    
   <script>
     $(document).ready(function () {
       // Event listener for delete expense button

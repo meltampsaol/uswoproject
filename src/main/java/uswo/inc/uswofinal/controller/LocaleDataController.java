@@ -17,14 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletResponse;
-import uswo.inc.uswofinal.app.LocaleDataProcessor;
 import uswo.inc.uswofinal.model.F4Detail;
 import uswo.inc.uswofinal.repository.F4DetailRepository;
 import uswo.inc.uswofinal.repository.LocaleDataRepository;
 
 @Controller
+@RequestMapping("/f4")
 public class LocaleDataController {
 
    
@@ -75,7 +76,7 @@ try {
 }
     }
     @GetMapping("/excel-export")
-public void exportExcel(Model model, HttpServletResponse response) throws IOException {
+    public void exportExcel(Model model, HttpServletResponse response) throws IOException {
     
     String fileName = "MICOGN_week13_2023.xlsx";
     String filePath = "H:/uswofinal/remittance/" + fileName;
@@ -159,5 +160,12 @@ try {
 }
     }
 
+    @GetMapping("/imported-excel")
+    public String showImported(Model model){
+        List<F4Detail> lc = f4detailRepository.findAll();
+        model.addAttribute("localeDataList", lc);
+        return "imported-excel";
+
+    }
 }
 

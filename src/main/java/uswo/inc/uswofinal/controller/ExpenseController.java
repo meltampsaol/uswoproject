@@ -3,6 +3,7 @@ package uswo.inc.uswofinal.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,10 +44,16 @@ public class ExpenseController {
     }
 
     @GetMapping("/{id}")
-    public Expense getExpenseById(@PathVariable("id") String id) {
+public ResponseEntity<Expense> getExpenseById(@PathVariable("id") String id) {
+    try {
         int newid = Integer.parseInt(id);
-        return expenseRepository.findById(newid);
+        Expense expense = expenseRepository.findById(newid);
+        return ResponseEntity.ok(expense);
+    } catch (NumberFormatException e) {
+        return ResponseEntity.badRequest().build();
     }
+}
+
 
     @PostMapping("/save")
     public String createExpense(@ModelAttribute("expense") Expense expense, Model model) {
@@ -56,6 +63,14 @@ public class ExpenseController {
         //List<Expense> expenses = expenseRepository.findRecentExpenses();
         int lcode = expense.getLokal().getLcode();
         List<Expense> expenses = expenseRepository.findRecentPerLokal(lcode);
+        model.addAttribute("expenses", expenses);
+
+        return "recent_perlokal";
+    }
+
+    @GetMapping("/loadrecent")
+    public String loadRecent(Model model) {
+        List<Expense> expenses = expenseRepository.findRecentExpenses();
         model.addAttribute("expenses", expenses);
 
         return "recent_perlokal";
@@ -80,7 +95,25 @@ public class ExpenseController {
         expense.setExptype(expenseData.getExptype());
         return expenseRepository.save(expense);
     }
-
+    @PostMapping("/update/{id}")
+    public Expense updateExpenses(@PathVariable("id") int id, @RequestBody Expense expenseData) {
+        Expense expense = expenseRepository.findById(id);
+        if (expense == null) {
+            return null;
+        }
+        expense.setLokal(expenseData.getLokal());
+        expense.setDistrict(expenseData.getDistrict());
+        expense.setWkno(expenseData.getWkno());
+        expense.setDescription(expenseData.getDescription());
+        expense.setF10(expenseData.getF10());
+        expense.setAmountRequested(expenseData.getAmountRequested());
+        expense.setActualExpenses(expenseData.getActualExpenses());
+        expense.setDatePurchased(expenseData.getDatePurchased());
+        expense.setRemarks(expenseData.getRemarks());
+        expense.setQty(expenseData.getQty());
+        expense.setExptype(expenseData.getExptype());
+        return expenseRepository.save(expense);
+    }
     @PostMapping("/delete/{id}")
     @ResponseBody
     public String deleteExpense(@PathVariable("id") int id) {

@@ -2,6 +2,7 @@ package uswo.inc.uswofinal.model;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,10 +23,13 @@ public class Balances {
 
     private Integer foryear;
 
+    @Column(name = "startingbalance")
     private BigDecimal startingBalance;
 
+    @Column(name = "currentpayment")
     private BigDecimal currentPayment;
 
+    @Column(name = "currentbalance")
     private BigDecimal currentBalance;
 
     public String getLokal() {
