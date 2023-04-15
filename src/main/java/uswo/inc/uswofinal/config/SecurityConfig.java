@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .requestMatchers("/uploadrequest", "/upload/", "/viewrequest", "/requests/*").permitAll()
                 .requestMatchers("/uploads/*","/file","fragments/*","/requests","/searchrequest","/requestlist","/searchresult/*").permitAll()
                 .requestMatchers("/search/*","/searchpdf/*").permitAll()
-                .requestMatchers("/expenses/expense-add","/expenses/expense-view","/expenses/expense-search","/expenses/update/*").permitAll()
+                .requestMatchers("/expenses/expense-add","/expenses/expense-view","/expenses/expense-search","/expenses/update/*","/expenses/update/**","expenses/update/*").permitAll()
                 .requestMatchers("/expenses/save","/expenses/recent","/expenses/","/expenses/*","/expenses/delete/*").permitAll()
                 .requestMatchers("/expenses/expense-search","/expenses/expense-search/*","/expenses/loadrecent").permitAll()
                 .requestMatchers("/f2b/**").permitAll()

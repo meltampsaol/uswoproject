@@ -30,4 +30,10 @@ public class Lokal {
 
     
     // getters and setters
+    public static Lokal fromString(String s) {
+        Lokal l = new Lokal();
+        l.setLcode(Integer.parseInt(s));
+        return l;
+    }
+    
 }

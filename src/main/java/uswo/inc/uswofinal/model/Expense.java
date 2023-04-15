@@ -1,7 +1,15 @@
 package uswo.inc.uswofinal.model;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
+
+import org.springframework.boot.json.JsonParseException;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +20,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import uswo.inc.uswofinal.app.CustomLocalDateDeserializer;
 
 @Entity
 @Table(name = "expenses")
@@ -54,7 +63,9 @@ public class Expense {
     private double actualExpenses;
 
     @Column(name = "date_reported")
+    @JsonDeserialize(using = CustomLocalDateDeserializer.class)
     private LocalDate datePurchased;
+  
 
     @Column(name = "remarks")
     private String remarks;
@@ -163,9 +174,38 @@ public class Expense {
         this.exptype = exptype;
     }
 
-   
+    public static Expense fromJson(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Expense expense = null;
+        try {
+            expense = objectMapper.readValue(json, Expense.class);
+            expense.setLokal(Lokal.fromString(expense.getLokal().getLcode().toString()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return expense;
+    }
 
-   
+    public Expense(String jsonString) throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Expense expense = objectMapper.readValue(jsonString, Expense.class);
+        this.setRecid(expense.getRecid());
+        this.setLokal(expense.getLokal());
+        this.setDistrict(expense.getDistrict());
+        this.setWkno(expense.getWkno());
+        this.setDescription(expense.getDescription());
+        this.setF10(expense.getF10());
+        this.setAmountRequested(expense.getAmountRequested());
+        this.setActualExpenses(expense.getActualExpenses());
+        this.setDatePurchased(expense.getDatePurchased());
+        this.setRemarks(expense.getRemarks());
+        this.setQty(expense.getQty());
+        this.setExptype(expense.getExptype());
+    }
+
+    public Expense() {
+    }
+    
 
     
 }

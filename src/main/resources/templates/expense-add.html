@@ -17,7 +17,12 @@
   <!-- Include jquery.dataTables.min.js after jQuery -->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
+<style>
+  .modal {
+    z-index: 1050;
+  }
+ 
+</style>  
 
 </head>
 
@@ -342,7 +347,9 @@
             </div>
             <div class="form-group">
               <label for="editDatePurchased">Date Purchased:</label>
-              <input type="text" class="form-control" id="editDatePurchased" name="datePurchased" th:value="${#dates.format(expense.datePurchased, 'yyyy-MM-dd')}" required>
+              <input type="text" class="form-control" id="editDatePurchased" name="datePurchased" th:value="${#temporals.format(expense.datePurchased, 'MM/dd/yyyy')}" required>
+              
+
 
 
 
@@ -393,7 +400,7 @@
         $("#editF10").val(data.f10);
         $("#editAmountRequested").val(data.amountRequested);
         $("#editActualExpenses").val(data.actualExpenses);
-        $("#editDatePurchased").val(data.datePurchased);
+        $("#editDatePurchased").val(moment(data.datePurchased).format("MM/DD/YYYY"));
         $("#editRemarks").val(data.remarks);
         $("#editQty").val(data.qty);
         $("#editExpenseType").val(data.exptype);
@@ -419,25 +426,32 @@
     }
     
     $(document).on("click", "#editExpenseButton", function () {
-  // Get the form data
-  var formData = $("#editExpenseForm").serialize();
+  // Get the form data as an array
+  var formDataArray = $("#editExpenseForm").serializeArray();
 
+  // Create an object to hold the form data
+  var formData = {};
+
+  // Loop through the form data array and add the keys and values to the object
+  $.each(formDataArray, function(index, element) {
+  if (element.name === "district.did") {
+    formData["district"] = { "did": element.value };
+  } else {
+    formData[element.name] = element.value;
+  }
+});
   // Submit the form data to the server using AJAX
   $.ajax({
     url: '/expenses/update/' + expenseId,
-    type: "POST",
-    data: formData,
-    success: function () {
-      // Reload the expense table
-      $("#expenseTableDiv").load("/expenses/loadrecent");
-      
-      // Hide the edit expense modal
-      $("#editExpenseModal").modal("hide");
-
-      console.log("Expense record updated successfully");
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json',
+    data: JSON.stringify(formData),
+    success: function(response) {
+        console.log('Expense record updated successfully');
     },
-    error: function () {
-      console.log("Error updating expense record");
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.error('Error updating expense record: ' + textStatus);
     }
   });
 });

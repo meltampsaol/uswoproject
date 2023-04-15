@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import uswo.inc.uswofinal.model.Expense;
 
-@Repository
+
 public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
 
   // get a list of expenses sorted by date in descending order

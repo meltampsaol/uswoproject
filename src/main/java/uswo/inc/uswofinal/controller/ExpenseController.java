@@ -1,8 +1,13 @@
 package uswo.inc.uswofinal.controller;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +20,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.Expense;
 import uswo.inc.uswofinal.model.Lokal;
@@ -25,6 +34,7 @@ import uswo.inc.uswofinal.repository.LokalRepository;
 @Controller
 @RequestMapping("/expenses")
 public class ExpenseController {
+    private static final Logger logger = LoggerFactory.getLogger(ExpenseController.class);
 
     @Autowired
     private ExpenseRepository expenseRepository;
@@ -95,25 +105,33 @@ public ResponseEntity<Expense> getExpenseById(@PathVariable("id") String id) {
         expense.setExptype(expenseData.getExptype());
         return expenseRepository.save(expense);
     }
-    @PostMapping("/update/{id}")
-    public Expense updateExpenses(@PathVariable("id") int id, @RequestBody Expense expenseData) {
-        Expense expense = expenseRepository.findById(id);
-        if (expense == null) {
-            return null;
-        }
-        expense.setLokal(expenseData.getLokal());
-        expense.setDistrict(expenseData.getDistrict());
-        expense.setWkno(expenseData.getWkno());
-        expense.setDescription(expenseData.getDescription());
-        expense.setF10(expenseData.getF10());
-        expense.setAmountRequested(expenseData.getAmountRequested());
-        expense.setActualExpenses(expenseData.getActualExpenses());
-        expense.setDatePurchased(expenseData.getDatePurchased());
-        expense.setRemarks(expenseData.getRemarks());
-        expense.setQty(expenseData.getQty());
-        expense.setExptype(expenseData.getExptype());
-        return expenseRepository.save(expense);
-    }
+    
+    @PostMapping(value ="/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Expense updateExpenses(@PathVariable("id") int id, @RequestBody String json) throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new JavaTimeModule());
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    objectMapper.setDateFormat(dateFormat);
+    
+    Expense expense = objectMapper.readValue(json, Expense.class);
+    Expense expenseData = new Expense(json);
+    //Expense expense = expenseRepository.findById(id);
+    expense.setLokal(expenseData.getLokal());
+    expense.setDistrict(expenseData.getDistrict());
+    int did = expenseData.getDistrict().getDid();
+    expense.getDistrict().setDid(did);
+    expense.setWkno(expenseData.getWkno());
+    expense.setDescription(expenseData.getDescription());
+    expense.setF10(expenseData.getF10());
+    expense.setAmountRequested(expenseData.getAmountRequested());
+    expense.setActualExpenses(expenseData.getActualExpenses());
+    expense.setDatePurchased(expenseData.getDatePurchased());
+    expense.setRemarks(expenseData.getRemarks());
+    expense.setQty(expenseData.getQty());
+    expense.setExptype(expenseData.getExptype());
+    return expenseRepository.save(expense);
+}
+
     @PostMapping("/delete/{id}")
     @ResponseBody
     public String deleteExpense(@PathVariable("id") int id) {
