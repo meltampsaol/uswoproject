@@ -426,27 +426,14 @@
     }
     
     $(document).on("click", "#editExpenseButton", function () {
-  // Get the form data as an array
-  var formDataArray = $("#editExpenseForm").serializeArray();
+  // Get the form data as an object
+  var formData = $("#editExpenseForm").serializeObject();
 
-  // Create an object to hold the form data
-  var formData = {};
-
-  // Loop through the form data array and add the keys and values to the object
-  $.each(formDataArray, function(index, element) {
-  if (element.name === "district.did") {
-    formData["district"] = { "did": element.value };
-  } else {
-    formData[element.name] = element.value;
-  }
-});
   // Submit the form data to the server using AJAX
   $.ajax({
     url: '/expenses/update/' + expenseId,
     type: 'POST',
-    dataType: 'json',
-    contentType: 'application/json',
-    data: JSON.stringify(formData),
+    data: formData,
     success: function(response) {
         console.log('Expense record updated successfully');
     },
@@ -456,6 +443,20 @@
   });
 });
 
+// Function to serialize form data as an object
+$.fn.serializeObject = function() {
+  var formData = {};
+  var formArray = this.serializeArray();
+  for (var i = 0; i < formArray.length; i++) {
+    var element = formArray[i];
+    if (element.name === "district.did") {
+      formData["district"] = { "did": element.value };
+    } else {
+      formData[element.name] = element.value;
+    }
+  }
+  return formData;
+};
 
     </script>
     

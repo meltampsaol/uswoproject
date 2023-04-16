@@ -106,16 +106,11 @@ public ResponseEntity<Expense> getExpenseById(@PathVariable("id") String id) {
         return expenseRepository.save(expense);
     }
     
-    @PostMapping(value = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Expense updateExpenses(@PathVariable("id") int id, @RequestBody String json) throws IOException {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new JavaTimeModule());
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    objectMapper.setDateFormat(dateFormat);
-    
-    Expense expense = objectMapper.readValue(json, Expense.class);
-    Expense expenseData = new Expense(json);
-    //Expense expense = expenseRepository.findById(id);
+    @PostMapping("/update/{id}")
+    @ResponseBody
+    public Expense updateExpenses(@PathVariable("id") int id,  Expense expenseData) throws IOException {
+   
+    Expense expense = expenseRepository.findById(id);
     expense.setLokal(expenseData.getLokal());
     expense.setDistrict(expenseData.getDistrict());
     int did = expenseData.getDistrict().getDid();
