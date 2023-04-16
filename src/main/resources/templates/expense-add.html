@@ -300,7 +300,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form id="editExpenseForm" th:action="@{/expenses/update}" method="post">
+          <form id="editExpenseForm" th:action="@{/expenses/update}" th:object="${expense}" method="post">
             <input type="hidden" id="editExpenseId" name="recid" th:value="${expense.recid}">
             <div class="form-group">
               <label for="editDistrict">District:</label>
