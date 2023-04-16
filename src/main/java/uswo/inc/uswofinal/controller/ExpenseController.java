@@ -107,9 +107,7 @@ public ResponseEntity<Expense> getExpenseById(@PathVariable("id") String id) {
     }
     
     @PostMapping("/update/{id}")
-    @ResponseBody
-    public Expense updateExpenses(@PathVariable("id") int id,  Expense expenseData) throws IOException {
-   
+    public Expense updateExpenses(@PathVariable("id") int id,  @ModelAttribute("expense") Expense expenseData) throws IOException {
     Expense expense = expenseRepository.findById(id);
     expense.setLokal(expenseData.getLokal());
     expense.setDistrict(expenseData.getDistrict());
