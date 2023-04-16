@@ -106,7 +106,7 @@ public ResponseEntity<Expense> getExpenseById(@PathVariable("id") String id) {
         return expenseRepository.save(expense);
     }
     
-    @PostMapping(value ="/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Expense updateExpenses(@PathVariable("id") int id, @RequestBody String json) throws IOException {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
