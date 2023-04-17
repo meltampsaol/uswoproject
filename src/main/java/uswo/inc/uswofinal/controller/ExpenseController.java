@@ -79,7 +79,18 @@ public ResponseEntity<Expense> getExpenseById(@PathVariable("id") String id) {
 
         return "recent_perlokal";
     }
+    @GetMapping("/editrecord/{recid}")
+    public String editRecord(Model model, @PathVariable ("recid") String recid) {
+        int recordid = Integer.parseInt(recid);
+        Expense expenses = expenseRepository.findById(recordid);
+        List<District> districts = districtRepository.findAll();
+        List<Lokal> locales = lokalRepository.findAll();
+        model.addAttribute("districts", districts);
+        model.addAttribute("locales", locales);
+        model.addAttribute("expense", expenses);
 
+        return "expenses-edit";
+    }
     @PutMapping("/{id}")
     public Expense updateExpense(@PathVariable("id") int id, @RequestBody Expense expenseData) {
         Expense expense = expenseRepository.findById(id);
