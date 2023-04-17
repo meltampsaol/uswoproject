@@ -26,7 +26,7 @@
       <div class="form-group row">
         <label for="district" class="col-sm-2 col-form-label">District:</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="district" name="district.district" value="${expense.district.district}" required>
+          <input type="text" class="form-control" id="district" name="district.district" th:value="${expense.District.district}" required>
         </div>
         <div class="col-sm-6">
           <select class="form-control" id="districtDropdown" name="district.did" required>
@@ -37,16 +37,13 @@
           </select>
         </div>
       </div>
-      <div class="form-group row">
-        <label for="lokal" class="col-sm-2 col-form-label">Lokal:</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="lokal" name="lokal" value="${expense.lokal}" required>
-        </div>
-        <div class="col-sm-6">
-          <select class="form-control" id="lokalDropdown" required>
-            <option value="" selected>Select Lokal</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <label for="editLokal">Lokal:</label>
+        <input type="text" class="form-control" id="editLokal" name="lokal" th:value="${expense.Lokal.locale}" disabled>
+        <select class="form-control" id="editLokalCode" name="lokal" required>
+          <option value="" selected>Select Lokal</option>
+          <option th:each="lokal : ${lokals}" th:value="${lokal.lcode}" th:text="${lokal.locale}" th:selected="${lokal.lcode == expense.Lokal.lcode}"></option>
+        </select>
       </div>
       
       
