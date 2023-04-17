@@ -89,7 +89,7 @@ public ResponseEntity<Expense> getExpenseById(@PathVariable("id") String id) {
         model.addAttribute("locales", locales);
         model.addAttribute("expense", expenses);
 
-        return "expenses-edit";
+        return "expense-edit";
     }
     @PutMapping("/{id}")
     public Expense updateExpense(@PathVariable("id") int id, @RequestBody Expense expenseData) {

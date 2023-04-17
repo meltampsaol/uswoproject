@@ -58,4 +58,27 @@
         <input type="number" class="form-control" id="editActualExpenses" name="actualExpenses" min="0" required
                th:value="${expense.actualExpenses}">
       </div>
-      <div class="
+     
+        <div class="form-group">
+            <label for="editRemarks">Remarks:</label>
+            <textarea class="form-control" id="editRemarks" name="remarks"
+                      th:text="${expense.remarks}"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Update Expense</button>
+          <a href="/expenses" class="btn btn-secondary">Cancel</a>
+        </form>
+      </div>
+      <script>
+        $(document).ready(function() {
+          // Set the value of the district dropdown to the district of the expense being edited
+          var selectedDistrict = "${expense.district.did}";
+          $("#editDistrict").val(selectedDistrict);
+    
+          // Set the value of the lokal dropdown to the lokal of the expense being edited
+          var selectedLokal = "${expense.lokal}";
+          $("#editLokal").val(selectedLokal);
+        });
+      </script>
+    </body>
+    </html>
+    

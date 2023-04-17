@@ -264,16 +264,20 @@
 
 var openedWindow;
 
-$(document).on("click", ".edit-button", function () {
-  var recid = $(this).data("recid");
-  if (!window.openedWindow || window.openedWindow.closed) {
-    // Create a new window
-    window.openedWindow = window.open("/expenses/editrecord/" + recid, "_blank");
+$(document).on("click", ".edit-btn", function () {
+  var expenseId = $(this).data("expense-id");
+  var url = "/expenses/editrecord/" + expenseId;
+
+  // Check if the window is already open
+  if (window.open(url, "_blank", "width=800,height=600,resizable=yes,scrollbars=yes")) {
+    // Window is already open, focus on it
+    window.focus();
   } else {
-    // Window is already open, just focus on it
-    window.openedWindow.focus();
+    // Window is not open, open a new one
+    window.open(url, "_blank", "width=800,height=600,resizable=yes,scrollbars=yes");
   }
 });
+
   </script>
   
   <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
