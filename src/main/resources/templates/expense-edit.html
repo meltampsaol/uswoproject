@@ -4,33 +4,52 @@
   <title>Edit Expense</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Include Bootstrap's JavaScript after jQuery -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Include jquery.dataTables.min.js after jQuery -->
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 <body>
   <div class="container">
     <h1>Edit Expense</h1>
     <form id="editExpenseForm" method="post" action="/expenses/update">
       <input type="hidden" name="recid" value="${expense.recid}">
-      <div class="form-group">
-        <label for="editDistrict">District:</label>
-        <select class="form-control" id="editDistrict" name="district.did" required>
-          <option value="" selected>Select District</option>
-          <option th:each="district : ${districts}" th:value="${district.did}"
-                  th:text="${district.district}"
-                  th:selected="${district.did == expense.district.did}"></option>
-        </select>
+      <div class="form-group row">
+        <label for="district" class="col-sm-2 col-form-label">District:</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="district" name="district.district" value="${expense.district.district}" required>
+        </div>
+        <div class="col-sm-6">
+          <select class="form-control" id="districtDropdown" name="district.did" required>
+            <option value="" selected>Select District</option>
+            <option th:each="district : ${districts}" th:value="${district.did}"
+                    th:text="${district.district}"
+                    th:selected="${district.did == expense.district.did}"></option>
+          </select>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="editLokal">Lokal:</label>
-        <select class="form-control" id="editLokal" name="lokal" required>
-          <option value="" selected>Select Lokal</option>
-          <option th:each="lokal : ${lokals}" th:value="${lokal}"
-                  th:text="${lokal}"
-                  th:selected="${lokal == expense.lokal}"></option>
-        </select>
+      <div class="form-group row">
+        <label for="lokal" class="col-sm-2 col-form-label">Lokal:</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="lokal" name="lokal" value="${expense.lokal}" required>
+        </div>
+        <div class="col-sm-6">
+          <select class="form-control" id="lokalDropdown" required>
+            <option value="" selected>Select Lokal</option>
+          </select>
+        </div>
       </div>
+      
+      
       <div class="form-group">
         <label for="editWkno">Week Number:</label>
         <input type="text" class="form-control" id="editWkno" name="wkno" pattern="[0-9]{2}-[0-9]{4}"
@@ -68,15 +87,25 @@
           <a href="/expenses" class="btn btn-secondary">Cancel</a>
         </form>
       </div>
+   
       <script>
-        $(document).ready(function() {
-          // Set the value of the district dropdown to the district of the expense being edited
-          var selectedDistrict = "${expense.district.did}";
-          $("#editDistrict").val(selectedDistrict);
-    
-          // Set the value of the lokal dropdown to the lokal of the expense being edited
-          var selectedLokal = "${expense.lokal}";
-          $("#editLokal").val(selectedLokal);
+        $(document).ready(function () {
+          $('#districtDropdown').change(function () {
+            var did = $(this).val();
+            $.get('/getlocales/' + did, function (data) {  // @GetMapping("/getlocales/{districtId}")
+              $('#lokalDropdown').empty();
+              $('#lokalDropdown').append($('<option>').val('').text('Select Lokal'));
+              $.each(data, function (i, lokal) {
+                $('#lokalDropdown').append($('<option>').val(lokal.locale).text(lokal.locale));
+              });
+              $('#lokal').val('');
+            });
+            $('#district').val($('#districtDropdown option:selected').text());
+          });
+      
+          $('#lokalDropdown').change(function () {
+            $('#lokal').val($('#lokalDropdown option:selected').text());
+          });
         });
       </script>
     </body>

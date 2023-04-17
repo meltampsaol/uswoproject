@@ -86,7 +86,7 @@ public ResponseEntity<Expense> getExpenseById(@PathVariable("id") String id) {
         List<District> districts = districtRepository.findAll();
         List<Lokal> locales = lokalRepository.findAll();
         model.addAttribute("districts", districts);
-        model.addAttribute("locales", locales);
+        model.addAttribute("lokals", locales);
         model.addAttribute("expense", expenses);
 
         return "expense-edit";
