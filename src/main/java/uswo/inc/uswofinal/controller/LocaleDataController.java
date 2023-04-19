@@ -85,7 +85,7 @@ try {
     try (FileInputStream file = new FileInputStream(filePath)) {
         XSSFWorkbook workbook = new XSSFWorkbook(file);
         XSSFSheet worksheet = workbook.getSheet("OGNF4Details");
-        List<F4Detail> f4Details = f4detailRepository.findByWknoAndDid("12-2023",9);
+        List<F4Detail> f4Details = f4detailRepository.findByWknoAndDistrict("12-2023","MICRONESIA");
         for (F4Detail f4Detail : f4Details) {
             int lcode = f4Detail.getLcode();
             XSSFRow row = worksheet.getRow(lcode);
