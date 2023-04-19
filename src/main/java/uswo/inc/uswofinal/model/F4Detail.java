@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -42,7 +44,10 @@ public class F4Detail {
     private BigDecimal rcentral;
     private BigDecimal rtotal;
     private int lcode;
-    private int did;
+    @ManyToOne
+    @JoinColumn(name = "did", referencedColumnName = "did")
+    private District district;
+    
     private String wkno;
     private String reported;
     public String getLocale() {
@@ -213,12 +218,12 @@ public class F4Detail {
     public void setLcode(int lcode) {
         this.lcode = lcode;
     }
-    public int getDid() {
-        return did;
-    }
-    public void setDid(int did) {
-        this.did = did;
-    }
+    //public int getDid() {
+    //    return did;
+    //}
+    //public void setDid(int did) {
+    //    this.did = did;
+    //}
     public String getWkno() {
         return wkno;
     }
@@ -231,7 +236,12 @@ public class F4Detail {
     public void setReported(String reported) {
         this.reported = reported;
     }
+    public District getDistrict() {
+        return district;
+    }
+    public void setDistrict(District district) {
+        this.district = district;
+    }
 
-    // Constructor, getters and setters
 }
 

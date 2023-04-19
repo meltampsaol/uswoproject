@@ -17,10 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletResponse;
 import uswo.inc.uswofinal.model.F4Detail;
+import uswo.inc.uswofinal.model.LocaleData;
 import uswo.inc.uswofinal.repository.F4DetailRepository;
 import uswo.inc.uswofinal.repository.LocaleDataRepository;
 
@@ -89,7 +91,7 @@ try {
             XSSFRow row = worksheet.getRow(lcode);
             if (row != null) {
                 row.createCell(0).setCellValue(f4Detail.getLocale());
-                row.createCell(27).setCellValue(f4Detail.getDid());
+                row.createCell(27).setCellValue(f4Detail.getDistrict().getDid());
                 row.createCell(28).setCellValue(f4Detail.getWkno());
                 row.createCell(29).setCellValue(f4Detail.getReported());
                 row.getCell(27).setCellType(CellType.NUMERIC);
@@ -166,6 +168,25 @@ try {
         model.addAttribute("localeDataList", lc);
         return "imported-excel";
 
+    }
+    @GetMapping("/search/lokal")
+    public String searchLocal(Model model){
+        
+        return "f4_search_lokal";
+
+    }
+    @GetMapping("/search/district")
+    public String searchDistrict(Model model){
+        
+        return "f4_search_district";
+
+    }
+
+    @GetMapping("/search/lokal/{searchText}")
+    public String searchlocalResults(@PathVariable String searchText, Model model) {
+        List<F4Detail> ld = f4detailRepository.findByLocale(searchText);
+        model.addAttribute("f4details", ld);
+        return "expense-search-result";
     }
 }
 

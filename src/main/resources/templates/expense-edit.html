@@ -22,14 +22,12 @@
   <div class="container">
     <h1>Edit Expense</h1>
     <form id="editExpenseForm" method="post" action="/expenses/update">
-      <input type="hidden" name="recid" value="${expense.recid}">
+      <input type="hidden" name="recid" th:value="${expense.recid}">
       <div class="form-group row">
         <label for="district" class="col-sm-2 col-form-label">District:</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="district" name="district.district" th:value="${expense.District.district}" required>
-        </div>
+        
         <div class="col-sm-6">
-          <select class="form-control" id="districtDropdown" name="district.did" required>
+          <select class="form-control" id="district" name="district" required>
             <option value="" selected>Select District</option>
             <option th:each="district : ${districts}" th:value="${district.did}"
                     th:text="${district.district}"
@@ -37,13 +35,14 @@
           </select>
         </div>
       </div>
-      <div class="form-group">
-        <label for="editLokal">Lokal:</label>
-        <input type="text" class="form-control" id="editLokal" name="lokal" th:value="${expense.Lokal.locale}" disabled>
-        <select class="form-control" id="editLokalCode" name="lokal" required>
-          <option value="" selected>Select Lokal</option>
-          <option th:each="lokal : ${lokals}" th:value="${lokal.lcode}" th:text="${lokal.locale}" th:selected="${lokal.lcode == expense.Lokal.lcode}"></option>
-        </select>
+      <div class="form-group row">
+        <label for="editLokal" class="col-sm-2 col-form-label">Local:</label>
+        <div class="form-group">
+          <select class="form-control" id="lokal" name="lokal" required>
+            <option value="" selected>Select Lokal</option>
+            <option th:each="lokal : ${lokals}" th:value="${lokal.lcode}" th:text="${lokal.locale}" th:selected="${lokal.lcode == expense.Lokal.lcode}"></option>
+          </select>
+        </div>
       </div>
       
       
@@ -66,12 +65,12 @@
       </div>
       <div class="form-group">
         <label for="editAmountRequested">Amount Requested:</label>
-        <input type="number" class="form-control" id="editAmountRequested" name="amountRequested" min="0" required
+        <input type="number" class="form-control" id="editAmountRequested" name="amountRequested" step="0.01"  required
                th:value="${expense.amountRequested}">
       </div>
       <div class="form-group">
         <label for="editActualExpenses">Amount:</label>
-        <input type="number" class="form-control" id="editActualExpenses" name="actualExpenses" min="0" required
+        <input type="number" class="form-control" id="editActualExpenses" name="actualExpenses" step="0.01"  required
                th:value="${expense.actualExpenses}">
       </div>
      
@@ -86,24 +85,52 @@
       </div>
    
       <script>
-        $(document).ready(function () {
-          $('#districtDropdown').change(function () {
-            var did = $(this).val();
-            $.get('/getlocales/' + did, function (data) {  // @GetMapping("/getlocales/{districtId}")
-              $('#lokalDropdown').empty();
-              $('#lokalDropdown').append($('<option>').val('').text('Select Lokal'));
-              $.each(data, function (i, lokal) {
-                $('#lokalDropdown').append($('<option>').val(lokal.locale).text(lokal.locale));
-              });
-              $('#lokal').val('');
-            });
-            $('#district').val($('#districtDropdown option:selected').text());
-          });
+ $(document).ready(function () {
+  // Get the initial district ID from the expense model
+  var initialDid = parseInt("${expense.District.did}");
+
+  // If the initial district ID is not empty, populate the locale dropdown
+  if (initialDid) {
+    $.get('/getlocales/' + initialDid, function (data) {  // @GetMapping("/getlocales/{districtId}")
+      var $lokalDropdown = $('#lokal');
+      $lokalDropdown.empty();
+      $lokalDropdown.append($('<option>').val('').text('Select Lokal'));
+      $.each(data, function (i, lokal) {
+        var $option = $('<option>').val(lokal.lcode).text(lokal.locale);
+        if (lokal.lcode == "${expense.Lokal.lcode}") {
+          $option.attr('selected', true);
+        }
+        $lokalDropdown.append($option);
+      });
+      $('#lokal').siblings('.form-control').val($("#lokal option:selected").text());
+    });
+  }
+  
+  $('#district').change(function () {
+    var did = $(this).val();
+    $.get('/getlocales/' + did, function (data) {  // @GetMapping("/getlocales/{districtId}")
+      var $lokalDropdown = $('#lokal');
+      $lokalDropdown.empty();
+      $lokalDropdown.append($('<option>').val('').text('Select Lokal'));
+      $.each(data, function (i, lokal) {
+        $lokalDropdown.append($('<option>').val(lokal.lcode).text(lokal.locale));
+      });
       
-          $('#lokalDropdown').change(function () {
-            $('#lokal').val($('#lokalDropdown option:selected').text());
-          });
-        });
+      // Set the value of the district input field to the selected district
+      //$('#editDistrict').val($("#district option:selected").text());
+
+      // Set the value of the locale input field to the selected locale
+      //$('#editLokal').val($("#lokal option:selected").text());
+    });
+  });
+
+  
+  // Add a change event listener to the locale dropdown
+  $('#lokal').change(function () {
+    //$('#editLokal').val($("#lokal option:selected").text());
+  });
+});
+
       </script>
     </body>
     </html>

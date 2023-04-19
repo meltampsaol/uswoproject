@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import uswo.inc.uswofinal.model.District;
@@ -111,25 +112,30 @@ public ResponseEntity<Expense> getExpenseById(@PathVariable("id") String id) {
         return expenseRepository.save(expense);
     }
     
-    @PostMapping("/update/{id}")
-    public Expense updateExpenses(@PathVariable("id") int id,  @ModelAttribute("expense") Expense expenseData) throws IOException {
-    Expense expense = expenseRepository.findById(id);
-    expense.setLokal(expenseData.getLokal());
-    expense.setDistrict(expenseData.getDistrict());
-    int did = expenseData.getDistrict().getDid();
-    expense.getDistrict().setDid(did);
-    expense.setWkno(expenseData.getWkno());
-    expense.setDescription(expenseData.getDescription());
-    expense.setF10(expenseData.getF10());
-    expense.setAmountRequested(expenseData.getAmountRequested());
-    expense.setActualExpenses(expenseData.getActualExpenses());
-    expense.setDatePurchased(expenseData.getDatePurchased());
-    expense.setRemarks(expenseData.getRemarks());
-    expense.setQty(expenseData.getQty());
-    expense.setExptype(expenseData.getExptype());
-    return expenseRepository.save(expense);
-}
-
+    @PostMapping("/update")
+    public String updateExpenses(@RequestParam("recid") String recid, Expense expenseData, Model model) throws IOException {
+        int recordid = Integer.parseInt(recid);    
+        Expense expense = expenseRepository.findById(recordid);
+        expense.setLokal(expenseData.getLokal());
+        expense.setDistrict(expenseData.getDistrict());
+        int did = expenseData.getDistrict().getDid();
+        expense.getDistrict().setDid(did);
+        expense.setWkno(expenseData.getWkno());
+        expense.setDescription(expenseData.getDescription());
+        expense.setF10(expenseData.getF10());
+        expense.setAmountRequested(expenseData.getAmountRequested());
+        expense.setActualExpenses(expenseData.getActualExpenses());
+        expense.setDatePurchased(expenseData.getDatePurchased());
+        expense.setRemarks(expenseData.getRemarks());
+        expense.setQty(expenseData.getQty());
+        expense.setExptype(expenseData.getExptype());
+        expenseRepository.save(expense);
+        List<Expense> expenses = expenseRepository.findRecentExpenses();
+        model.addAttribute("expenses", expenses);
+        return "recent_perlokal";
+        
+    }
+    
     @PostMapping("/delete/{id}")
     @ResponseBody
     public String deleteExpense(@PathVariable("id") int id) {

@@ -18,7 +18,7 @@ public class LocaleData {
 
     @Column(name = "did")
     private Integer did;
-
+   
     @Column(name = "wkno")
     private String wkno;
 
