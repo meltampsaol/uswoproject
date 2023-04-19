@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Remittance Search Result</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+    <!-- Include Bootstrap's JavaScript after jQuery -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  
+    <!-- Include jquery.dataTables.min.js after jQuery -->
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</head>
+<body>
+
+    <h1>Remittance Search Result</h1>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="btn-info">
+                <tr>
+                    
+                    <th>Week</th>
+                    <th>Lokal</th>
+                    <th>District</th>
+                    <th>Remittance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="f4 : ${f4details}">
+                    
+                    <td th:text="${f4.wkno}"></td>
+                    <td th:text="${f4.locale}"></td>
+                    <td th:text="${f4.district.district}"></td>
+                    <td th:text="${f4.rtotal}"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" style="text-align: right">Total:</td>
+                    <td th:text="${#numbers.formatDecimal(#lists.sum(f4details.![rtotal]),1,2,'.')}" ></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</body>
+</html>

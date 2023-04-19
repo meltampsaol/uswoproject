@@ -186,7 +186,7 @@ try {
     public String searchlocalResults(@PathVariable String searchText, Model model) {
         List<F4Detail> ld = f4detailRepository.findByLocale(searchText);
         model.addAttribute("f4details", ld);
-        return "expense-search-result";
+        return "f4lokal-search-result";
     }
 }
 
