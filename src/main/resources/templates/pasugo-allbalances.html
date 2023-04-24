@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Search Result</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+    <!-- Include Bootstrap's JavaScript after jQuery -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  
+    <!-- Include jquery.dataTables.min.js after jQuery -->
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</head>
+<body>
+
+    <h1>Pasugo Search Result</h1>
+
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="btn-info">
+                <tr>
+                    <th>Lokal</th>
+                    <th>District</th>
+                    <th>Year</th>
+                    <th>Starting Balance</th>
+                    <th>Payment</th>
+                    <th>Current Balance</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="balance : ${balances}">
+                    <td th:text="${balance.lokal}"></td>
+                    <td th:text="${balance.district}"></td>
+                    <td th:text="${balance.foryear}"></td>
+                    <td th:text="${balance.startingBalance}"></td>
+                    <td th:text="${balance.currentPayment}"></td>
+                    <td th:text="${balance.currentBalance}"></td>
+                   
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+
+
+
+
+
+
+</body>
+</html>

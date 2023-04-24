@@ -10,20 +10,22 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>RecID</th>
+          
           <th>Lokal</th>
           <th>District</th>
           <th>For Year</th>
+          <th>Payment</th>
           <th>Balance</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="subscription : ${pasugo}">
-          <td th:text="${subscription.Recid}"></td>
-          <td th:text="${subscription.lokal.locale}"></td>
-          <td th:text="${subscription.district.district}"></td>
+          
+          <td th:text="${subscription.lokal}"></td>
+          <td th:text="${subscription.district}"></td>
           <td th:text="${subscription.foryear}"></td>
-          <td th:text="${subscription.balance}"></td>
+          <td th:text="${subscription.currentPayment}"></td>
+          <td th:text="${subscription.currentBalance}"></td>
         </tr>
       </tbody>
     </table>

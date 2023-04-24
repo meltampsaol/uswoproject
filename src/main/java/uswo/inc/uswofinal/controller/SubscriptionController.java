@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Controller;
@@ -88,7 +89,10 @@ public class SubscriptionController {
                 }
             }
         }
-        List<Subscription> psg = subscriptionRepository.findAll();
+        //List<Subscription> psg = subscriptionRepository.findAll();
+        //List<Subscription> psg = subscriptionRepository.findAll(Sort.by("foryear","District.district","Lokal.locale"));
+        List<Subscription> psg = subscriptionRepository.findAll(Sort.by("foryear").and(Sort.by("district.district")).and(Sort.by("lokal.lolocale")));
+
         model.addAttribute("pasugo", psg);
         return "pasugolist";
     }
@@ -144,11 +148,26 @@ public class SubscriptionController {
 
     @GetMapping("/pasugolist")
     public String allPasugo(Model model) {
-        List<Subscription> psg = subscriptionRepository.findAll();
+        List<Subscription> psg = subscriptionRepository.findAll(Sort.by("district.district").and(Sort.by("lokal.locale")).and(Sort.by("foryear")));
         model.addAttribute("pasugo", psg);
 
         return "pasugolist";
     }
+@GetMapping("/gmbalances")
+public String searchBalances(Model model) {
+    String sql = "SELECT l.locale, d.district, coalesce(s.foryear, 0) AS foryear, " +
+            "s.balance AS startingbalance, COALESCE(SUM(p.amount), 0) AS currentpayment, " +
+            "s.balance - COALESCE(SUM(p.amount), 0) AS currentbalance " +
+            "FROM subscription s " +
+            "INNER JOIN Lokal l ON l.lcode = s.lcode " +
+            "LEFT JOIN payment p ON p.lcode = s.lcode and p.foryear=s.foryear " +
+            "INNER JOIN districts d ON d.did = s.did " +
+            "GROUP BY s.lcode,s.foryear " +
+            "ORDER BY s.did, s.lcode, s.foryear";
+    List<Balances> balances = jdbcTemplate.query(sql, new BalancesRowMapper());
+    model.addAttribute("pasugo", balances);
+    return "pasugolist";
+}
 
     @PostMapping("/save-mass")
     public String subscribe(HttpServletRequest request, Model model) {
@@ -189,10 +208,17 @@ public class SubscriptionController {
                 }
             }
         }
-
-        List<Subscription> psg = subscriptionRepository.findAll();
-        model.addAttribute("pasugo", psg);
-
+        String sql = "SELECT l.locale, d.district, coalesce(s.foryear, 0) AS foryear, " +
+            "s.balance AS startingbalance, COALESCE(SUM(p.amount), 0) AS currentpayment, " +
+            "s.balance - COALESCE(SUM(p.amount), 0) AS currentbalance " +
+            "FROM subscription s " +
+            "INNER JOIN Lokal l ON l.lcode = s.lcode " +
+            "LEFT JOIN payment p ON p.lcode = s.lcode and p.foryear=s.foryear " +
+            "INNER JOIN districts d ON d.did = s.did " +
+            "GROUP BY s.lcode,s.foryear " +
+            "ORDER BY s.did, s.lcode, s.foryear";
+    List<Balances> balance = jdbcTemplate.query(sql, new BalancesRowMapper());
+    model.addAttribute("pasugo", balance);
         return "pasugolist";
     }
 

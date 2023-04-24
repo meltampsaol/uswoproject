@@ -213,8 +213,8 @@
 });
   </script>
   <script>
-    // Add an event listener to the form to update the recent expenses after submitting the form
-    $("form").submit(function () {
+   
+     $("form").submit(function () {
       $.ajax({
         url: $(this).attr("action"),
         method: $(this).attr("method"),
@@ -233,37 +233,9 @@
 
       return false;
     });
-
   </script>
   <script>
-    $(document).ready(function() {
-      // Load recent expenses on page load
-      $("#recentExpensesTable").load("/expenses/loadrecent");
-  
-      // Add an event listener to the form to update the recent expenses after submitting the form
-      $("form").submit(function() {
-        $.ajax({
-          url: $(this).attr("action"),
-          method: $(this).attr("method"),
-          data: $(this).serialize(),
-          success: function(data) {
-            // Replace the contents of the recentExpensesTable div with the updated HTML
-            $("#recentExpensesTable").html(data);
-  
-            // Reset the form
-            $("form")[0].reset();
-            $("#district").val("");
-            $("#lokal").empty();
-            $("#lokal").append($("<option>").val("").text("Select Lokal"));
-          }
-        });
-  
-        return false;
-      });
-    });
-
-var openedWindow;
-
+  var openedWindow;
 $(document).on("click", ".edit-btn", function () {
   var expenseId = $(this).data("expense-id");
   var url = "/expenses/editrecord/" + expenseId;

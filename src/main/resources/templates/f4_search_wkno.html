@@ -17,11 +17,6 @@
   <!-- Include jquery.dataTables.min.js after jQuery -->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-  <style>
-    #searchResultsTable {
-      height: 100vh;
-    }
-  </style>
 </head>
 
 <body>
@@ -42,10 +37,8 @@
         </form>
       </div>
     </div>
-    
-    
     <div id="searchResultsTable"></div>
-    
+
     <!-- Search Results Modal -->
     <div class="modal fade" id="searchResultsModal" tabindex="-1" role="dialog"
       aria-labelledby="searchResultsModalLabel" aria-hidden="true">
@@ -69,7 +62,7 @@
         $("#searchButton").click(function () {
           var searchText = $("#searchInput").val();
           $.ajax({
-            url: "/f4/search/lokal/" + searchText,
+            url: "/f4/search/wkno/" + searchText,
             type: "GET",
             success: function (result) {
               $("#searchResultsModal .modal-body").html(result);

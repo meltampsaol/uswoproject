@@ -4,50 +4,129 @@
     <meta charset="UTF-8">
     <title>Remittance Search Result</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  
-    <!-- Include Bootstrap's JavaScript after jQuery -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  
-    <!-- Include jquery.dataTables.min.js after jQuery -->
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <style>
+        .table-container {
+          position: relative;
+          overflow: scroll;
+          height: 800px;
+          width: 100%;
+        }
+    
+        .table-fixed {
+          position: absolute;
+          top: 0;
+          left: 0;
+          background-color: #fff;
+          width: auto;
+          border-right: 1px solid #ddd;
+          z-index: 1;
+        }
+    
+        .table-fixed th,
+        .table-fixed td {
+          white-space: nowrap;
+        }
+    
+        .table-scroll {
+          overflow: auto;
+          height: 800px;
+        }
+      </style>
 </head>
 <body>
 
-    <h1>Remittance Search Result</h1>
-
-    <div class="table-responsive">
+    
+    <div class="table-container">
         <table class="table table-bordered table-striped">
             <thead class="btn-info">
                 <tr>
-                    
                     <th>Week</th>
+                    <th>Reported</th>
                     <th>Lokal</th>
                     <th>District</th>
+                    <th>Thursday</th>
+                    <th>Sunday</th>
+                    <th>CWS</th>
+                    <th>TAdmin</th>
+                    <th>F13-Local</th>
+                    <th>F13-District</th>
+                    <th>Aid</th>
+                    <th>F9</th>
+                    <th>Rfd-Local</th>
+                    <th>Rfd-Dist</th>
+                    <th>Rfd-Central</th>
+                    <th>OffRfd-Total</th>
+                    <th>Exp-Local</th>
+                    <th>Exp-Dist</th>
+                    <th>Exp-Central</th>
+                    <th>ExpTotal</th>
+                    <th>Remainder</th>
+                    <th>Uswo</th>
+                    <th>CfoTotal</th>
+                    <th>Cfo-Local</th>
+                    <th>Cfo-Intl.</th>
+                    <th>Central</th>
                     <th>Remittance</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-scroll">
                 <tr th:each="f4 : ${f4details}">
-                    
                     <td th:text="${f4.wkno}"></td>
-                    <td th:text="${f4.locale}"></td>
+                    <td th:text="${f4.reported}"></td>
+                    <td th:text="${f4.lokal.locale}"></td>
                     <td th:text="${f4.district.district}"></td>
-                    <td th:text="${f4.rtotal}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.thursday,0,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.sunday,0,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.cws,0,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.totaloffering,0,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.thlocale,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.thdistrict,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.lingap,0,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.thanksgiving,0,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.reflocale,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.refdistrict,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.refcentral,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.offrefund,0,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.explocale,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.expdistrict,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.expcentral,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.exptotal,0,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.remainder,0,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.uswo,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.cfototal,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.cfolocale,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.cfointl,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.rcentral,1,'COMMA',2,'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(f4.rtotal,0,'COMMA',2,'POINT')}"></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4" style="text-align: right">Total:</td>
-                    <td th:text="${#numbers.formatDecimal(#lists.sum(f4details.![rtotal]),1,2,'.')}" ></td>
+                    <td colspan="10" align="right"><b>Total Lingap:</b></td>
+                    <td><b th:text="${#numbers.formatDecimal(#aggregates.sum(f4details.![lingap]),0,'COMMA',2,'POINT')}"></b></td>
+                    <td colspan="10" align="right"><b>Total USWO</b></td>
+                    <td><b th:text="${#numbers.formatDecimal(#aggregates.sum(f4details.![uswo]),1,'COMMA',2,'POINT')}"></b></td>
+                    <td align="right"><b>Total</b></td>
+                    <td><b th:text="${#numbers.formatDecimal(#aggregates.sum(f4details.![cfolocale]),0,'COMMA',2,'POINT')}"></b></td>
+                    <td><b th:text="${#numbers.formatDecimal(#aggregates.sum(f4details.![cfointl]),0,'COMMA',2,'POINT')}"></b></td>
+                    <td><b th:text="${#numbers.formatDecimal(#aggregates.sum(f4details.![rcentral]),0,'COMMA',2,'POINT')}"></b></td>
+                    <td><b th:text="${#numbers.formatDecimal(#aggregates.sum(f4details.![rtotal]),0,'COMMA',2,'POINT')}"></b></td>
+
+
+
                 </tr>
             </tfoot>
+            
         </table>
+     
     </div>
-
+    
+    
+      
 </body>
 </html>

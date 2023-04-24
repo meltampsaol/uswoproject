@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -22,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletResponse;
 import uswo.inc.uswofinal.model.F4Detail;
-import uswo.inc.uswofinal.model.LocaleData;
 import uswo.inc.uswofinal.repository.F4DetailRepository;
 import uswo.inc.uswofinal.repository.LocaleDataRepository;
 
@@ -77,52 +79,7 @@ try {
     return "error";
 }
     }
-    @GetMapping("/excel-export")
-    public void exportExcel(Model model, HttpServletResponse response) throws IOException {
     
-    String fileName = "MICOGN_week13_2023.xlsx";
-    String filePath = "H:/uswofinal/remittance/" + fileName;
-    try (FileInputStream file = new FileInputStream(filePath)) {
-        XSSFWorkbook workbook = new XSSFWorkbook(file);
-        XSSFSheet worksheet = workbook.getSheet("OGNF4Details");
-        List<F4Detail> f4Details = f4detailRepository.findByWknoAndDistrict("12-2023","MICRONESIA");
-        for (F4Detail f4Detail : f4Details) {
-            int lcode = f4Detail.getLcode();
-            XSSFRow row = worksheet.getRow(lcode);
-            if (row != null) {
-                row.createCell(0).setCellValue(f4Detail.getLocale());
-                row.createCell(27).setCellValue(f4Detail.getDistrict().getDid());
-                row.createCell(28).setCellValue(f4Detail.getWkno());
-                row.createCell(29).setCellValue(f4Detail.getReported());
-                row.getCell(27).setCellType(CellType.NUMERIC);
-                List<BigDecimal> dataList = Arrays.asList(f4Detail.getThursday(), f4Detail.getSunday(),
-                        f4Detail.getCws(), f4Detail.getTotaloffering(), f4Detail.getThlocale(),
-                        f4Detail.getThdistrict(), f4Detail.getLingap(), f4Detail.getThanksgiving(),
-                        f4Detail.getReflocale(), f4Detail.getRefdistrict(), f4Detail.getRefcentral(),
-                        f4Detail.getOffrefund(), f4Detail.getAlms(), f4Detail.getExplocale(),
-                        f4Detail.getExpdistrict(), f4Detail.getExpcentral(), f4Detail.getExptotal(),
-                        f4Detail.getRemainder(), f4Detail.getUswo(), f4Detail.getCfototal(),
-                        f4Detail.getCfolocale(), f4Detail.getCfointl(), f4Detail.getRdistrict(),
-                        f4Detail.getRlingap(), f4Detail.getRcentral(), f4Detail.getRtotal());
-                for (int i = 1; i <= 26; i++) {
-                    if (i != 27 && i != 28 && i != 29) {
-                        if (dataList.get(i - 1) != null) {
-                            row.createCell(i).setCellValue(dataList.get(i - 1).doubleValue());
-                            row.getCell(i).setCellType(CellType.NUMERIC);
-                        } else {
-                            row.createCell(i).setCellValue(0.00);
-                            row.getCell(i).setCellType(CellType.NUMERIC);
-                        }
-                    }
-                }
-            }
-        }
-        workbook.write(response.getOutputStream());
-        workbook.close();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
 @GetMapping("/excel-import-perweek")
     public String importF4Data(Model model) {
     
@@ -181,12 +138,88 @@ try {
         return "f4_search_district";
 
     }
+    @GetMapping("/search/wkno")
+    public String searchWeeknumber(Model model){
+        
+        return "f4_search_wkno";
 
+    }
     @GetMapping("/search/lokal/{searchText}")
-    public String searchlocalResults(@PathVariable String searchText, Model model) {
+    public String searchlocalResults(@PathVariable String searchText, Model model, Locale locale) {
         List<F4Detail> ld = f4detailRepository.findByLocale(searchText);
+      
         model.addAttribute("f4details", ld);
         return "f4lokal-search-result";
     }
+    @GetMapping("/search/district/{searchText}")
+    public String searchdistrictResults(@PathVariable String searchText, Model model, Locale locale) {
+        List<F4Detail> ld = f4detailRepository.findByDistrict(searchText);
+      
+        model.addAttribute("f4details", ld);
+        return "f4district-search-result";
+    }
+    @GetMapping("/search/wkno/{searchText}")
+    public String searchwknoResults(@PathVariable String searchText, Model model, Locale locale) {
+        List<F4Detail> ld = f4detailRepository.findByReported(searchText);
+      
+        model.addAttribute("f4details", ld);
+        return "f4wkno-search-result";
+    }
+    @GetMapping("/import/perweek")
+    public String importWeek(Model model){
+        
+        return "f4_import_wkno";
+
+    }
+
+    @GetMapping("/import/perweek/{file}")
+    public String importF4Data(Model model, @PathVariable ("file") String file) {
+        String weekNumber = "";
+        Pattern pattern = Pattern.compile("week(\\d+)");
+        Matcher matcher = pattern.matcher(file);
+        
+        if (matcher.find()) {
+            weekNumber = matcher.group(1);
+        }
+        
+        // format the week number as "XX-YYYY"
+        String formattedWeekNumber = weekNumber + "-2023";
+       
+try {
+    
+    String pythonScriptPath = "H:/uswofinal/remittance/process_data_perweek.py";
+
+    ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath,file);
+    
+    Process process = processBuilder.start();
+    
+    // Wait for the process to complete
+    int exitCode = process.waitFor();
+    
+    if (exitCode == 0) {
+        System.out.println("Python script executed successfully.");
+        List<F4Detail> lc = f4detailRepository.findByReported(formattedWeekNumber);
+        model.addAttribute("localeDataList", lc);
+        return "imported-excel";
+    } else {
+         // Get the error stream from the process
+    InputStream errorStream = process.getErrorStream();
+    BufferedReader errorReader = new BufferedReader(new InputStreamReader(errorStream));
+    String errorLine = null;
+    StringBuilder errorMessage = new StringBuilder();
+    while ((errorLine = errorReader.readLine()) != null) {
+        errorMessage.append(errorLine);
+    }
+    System.err.println("Error executing Python script. Error message: " + errorMessage.toString());
+    model.addAttribute("errorMessage", errorMessage.toString());
+    return "error";
+    }
+} catch (Exception e) {
+    e.printStackTrace();
+    return "error";
+}
+    }
+
+    
 }
 

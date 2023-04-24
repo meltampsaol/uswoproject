@@ -16,7 +16,11 @@ public class F4Detail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int recid;
-    private String locale;
+
+    @ManyToOne
+    @JoinColumn(name = "lcode", referencedColumnName = "lcode")
+    private Lokal lokal;
+
     private BigDecimal thursday;
     private BigDecimal sunday;
     private BigDecimal cws;
@@ -43,19 +47,14 @@ public class F4Detail {
     private BigDecimal rlingap;
     private BigDecimal rcentral;
     private BigDecimal rtotal;
-    private int lcode;
+  
     @ManyToOne
     @JoinColumn(name = "did", referencedColumnName = "did")
     private District district;
     
     private String wkno;
     private String reported;
-    public String getLocale() {
-        return locale;
-    }
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
+   
     public BigDecimal getThursday() {
         return thursday;
     }
@@ -212,18 +211,7 @@ public class F4Detail {
     public void setRtotal(BigDecimal rtotal) {
         this.rtotal = rtotal;
     }
-    public int getLcode() {
-        return lcode;
-    }
-    public void setLcode(int lcode) {
-        this.lcode = lcode;
-    }
-    //public int getDid() {
-    //    return did;
-    //}
-    //public void setDid(int did) {
-    //    this.did = did;
-    //}
+    
     public String getWkno() {
         return wkno;
     }
@@ -242,6 +230,13 @@ public class F4Detail {
     public void setDistrict(District district) {
         this.district = district;
     }
+    public Lokal getLokal() {
+        return lokal;
+    }
+    public void setLokal(Lokal lokal) {
+        this.lokal = lokal;
+    }
 
+    
 }
 

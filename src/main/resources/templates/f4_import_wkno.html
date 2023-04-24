@@ -17,17 +17,12 @@
   <!-- Include jquery.dataTables.min.js after jQuery -->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-  <style>
-    #searchResultsTable {
-      height: 100vh;
-    }
-  </style>
 </head>
 
 <body>
   <div th:replace="~{fragments/navbar :: navbar}"></div>
   <div class="container">
-    <h1 class="text-center my-4">Remittance Search</h1>
+    <h1 class="text-center my-4">Import File</h1>
 
     <div class="row">
       <div class="col-md-6">
@@ -36,23 +31,21 @@
             <input type="text" class="form-control" placeholder="Search remittance" aria-label="Search remittance"
               id="searchInput">
             <div class="input-group-append">
-              <button class="btn btn-info" type="button" id="searchButton">Search Local</button>
+              <button class="btn btn-info" type="button" id="searchButton">Import File</button>
             </div>
           </div>
         </form>
       </div>
     </div>
-    
-    
     <div id="searchResultsTable"></div>
-    
+
     <!-- Search Results Modal -->
     <div class="modal fade" id="searchResultsModal" tabindex="-1" role="dialog"
       aria-labelledby="searchResultsModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable w-75" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="searchResultsModalLabel">Search Results</h5>
+            <h5 class="modal-title" id="searchResultsModalLabel">Imported Records</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -69,7 +62,7 @@
         $("#searchButton").click(function () {
           var searchText = $("#searchInput").val();
           $.ajax({
-            url: "/f4/search/lokal/" + searchText,
+            url: "/f4/import/perweek/" + searchText,
             type: "GET",
             success: function (result) {
               $("#searchResultsModal .modal-body").html(result);
