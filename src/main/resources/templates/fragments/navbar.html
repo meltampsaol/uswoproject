@@ -66,9 +66,13 @@
             
           </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/note/mynote">My Notes</a>
-          <a class="nav-link" href="/note/search">Search Notes</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="noteDropdown" role="button" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false">Notes</a>
+          <div class="dropdown-menu" aria-labelledby="noteDropdown">
+            <a class="dropdown-item" href="/note/mynote">My Notes</a>
+            <a class="dropdown-item" href="/note/search">Search Local or Concern</a>
+          </div>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/collectionpermit">Collection Permit</a>
