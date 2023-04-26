@@ -45,7 +45,7 @@
           <thead>
             <tr>
               <td colspan="9" style="text-align: right;">
-                <a th:href="@{/addnote}" class="btn btn-primary">Add New Note</a>
+                <a th:href="@{/note/newnote}" class="btn btn-primary">Add New Note</a>
               </td>
             </tr>
             <tr>
@@ -84,7 +84,7 @@
   <script>
     $(document).on('click', '[id^="edit-"]', function () {
       var id = $(this).data('id');
-      window.location.href = '/updatenote/' + id;
+      window.location.href = '/note/updatenote/' + id;
     });
     $(document).on('click', '[id^="delete-"]', function () {
       var id = $(this).data('id');

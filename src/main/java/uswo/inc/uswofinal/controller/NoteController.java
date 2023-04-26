@@ -66,7 +66,7 @@ public class NoteController {
         model.addAttribute("locales", locales);
         return "newnote";
     }
-    @GetMapping("/addnote")
+    @GetMapping("/newnote")
     public String addNoteForm(Model model) {
         // Add the District and Lokal models to the attributes
         List<District> districts = districtRepository.findAll();
@@ -115,8 +115,8 @@ public class NoteController {
         }
     }
 
-    @PostMapping("/addnote/")
-    public String addNote(@ModelAttribute("note") Note note) {
+    @PostMapping("/addnote")
+    public String addNote(@ModelAttribute("note") Note note, Model model) {
         Note existingNote = noteRepository.findByLcodeAndWknoAndConcerns(note.getLcode(), note.getWkno(),
                 note.getConcerns());
         if (existingNote != null) {
@@ -148,7 +148,9 @@ public class NoteController {
             }
 
         }
-        return "redirect:/mynote";
+        List<Note> notes = noteRepository.findByLcode(note.getLcode());
+        model.addAttribute("notes", notes);
+        return "mynote";
     }
     @GetMapping("/search")
     public String searchNote(Model model) {

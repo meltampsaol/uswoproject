@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .requestMatchers("/savefundstart/*", "/fundstartlist", "/collectionpermit", "/lokal-list-permit/*","/savepermit/*")
                 .permitAll()
                 .requestMatchers("/note/addnote", "/note/update-note/*", "/note/updatenote/*", "/note/update-note/").permitAll()
-                .requestMatchers("/note/addnote/","/note/newnote/*","/note/delete/*","/note/search","/note/mynote","/note/search/*").permitAll()
+                .requestMatchers("/note/newnote/*","/note/delete/*","/note/search","/note/mynote","/note/search/*").permitAll()
                 .requestMatchers("/uploadrequest", "/upload/", "/viewrequest", "/requests/*").permitAll()
                 .requestMatchers("/uploads/*","/file","fragments/*","/requests","/searchrequest","/requestlist","/searchresult/*").permitAll()
                 .requestMatchers("/search/*","/searchpdf/*").permitAll()
