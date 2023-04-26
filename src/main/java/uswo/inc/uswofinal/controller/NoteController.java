@@ -150,5 +150,17 @@ public class NoteController {
         }
         return "redirect:/mynote";
     }
+    @GetMapping("/search")
+    public String searchNote(Model model) {
+        return "mynote_search";
+    }
+
+    @GetMapping("/search/{searchText}")
+    public String searchnoteResults(@PathVariable String searchText, Model model) {
+        List<Note> notes = noteRepository.findAnyNote(searchText);
+      
+        model.addAttribute("notes", notes);
+        return "mynote-search-result";
+    }
 
 }

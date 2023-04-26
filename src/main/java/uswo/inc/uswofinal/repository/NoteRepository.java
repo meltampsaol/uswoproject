@@ -28,7 +28,11 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
     List<Note> findByActionDate(LocalDate actionDate);
 
     Note findByLcodeAndWknoAndConcerns(Integer lcode, String wkno, String concerns);
+
     @Query("SELECT f FROM Note f WHERE f.concerns LIKE %:concerns% order by f.lokal.lcode, f.wkno")
-    List<Note> findConcerns(@Param("concerns") String concern);
+    List<Note> findConcerns(@Param("concerns") String concerns);
+
+    @Query("SELECT f FROM Note f WHERE f.concerns LIKE %:search% or f.wkno LIKE %:search% or f.lokal.locale LIKE %:search% order by f.wkno")
+    List<Note> findAnyNote(@Param("search") String search);
     
 }
