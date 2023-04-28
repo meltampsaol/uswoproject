@@ -79,7 +79,7 @@ public class NoteController {
         return "addnote";
     }
     @PostMapping("/update-note/")
-    public String updateNote(Note updatedNote) {
+    public String updateNote(Note updatedNote, Model model) {
         Optional<Note> noteOptional = noteRepository.findById(updatedNote.getId());
 
         if (noteOptional.isPresent()) {
@@ -95,7 +95,9 @@ public class NoteController {
             noteRepository.save(note);
         }
 
-        return "redirect:/mynote";
+        List<Note> notes = noteRepository.findByLcode(updatedNote.getLcode());
+        model.addAttribute("notes", notes);
+        return "mynote";
     }
 
     @GetMapping("/updatenote/{id}")
@@ -115,8 +117,8 @@ public class NoteController {
         }
     }
 
-    @PostMapping("/addnote")
-    public String addNote(@ModelAttribute("note") Note note, Model model) {
+    @PostMapping("/savenote")
+    public String saveNote(@ModelAttribute("note") Note note, Model model) {
         Note existingNote = noteRepository.findByLcodeAndWknoAndConcerns(note.getLcode(), note.getWkno(),
                 note.getConcerns());
         if (existingNote != null) {
