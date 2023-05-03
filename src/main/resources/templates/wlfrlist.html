@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<table>
+    <thead>
+        <tr>
+            <th>Locale</th>
+            <th>District</th>
+            <th>Week No.</th>
+            <th>Bank Start</th>
+            <th>Bank Balance</th>
+            <th>LF Start</th>
+            <th>LF Balance</th>
+            <th>CF Start</th>
+            <th>CF Balance</th>
+            <th>Summary</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="row : ${wlfrlist}">
+            <td th:text="${row.lokal}"></td>
+            <td th:text="${row.district}"></td>
+            <td th:text="${row.wkno}"></td>
+            <td th:text="${row.bankstart}"></td>
+            <td th:text="${row.bank_balance}"></td>
+            <td th:text="${row.lfstart}"></td>
+            <td th:text="${row.lf_balance}"></td>
+            <td th:text="${row.cfstart}"></td>
+            <td th:text="${row.cf_balance}"></td>
+            <td th:text="${row.resumen}"></td>
+        </tr>
+    </tbody>
+</table>
+</html>
+
