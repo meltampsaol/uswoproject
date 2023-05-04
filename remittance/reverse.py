@@ -1,3 +1,7 @@
+from click import style
+from openpyxl.styles import Font
+from openpyxl.styles.colors import Color
+from openpyxl.styles import Alignment
 import mysql.connector
 import pandas as pd
 from decimal import Decimal, getcontext
@@ -13,29 +17,46 @@ cnx = mysql.connector.connect(user='root', password='mbt073233',
 cursor = cnx.cursor()
 
 # Define the query to retrieve the data from the f4detail table
-query = "SELECT locale, thursday, sunday, cws, thlocale, thdistrict, lingap, thanksgiving, reflocale, refdistrict, refcentral, alms, explocale, expdistrict, expcentral, uswo, cfototal, cfolocale, cfointl, rdistrict, rlingap, rtotal, lcode FROM f4detail WHERE reported = '06-2023' AND did = 9"
+query = "SELECT b.locale,uswo,'04-25-23' as deadline,cfolocale, cfointl,rlingap, rcentral,rtotal FROM f4detail a, lokal b WHERE a.lcode=b.lcode and reported = '06-2023' AND a.did = 9"
 cursor.execute(query)
 result = cursor.fetchall()
 
 # Convert the result set to a pandas DataFrame
-df_f4 = pd.DataFrame(result, columns=['locale', 'thursday', 'sunday', 'cws', 'thlocale', 'thdistrict', 'lingap', 'thanksgiving', 'reflocale', 'refdistrict', 'refcentral', 'alms', 'explocale', 'expdistrict', 'expcentral', 'uswo', 'cfototal', 'cfolocale', 'cfointl', 'rdistrict', 'rlingap', 'rtotal', 'lcode'])
+df_f4 = pd.DataFrame(result, columns=['locale','uswo','deadline','cfolocale', 'cfointl','rlingap', 'rcentral','rtotal'])
 
 # Load the Excel file and select the worksheet
-filename = r'MICOGN_week13_2023.xlsx'
+filename = r'MICOGN_template.xlsx'
 book = openpyxl.load_workbook(filename)
-sheet = book['OGNF4Details']
+sheet = book['OGN_Remittance']
 
-# Append the data to the worksheet
+# Assign the values to the specified cells in the Excel worksheet
 for i, row in df_f4.iterrows():
-    for j, col in enumerate(df_f4.columns[:-1]): # exclude the last column (lcode)
-        if j not in [4, 5, 8, 9, 10, 11, 13, 14, 15, 20, 21, 22]: # skip columns with formulas
-            sheet.cell(row=i+2, column=j+1, value=row[col])
-            sheet.cell(row=i+2, column=j+1).number_format = '0.00'
+    sheet.cell(row=i+5, column=2, value=row['locale'])
+    sheet.cell(row=i+5, column=3, value=row['deadline'])
+    sheet.cell(row=i+5, column=5, value=row['uswo'])
+    sheet.cell(row=i+5, column=6, value=row['cfolocale'])
+    sheet.cell(row=i+5, column=7, value=row['cfointl'])
+    sheet.cell(row=i+5, column=9, value=row['rlingap'])
+    sheet.cell(row=i+5, column=10, value=row['rcentral'])
+    sheet.cell(row=i+5, column=11, value=row['rtotal'])
+    for j in [4, 8]: # Set the other cells to blank
+        sheet.cell(row=i+5, column=j, value='')
 
 # Save the updated Excel file
+
+
+
+# Set the value of cell D1
+sheet['D1'] = 6
+# Font properties
+font = Font(color='FFFF0000', bold=True, size=12)
+align = Alignment(horizontal='center')
+sheet['D1'].font = font
+sheet['D1'].alignment = align
+
+
 book.save(filename)
 
 # Close the database connection
 cursor.close()
 cnx.close()
-

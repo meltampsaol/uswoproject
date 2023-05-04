@@ -8,26 +8,64 @@
     <script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}"></script>
     <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}"></script>
     <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            font-weight: bold;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            border-color: #007bff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            transition: background-color 0.3s, border-color 0.3s;
+            width: 100%;
+        }
+        button[type="submit"]:hover {
+            background-color: #0062cc;
+            border-color: #0062cc;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-sm-6 col-md-4 col-lg-3">
             <div class="card my-5">
-                <div class="card-header text-center">
-                    <h4>Login</h4>
+                <div class="card-header">
+                    Login
                 </div>
                 <div class="card-body">
                     <form method="post" th:action="@{/login}">
                         <div class="form-group">
-                            <label for="username">Username</label>
+                            <label for="username">Username:</label>
                             <input type="text" class="form-control" id="username" name="username" />
                         </div>
                         <div class="form-group">
-                            <label for="password">Password</label>
+                            <label for="password">Password:</label>
                             <input type="password" class="form-control" id="password" name="password" />
                         </div>
-                        <div class="form-group text-center">
+                        <div class="form-group">
                             <button type="submit" class="btn btn-primary">Login</button>
                         </div>
                     </form>

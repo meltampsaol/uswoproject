@@ -21,7 +21,7 @@ result = cursor.fetchall()
 df_f4 = pd.DataFrame(result, columns=cursor.column_names)
 
 # Load the Excel file and select the worksheet
-filename = r'MICOGN_week13_2023.xlsx'
+filename = r'MICOGN_template.xlsx'
 book = openpyxl.load_workbook(filename)
 sheet = book['OGNF4Details']
 

@@ -27,7 +27,7 @@
             <tbody>
                 <tr th:each="f4 : ${f4details}">
                     <td th:text="${f4.wkno}"></td>
-                    <td th:text="${f4.locale}"></td>
+                    <td th:text="${f4.lokal.locale}"></td>
                     <td th:text="${f4.district.district}"></td>
                     <td th:text="${#numbers.formatDecimal(f4.rtotal,1,'COMMA',2,'POINT')}"></td>
                 </tr>

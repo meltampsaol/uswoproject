@@ -12,9 +12,9 @@ import lombok.Data;
 
 
 @Entity
-@Table(name = "wlfr_start")
+@Table(name = "f9")
 @Data
-public class FundStart {
+public class F9Plus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,18 +22,25 @@ public class FundStart {
 
     private Integer lcode;
 
-    private Integer did;
+    private Integer dcode;
 
     private String wkno;
 
-    @Column(name = "bankstart")
-    private BigDecimal bank;
+    @Column(name = "lokal")
+    private BigDecimal lokal;
 
-    @Column(name = "lfstart")
-    private BigDecimal usmo;
+    @Column(name = "district")
+    private BigDecimal district;
 
-    @Column(name = "cfstart")
-    private BigDecimal cfo;
+    private BigDecimal f9;
+
+    @Column(name = "central")
+    private BigDecimal central;
+
+    @Column(name = "lingap")
+    private BigDecimal lingap;
+
+    
     
 
 }

@@ -8,5 +8,5 @@ import uswo.inc.uswofinal.model.FundStart;
 
 public interface FundStartRepository extends JpaRepository<FundStart, Integer> {
     FundStart findByLcode(Integer lcode);
-    FundStart findByLcodeAndDcode(Integer lcode, Integer dcode);
+    FundStart findByLcodeAndDid(Integer lcode, Integer dcode);
 }

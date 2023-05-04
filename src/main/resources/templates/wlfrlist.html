@@ -1,6 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<table>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container my-8">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>WLFR</h2>
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Locale</th>
@@ -30,5 +37,10 @@
         </tr>
     </tbody>
 </table>
+</div>
+</div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
 </html>
 
