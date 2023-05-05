@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lokal List</title>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<!-- Include Bootstrap's JavaScript after jQuery -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+
+<!-- Include jquery.dataTables.min.js after jQuery -->
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+
+</style>
+</head>
+<body>
+  <div th:replace="~{fragments/navbar :: navbar}"></div>
+  <div class="container my-8">
+    <div class="row">
+      <div class="col-md-6">
+    <h1>Add Transaction</h1>
+    <form action="#" th:action="@{/wlfr/save}" th:object="${wlfr}" method="post">
+      <div class="form-group">
+        <label for="district">District:</label>
+        <select class="form-control" id="district" name="district.did" required>
+          <option value="" selected>Select District</option>
+          <option th:each="district : ${districts}" th:value="${district.did}" th:text="${district.district}"></option>
+      </select>
+      
+      </div>
+      <div class="form-group">
+        <label for="locale">Locale:</label>
+        <select class="form-control" id="locale" name="lcode" required>
+          <option value="" selected>Select Locale</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="wkno">Week Number:</label>
+        <input type="text" class="form-control" id="wkno" name="wkno" pattern="[0-9]{2}-[0-9]{4}" required>
+        <div class="invalid-feedback">
+          Please enter a valid week number (week-yyyy).
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="concerns">Bank Charge:</label>
+        <input class="form-control" id="bankcharge" name="bankcharge">
+      </div>
+      <div class="form-group">
+        <label for="action">Miscellaneous IN:</label>
+        <input class="form-control" id="miscin" name="miscin">
+      </div>
+      <div class="form-group">
+        <label for="action">Miscellaneous OUT:</label>
+        <input class="form-control" id="miscout" name="miscout">
+      </div>
+      <div class="form-group">
+        <label for="action">Retaining Amount:</label>
+        <input class="form-control" id="retamount" name="retamount">
+      </div>
+      <div class="form-group">
+        <label for="action">USMO Remittance:</label>
+        <input class="form-control" id="lfremit" name="lfremit">
+      </div>
+      <div class="form-group">
+        <label for="action">Approved F-10 (Locale):</label>
+        <input class="form-control" id="lfappf10" name="lfappf10">
+      </div>
+      
+      <div class="form-group">
+        <label for="action">Locale Fund Miscellaneous OUT:</label>
+        <input class="form-control" id="lfmiscout" name="lfmiscout">
+      </div>
+      <div class="form-group">
+        <label for="action">CFO Fund Remittance:</label>
+        <input class="form-control" id="cfremit" name="cfremit">
+      </div>
+      <div class="form-group">
+        <label for="action">CFO Approved F-10:</label>
+        <input class="form-control" id="cfappf10" name="cfappf10">
+      </div>
+      <div class="form-group">
+        <label for="action">CFO Miscellaneous (OUT):</label>
+        <input class="form-control" id="cfmiscout" name="cfmiscout">
+      </div>
+      <div class="form-group">
+        <label for="action">CFO International:</label>
+        <input class="form-control" id="cfintl" name="cfintl">
+      </div>
+      <div class="form-group">
+        <label for="action">Amount Withheld:</label>
+        <input class="form-control" id="amtwithheld" name="amtwithheld">
+      </div>
+      <button type="submit" class="btn btn-primary">Add Note</button>
+    </form>
+  </div>
+</div>
+  </div>
+  
+  
+
+ 
+  <script>
+    $(document).ready(function () {
+      $('#district').change(function () {
+        var did = $(this).val();
+        $.get('/getlocales/' + did, function (data) { 
+          $('#locale').empty();
+          $('#locale').append($('<option>').val('').text('Select Locale'));
+          $.each(data, function (i, locale) {
+            $('#locale').append($('<option>').val(locale.lcode).text(locale.locale));
+          });
+        });
+      });
+    });
+  </script>
+ <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
+ 
+  </body>
+</html>

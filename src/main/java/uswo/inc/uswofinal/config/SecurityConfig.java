@@ -58,7 +58,8 @@ public class SecurityConfig {
                 .requestMatchers("/f4/excel-import","/f4/imported-excel","/f4/excel-export","/f4/excel-import-perweek").permitAll()
                 .requestMatchers("/f4/search/lokal","/f4/search/district","/f4/search/lokal/*","/f4/search/district/*").permitAll()
                 .requestMatchers("/f4/search/wkno","/f4/search/wkno/*","/f4/import/perweek","/f4/import/perweek/*").permitAll()
-                .requestMatchers("/wlfr/**").permitAll()
+                .requestMatchers("/wlfr/**","/wlfr/add","/wlfr/save").permitAll()
+
                 .and()
                 .formLogin()
                 .loginPage("/login")

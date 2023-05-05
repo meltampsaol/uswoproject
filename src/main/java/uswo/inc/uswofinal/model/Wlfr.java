@@ -1,12 +1,9 @@
 package uswo.inc.uswofinal.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Data;
@@ -26,6 +23,7 @@ public class Wlfr {
     private String district;
 
     private Integer did;
+    private Integer lcode;
     
     private String wkno;
     
@@ -58,11 +56,15 @@ public class Wlfr {
     private Double cfremit;
     
     private Double cfappf10;
+
+    private Double cfmiscout;
     
     private Double cfintl;
     
     private Double cf_balance;
     
+    private Double amtwithheld;
+
     private Double resumen;
     
     
