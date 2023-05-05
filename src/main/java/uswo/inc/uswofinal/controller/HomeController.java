@@ -538,15 +538,15 @@ public class HomeController {
         System.out.println("lcode value: " + lcode);
         
         // Check if a record with the same lcode and dcode already exists
-        FundStart existingFundstart = fundstartRepository.findByLcodeAndDid(lcode, fundstart.g)
+        FundStart existingFundstart = fundstartRepository.findByLcodeAndDcode(lcode, fundstart.getDcode());
 
         if (existingFundstart != null) {
             // Update the existing record
             
             existingFundstart.setWkno(fundstart.getWkno());
-            existingFundstart.setUsmo(fundstart.getUsmo());
-            existingFundstart.setCfo(fundstart.getCfo());
-            existingFundstart.setBank(fundstart.getBank());
+            existingFundstart.setLfstart(fundstart.getLfstart());
+            existingFundstart.setCfstart(fundstart.getCfstart());
+            existingFundstart.setBankstart(fundstart.getBankstart());
 
             // set other fields here
 
@@ -566,7 +566,7 @@ public class HomeController {
         model.addAttribute("fstart", fstart);
 
         // Redirect the user back to the original page
-        return "redirect:/";
+        return "fundstartlist";
 
     }
 

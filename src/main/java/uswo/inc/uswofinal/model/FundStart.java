@@ -22,18 +22,19 @@ public class FundStart {
 
     private Integer lcode;
 
-    private Integer did;
+    @Column(name = "did")
+    private Integer dcode;
 
     private String wkno;
 
     @Column(name = "bankstart")
-    private BigDecimal bank;
+    private BigDecimal bankstart;
 
     @Column(name = "lfstart")
-    private BigDecimal usmo;
+    private BigDecimal lfstart;
 
     @Column(name = "cfstart")
-    private BigDecimal cfo;
+    private BigDecimal cfstart;
     
 
 }
