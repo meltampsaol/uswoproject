@@ -1,6 +1,7 @@
 package uswo.inc.uswofinal.controller;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,14 @@ public class WlfrController {
         wlfrRepository.save(wlfr);       
         Integer xlcode = wlfr.getLcode();
         Integer xdcode = wlfr.getDid();
-       
+        try {
+            ProcessBuilder pb = new ProcessBuilder("python", "/path/to/get_transdata.py", xlcode.toString());
+            pb.redirectErrorStream(true);
+            Process p = pb.start();
+            p.waitFor();
+        } catch (IOException | InterruptedException e) {
+            // handle the exception
+        }
         String procSql = "CALL wlfrAccumulatedBalance2(?, ?)";
         jdbcTemplate.update(procSql, xlcode, xdcode);
         
