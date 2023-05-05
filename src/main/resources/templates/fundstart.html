@@ -80,18 +80,18 @@ function handleButtonClick2(event) {
         const buttonId = $(event.target).attr("id");
         const tableRow = $(event.target).closest("tr");
         const wkno = tableRow.find('td:eq(2) input').val();
-        const bank = tableRow.find('td:eq(3) input').val();
-        const usmo = tableRow.find('td:eq(4) input').val();
-        const cfo = tableRow.find('td:eq(5) input').val();
+        const bankstart = tableRow.find('td:eq(3) input').val();
+        const lfstart = tableRow.find('td:eq(4) input').val();
+        const cfstart = tableRow.find('td:eq(5) input').val();
         const tdValue = tableRow.find('td:eq(1)').text();
         const districtCode = tableRow.find('button').attr('data-district-code');
 
         const lcode = buttonId.split('-')[1];
         console.log("Lcode: " + lcode);
         console.log("Week Started: " + wkno);
-        console.log("Bank: " + bank);
-        console.log("USMO: " + usmo);
-        console.log("CFO: " + cfo);
+        console.log("Bank: " + bankstart);
+        console.log("USMO: " + lfstart);
+        console.log("CFO: " + cfstart);
         console.log("Dcode: " + districtCode);
 
         console.log(tableRow.html())
@@ -114,9 +114,9 @@ function handleButtonClick2(event) {
         };
         xhr.send(JSON.stringify({
             wkno: wkno,
-            bank: bank,
-            usmo: usmo,
-            cfo: cfo,
+            bank: bankstart,
+            usmo: lfstart,
+            cfo: cfstart,
             dcode: districtCode
         }));
     }
@@ -129,7 +129,7 @@ function handleButtonClick2(event) {
 
 </head>
 <body>
-  <div th:replace="fragments/navbar :: navbar"></div>
+  <div th:replace="~{fragments/navbar :: navbar}"></div>
   <div class="container mt-4">
     <div class="row">
       <div class="col-12">
@@ -164,6 +164,7 @@ function handleButtonClick2(event) {
     <div id="lokalTable"></div>
     <div id="locale-dropdown"></div>
 </div>
+<div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
 </body>
   <!-- jQuery -->
 

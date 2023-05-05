@@ -33,13 +33,13 @@
                     
                     <td><input type="text"
                         th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].bankstart : ''}"
-                        name="bank" class="form-control"></td>
+                        name="bankstart" class="form-control"></td>
                     <td><input type="text"
                         th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].lfstart : ''}"
-                        name="usmo" class="form-control"></td>
+                        name="lfstart" class="form-control"></td>
                     <td><input type="text"
                         th:value="${fundStartMap[locale.lcode] != null ? fundStartMap[locale.lcode].cfstart : ''}"
-                        name="cfo" class="form-control"></td>
+                        name="cfstart" class="form-control"></td>
                     <td>
                         <button type="submit" class="btn btn-primary" 
                             th:attr="data-id=${locale.lcode}, data-district-code=${locale.did}" 
