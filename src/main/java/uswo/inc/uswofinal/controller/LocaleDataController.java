@@ -1,21 +1,13 @@
 package uswo.inc.uswofinal.controller;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,10 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jakarta.servlet.http.HttpServletResponse;
+import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.F4Detail;
+import uswo.inc.uswofinal.model.Lokal;
+import uswo.inc.uswofinal.repository.DistrictRepository;
 import uswo.inc.uswofinal.repository.F4DetailRepository;
 import uswo.inc.uswofinal.repository.LocaleDataRepository;
+import uswo.inc.uswofinal.repository.LokalRepository;
 
 @Controller
 @RequestMapping("/f4")
@@ -38,6 +33,12 @@ public class LocaleDataController {
 
     @Autowired
     LocaleDataRepository localeDataRepository;
+    
+    @Autowired
+    private LokalRepository lokalRepository;
+
+    @Autowired
+    private DistrictRepository districtRepository;
     
     @Autowired
     F4DetailRepository f4detailRepository;
@@ -144,12 +145,25 @@ try {
         return "f4_search_wkno";
 
     }
+    @GetMapping("/search/districtwkno")
+    public String searchDistrictWeeknumber(Model model){
+        List<District> districts = districtRepository.findAll();
+        model.addAttribute("districts", districts);
+        return "f4_search_wknodistrict";
+
+    }
     @GetMapping("/search/lokal/{searchText}")
     public String searchlocalResults(@PathVariable String searchText, Model model, Locale locale) {
         List<F4Detail> ld = f4detailRepository.findByLocale(searchText);
       
         model.addAttribute("f4details", ld);
         return "f4lokal-search-result";
+    }
+    @GetMapping("/search/districtwkno/{searchText}/{searchDistrict}")
+    public String searchdistwknoResults(@PathVariable String searchText,@PathVariable String searchDistrict,Model model, Locale locale) {
+        List<F4Detail> ld = f4detailRepository.findByDistrictReported(searchDistrict,searchText);
+        model.addAttribute("f4details", ld);
+        return "f4wknodistrict-search-result";
     }
     @GetMapping("/search/district/{searchText}")
     public String searchdistrictResults(@PathVariable String searchText, Model model, Locale locale) {
@@ -220,6 +234,15 @@ try {
 }
     }
 
-    
+    @GetMapping("/addrecord")
+    public String addTransaction(Model model){
+        model.addAttribute("f4detail", new F4Detail());
+        List<District> districts = districtRepository.findAll();
+        List<Lokal> locales = lokalRepository.findAll();
+        model.addAttribute("districts", districts);
+        model.addAttribute("locales", locales);
+        return "f4detail-add";
+
+    }    
 }
 

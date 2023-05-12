@@ -17,37 +17,38 @@ cnx = mysql.connector.connect(user='root', password='mbt073233',
 cursor = cnx.cursor()
 
 # Define the query to retrieve the data from the f4detail table
-query = "SELECT b.locale,uswo,'04-25-23' as deadline,cfolocale, cfointl,rlingap, rcentral,rtotal FROM f4detail a, lokal b WHERE a.lcode=b.lcode and reported = '06-2023' AND a.did = 9"
+query = "SELECT b.locale,'04-25-23' as deadline,uswo,cfolocale, cfointl,rlingap, rcentral FROM f4detail a, lokal b WHERE a.lcode=b.lcode and reported = '16-2023' AND a.did = 9"
 cursor.execute(query)
 result = cursor.fetchall()
 
 # Convert the result set to a pandas DataFrame
-df_f4 = pd.DataFrame(result, columns=['locale','uswo','deadline','cfolocale', 'cfointl','rlingap', 'rcentral','rtotal'])
+df_f4 = pd.DataFrame(result, columns=['locale','deadline','uswo','cfolocale', 'cfointl','rlingap', 'rcentral'])
 
 # Load the Excel file and select the worksheet
 filename = r'MICOGN_template.xlsx'
 book = openpyxl.load_workbook(filename)
-sheet = book['OGN_Remittance']
+sheet = book['MIC_Remittance']
 
 # Assign the values to the specified cells in the Excel worksheet
-for i, row in df_f4.iterrows():
-    sheet.cell(row=i+5, column=2, value=row['locale'])
-    sheet.cell(row=i+5, column=3, value=row['deadline'])
-    sheet.cell(row=i+5, column=5, value=row['uswo'])
-    sheet.cell(row=i+5, column=6, value=row['cfolocale'])
-    sheet.cell(row=i+5, column=7, value=row['cfointl'])
-    sheet.cell(row=i+5, column=9, value=row['rlingap'])
-    sheet.cell(row=i+5, column=10, value=row['rcentral'])
-    sheet.cell(row=i+5, column=11, value=row['rtotal'])
-    for j in [4, 8]: # Set the other cells to blank
-        sheet.cell(row=i+5, column=j, value='')
+headers = ['','locale','deadline','','uswo', 'cfolocale', 'cfointl','','rlingap', 'rcentral']
+for i, row in enumerate(df_f4.to_dict('records')):
+    for j, header in enumerate(headers):
+        cell = sheet.cell(row=i+5, column=j+1)
+        if header == '':
+            cell.value = ''
+            continue
+        if cell.coordinate in sheet.merged_cells:
+            continue
+        cell.value = row[header]
+        
+
 
 # Save the updated Excel file
 
 
 
 # Set the value of cell D1
-sheet['D1'] = 6
+sheet['D1'] = 16
 # Font properties
 font = Font(color='FFFF0000', bold=True, size=12)
 align = Alignment(horizontal='center')

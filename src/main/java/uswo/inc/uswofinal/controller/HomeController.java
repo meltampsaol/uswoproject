@@ -417,6 +417,11 @@ public class HomeController {
         model.addAttribute("requests", reqlist);
         return "requestslist";
     }
+    @GetMapping("/f1calculator")
+    public String f1calc(Model model) {
+       
+        return "f1calculator";
+    }
     @GetMapping("/getlocales3/{districtId}")
     public String lokalList(Model model, @PathVariable Integer districtId) {
         List<Lokal> locales = lokalRepository.findAll();

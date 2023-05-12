@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Remittance Encoding</title>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Include Bootstrap's JavaScript after jQuery -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Include jquery.dataTables.min.js after jQuery -->
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/num2words@1.0.2/src/numtowords.min.js"></script>
+
+  <style>
+    .modal {
+      z-index: 1050;
+    }
+  </style>
+ <style>
+  .first-set {
+background-color: #58B2AC;
+}
+
+.second-set {
+background-color: #519795;
+}
+.third-set {
+background-color:#81E6D9; 
+}
+.fourth-set {
+background-color:#48BB78;
+}
+
+.total-css {
+background-color: #2F855A;
+}
+.total-rem {
+background-color:#C55050;
+}
+  .btn-midnight-blue {
+background-color: #191970;
+color: #fff;
+}
+  .set-total {
+    display: none;
+  }
+
+  #set1-total {
+    display: block;
+  }
+
+  #set2-total {
+    display: none;
+  }
+
+  #set5-total {
+    display: none;
+  }
+
+  #set4-total {
+    display: block;
+  }
+
+  #set5-total {
+    display: none;
+  }
+
+  #set6-total {
+    display: none;
+  }
+
+  #set7-total {
+    display: block;
+  }
+
+  #set8-total {
+    display: none;
+  }
+
+  #set9-total {
+    display: none;
+  }
+
+  #set10-total {
+    display: block;
+  }
+
+  input {
+    width: 60px;
+  }
+
+  .set-fields {
+    width: 50px;
+    /* adjust the width as needed */
+  }
+
+  .total-fields {
+    width: 80px;
+    /* adjust the width as needed */
+  }
+
+  .blue-100 {
+    color: hsl(210, 50%, 60%);
+    /* additional styles... */
+  }
+  .table {
+font-size: 14px;
+padding: 10px;
+margin-right: 20px;
+}
+</style>
+
+</head>
+
+<body>
+  <div th:replace="~{fragments/navbar :: navbar}"></div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Add Transaction</h1>
+        <form th:action="@{/recordsave}" th:object="${f4detail}" method="post">
+          <table class="table table-striped table-responsive" align="left">
+            <tr>
+              <td>
+                <table class="container-fluid table table-striped btn-info">
+                  <tr>
+                    <td>District:</td>
+                      <td>
+                      <select class="form-control" id="district" name="district.did" required>
+                        <option value="" selected>Select District</option>
+                        <option th:each="district : ${districts}" th:value="${district.did}"
+                          th:text="${district.district}">
+                        </option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                      <td>Lokal:</td>
+                      <td>
+                      <select class="form-control" id="lokal" name="lokal" required>
+                        <option value="" selected>Select Lokal</option>
+                      </select>
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Week Reported:</td>
+                      <td>
+                      <select class="form-control" id="reported" name="reported" required>
+                        <option value="" selected>Select Week Number</option>
+                        <script>
+                          $(document).ready(function () {
+                            var currentDate = new Date();
+                            var currentWeek = getWeekNumber(currentDate);
+
+                            // Generate the week number dropdown options
+                            var dropdownOptions = "";
+                            for (var i = currentWeek; i >= currentWeek - 11; i--) {
+                              var year = currentDate.getFullYear();
+                              if (i < 1) {
+                                i = 52 + i;
+                                year--;
+                              }
+                              var weekYear = i.toString().padStart(2, '0') + '-' + year.toString();
+                              dropdownOptions += '<option value="' + weekYear + '">' + weekYear + '</option>';
+                            }
+
+                            // Set the dropdown options in the HTML
+                            $("#reported").html(dropdownOptions);
+                          });
+
+                          // Function to get the week number of a date
+                          function getWeekNumber(date) {
+                            var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+                            var dayNum = d.getUTCDay() || 7;
+                            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+                            var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+                            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+                          }
+
+                        </script>
+
+                      </select>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>Week Number:</td>
+                      <td>
+                      <select class="form-control" id="wkno" name="wkno" required>
+                        <option value="" selected>Select Week Number</option>
+                        <script>
+                          $(document).ready(function () {
+                            var currentDate = new Date();
+                            var currentWeek = getWeekNumber(currentDate);
+
+                            // Generate the week number dropdown options
+                            var dropdownOptions = "";
+                            for (var i = currentWeek; i >= currentWeek - 11; i--) {
+                              var year = currentDate.getFullYear();
+                              if (i < 1) {
+                                i = 52 + i;
+                                year--;
+                              }
+                              var weekYear = i.toString().padStart(2, '0') + '-' + year.toString();
+                              dropdownOptions += '<option value="' + weekYear + '">' + weekYear + '</option>';
+                            }
+
+                            // Set the dropdown options in the HTML
+                            $("#wkno").html(dropdownOptions);
+                          });
+
+                          // Function to get the week number of a date
+                          function getWeekNumber(date) {
+                            var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+                            var dayNum = d.getUTCDay() || 7;
+                            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+                            var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+                            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+                          }
+
+                        </script>
+
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                      <td>Deadline:</td>
+                    <td>
+                      <input type="text" class="form-control" id="deadline" name="deadline" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Thursday:</td>
+                    <td><input type="number" class="form-control" id="thursday" name="thursday" step="0.01" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Sunday:</td>
+                    <td><input type="number" class="form-control" id="sunday" name="sunday" step="0.01" required>
+
+                    </td>
+                  </tr>
+                  <tr>
+                  <td>CWS:</td>
+                  <td><input type="number" class="form-control" id="cws" name="cws" step="0.01">
+                  </td>
+                  </tr>
+                  
+
+
+                </table>
+              </td>
+
+              <td>
+                <table class="table table-striped btn-primary">
+                  <tr>
+                    <td>
+
+                      Special Offering Locale:</td>
+                      <td><input type="number" class="form-control" id="thlocale" name="thlocale" step="0.01">
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+
+                      Special Offering District:</td>
+                      <td><input type="number" class="form-control" id="thdistrict" name="thdistrict" step="0.01">
+
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+
+                      AID:</td>
+                      <td><input type="number" class="form-control" id="lingap" name="lingap" step="0.01"></td>
+                  </tr>
+                  <tr>
+                      <td>F9:</td>
+                      <td><input type="number" class="form-control" id="thanksgiving" name="thanksgiving" step="0.01"></td>
+
+                  </tr>
+                  <tr>
+                    <td>Expenses Locale</td>
+                    <td><input type="number" name="explocale" id="explocale" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td>Expenses District</td>
+                    <td><input type="number" name="expdistrict" id="expdistrict" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td>Expenses Central</td>
+                    <td><input type="number" name="expcentral" id="expcentral" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td>Refund Locale</td>
+                    <td><input type="number" name="reflocale" id="reflocale" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td>Refund District</td>
+                    <td><input type="number" name="refdistrict" id="refdistrict" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td>Refund Central</td>
+                    <td><input type="number" name="refcentral" id="refcentral" step="0.01"></td>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <table class="table table-striped btn-info">
+                  <tr>
+                    <td>USWO</td>
+                    <td><input type="number" name="uswo" id="uswo"></td>
+                  </tr>
+                  <tr>
+                    <td>Total Offering</td>
+                    <td><input type="number" name="totaloffering" id="totaloffering"></td>
+                  </tr>
+                  <tr>
+                    <td>Total Refund</td>
+                    <td><input type="number" name="totalrefund" id="totalrefund"></td>
+                  </tr>
+                  <tr>
+                    <td>Total Expenses</td>
+                    <td><input type="number" name="exptotal" id="exptotal"></td>
+                  </tr>
+                  <tr>
+                    <td>CFO Total</td>
+                    <td><input type="number" name="cfototal" id="cfototal"></td>
+                  </tr>
+                  <tr>
+                    <td>CFO Locale</td>
+                    <td><input type="number" name="cfolocale" id="cfolocale"></td>
+                  </tr>
+                  <tr>
+                    <td>CFO Intl</td>
+                    <td><input type="number" name="cfointl" id="cfointl"></td>
+                  </tr>
+                  <tr>
+                    <td>Remainder</td>
+                    <td><input type="number" name="remainder" id="remainder"></td>
+                  </tr>
+                  <tr>
+                    <td>Total Central</td>
+                    <td><input type="number" name="rcentral" id="rcentral"></td>
+                  </tr>
+                  <tr>
+                    <td>Total Remittance</td>
+                    <td><input type="number" name="rtotal" id="rtotal"></td>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <table class="table table-striped btn-primary">
+                  <tr>
+                    <th>F1 Calculator</th>
+                  </tr>
+                  <tr>
+                    <td>Offering: Admin</td>
+                    <td><input type="number" name="f1admin" id="f1admin"></td>
+                    <td><input type="text" name="f1admin_words" id="f1admin_words"></td>
+                  </tr>
+                  <tr>
+                    <td>Offering: Local</td>
+                    <td><input type="number" name="f1local" id="f1local"></td>
+                    <td><input type="text" name="f1local_words" id="f1local_words"></td>
+                  </tr>
+                  <tr>
+                    <td>Offering: District</td>
+                    <td><input type="number" name="f1district" id="f1district"></td>
+                    <td><input type="text" name="f1district_words" id="f1district_words"></td>
+                  </tr>
+                  <tr>
+                    <td>Offering: Thanksgiving</td>
+                    <td><input type="number" name="f1txgiving" id="f1txgiving"></td>
+                    <td><input type="text" name="f1txgiving_words" id="f1txgiving_words"></td>
+                  </tr>
+                  <tr>
+                    <td>Offering: Lingap</td>
+                    <td><input type="number" name="f1lingap" id="f1lingap"></td>
+                    <td><input type="text" name="f1lingap_words" id="f1lingap_words"></td>
+                  </tr>
+                  <tr>
+                    <td>Refund</td>
+                    <td><input type="number" name="f1refund" id="f1refund"></td>
+                    <td><input type="text" name="f1refund_words" id="f1refund_words"></td>
+                  </tr>
+                  <tr>
+                    <td>Total F1</td>
+                    <td><input type="number" name="totalf1" id="totalf1"></td>
+                    <td><input type="text" name="totalf1_words" id="totalf1_words" width="200"></td>
+                  </tr>
+                  <tr><td colspan="3"><input type="button" value="Read" id="startButton"></td></tr>
+                </table>
+              </td>
+              <td>
+                <table class="table table-striped btn-info">
+                  <tr>
+                    <th>Calculate Any</th>
+                  </tr>
+                  <tr>
+                    <td>Entry 1</td>
+                    <td><input type="number" name="entry1" id="entry1"></td>
+                  </tr>
+                  <tr>
+                    <td>Entry 2</td>
+                    <td><input type="number" name="entry2" id="entry2"></td>
+                  </tr>
+                  <tr>
+                    <td>Entry 3</td>
+                    <td><input type="number" name="entry3" id="entry3"></td>
+                  </tr>
+                  <tr>
+                    <td>Entry 4</td>
+                    <td><input type="number" name="entry4" id="entry4"></td>
+                  </tr>
+                  <tr>
+                    <td>Entry 5</td>
+                    <td><input type="number" name="entry5" id="entry5"></td>
+                  </tr>
+                  <tr>
+                    <td>Entry 6</td>
+                    <td><input type="number" name="entry6" id="entry6"></td>
+                  </tr>
+                  <tr>
+                    <td>Entry 7</td>
+                    <td><input type="number" name="entry7" id="entry7"></td>
+                  </tr>
+                  <tr>
+                    <td>Entry 8</td>
+                    <td><input type="number" name="entry8" id="entry8"></td>
+                  </tr>
+                  <tr>
+                    <td>Total </td>
+                    <td><input type="number" name="totalentry" id="totalentry"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="8" class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">Add Transaction</button>
+              </td>
+            </tr>
+          </table>
+        </form>
+
+      </div>
+
+
+
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      $('#district').change(function () {
+        var did = $(this).val();
+        $.get('/getlocales/' + did, function (data) {  // @GetMapping("/getlocales/{districtId}")
+          $('#lokal').empty();
+          $('#lokal').append($('<option>').val('').text('Select Lokal'));
+          $.each(data, function (i, lokal) {
+            $('#lokal').append($('<option>').val(lokal.lcode).text(lokal.locale));
+          });
+        });
+      });
+    });
+
+    $(document).ready(function () {
+      $('#editDistrict').change(function () {
+        var did = $(this).val();
+        $.get('/getlocales/' + did, function (data) { // @GetMapping("/getlocales/{districtId}")
+          $('#editLokal').empty();
+          $('#editLokal').append($('<option>').val('').text('Select Lokal'));
+          $.each(data, function (i, lokal) {
+            $('#editLokal').append($('<option>').val(lokal.lcode).text(lokal.locale));
+          });
+        });
+      });
+    });
+  </script>
+
+  <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
+  <script>
+    $(document).ready(function () {
+      // Listen to changes in input fields
+      $('input:not(#lcode, #did, #wkno, #reported, #chkno, #deadline)').on('input', function () {
+        // Get input field values
+        var thursday = $('#thursday').val() ? parseFloat($('#thursday').val()) : 0;
+        var sunday = $('#sunday').val() ? parseFloat($('#sunday').val()) : 0;
+        var cws = $('#cws').val() ? parseFloat($('#cws').val()) : 0;
+        var thlocale = $('#thlocale').val() ? parseFloat($('#thlocale').val()) : 0;
+        var thdistrict = $('#thdistrict').val() ? parseFloat($('#thdistrict').val()) : 0;
+        var lingap = $('#lingap').val() ? parseFloat($('#lingap').val()) : 0;
+        var thanksgiving = $('#thanksgiving').val() ? parseFloat($('#thanksgiving').val()) : 0;
+        var reflocale = $('#reflocale').val() ? parseFloat($('#reflocale').val()) : 0;
+        var refdistrict = $('#refdistrict').val() ? parseFloat($('#refdistrict').val()) : 0;
+        var refcentral = $('#refcentral').val() ? parseFloat($('#refcentral').val()) : 0;
+        var explocale = $('#explocale').val() ? parseFloat($('#explocale').val()) : 0;
+        var expdistrict = $('#expdistrict').val() ? parseFloat($('#expdistrict').val()) : 0;
+        var expcentral = $('#expcentral').val() ? parseFloat($('#expcentral').val()) : 0;
+        var uswo = $('#uswo').val() ? parseFloat($('#uswo').val()) : 0;
+
+        var f1admin = $('#f1admin').val() ? parseFloat($('#f1admin').val()) : 0;
+        var f1local = $('#f1local').val() ? parseFloat($('#f1local').val()) : 0;
+        var f1district = $('#f1district').val() ? parseFloat($('#f1district').val()) : 0;
+        var f1txgiving = $('#f1txgiving').val() ? parseFloat($('#f1txgiving').val()) : 0;
+        var f1lingap = $('#f1lingap').val() ? parseFloat($('#f1lingap').val()) : 0;
+        var f1refund = $('#f1refund').val() ? parseFloat($('#f1refund').val()) : 0;
+
+        //Calculator
+        var entry1 = $('#entry1').val() ? parseFloat($('#entry1').val()) : 0;
+        var entry2 = $('#entry2').val() ? parseFloat($('#entry2').val()) : 0;
+        var entry3 = $('#entry3').val() ? parseFloat($('#entry3').val()) : 0;
+        var entry4 = $('#entry4').val() ? parseFloat($('#entry4').val()) : 0;
+        var entry5 = $('#entry5').val() ? parseFloat($('#entry5').val()) : 0;
+        var entry6 = $('#entry6').val() ? parseFloat($('#entry6').val()) : 0;
+        var entry7 = $('#entry7').val() ? parseFloat($('#entry7').val()) : 0;
+        var entry8 = $('#entry8').val() ? parseFloat($('#entry8').val()) : 0;
+        // Perform calculations
+        var totalentry = entry1 + entry2 + entry3 + entry4 + entry5 + entry6 + entry7 + entry8;
+        var totalf1 = f1admin + f1local + f1district + f1txgiving + f1lingap + f1refund;
+        var totaloffering = thursday + sunday + cws;
+        var offrefund = totaloffering + thlocale + thdistrict + thanksgiving + lingap + reflocale + refdistrict + refcentral;
+        var exptotal = explocale + expdistrict + expcentral;
+        var totalrefund = reflocale + refdistrict + refcentral;
+       
+        var remainder = offrefund - exptotal;
+        var cfototal = thlocale * 0.15;
+        var cfolocale = thlocale * 0.10;
+        var cfointl = thlocale * 0.05;
+        var rcentral = totaloffering + thanksgiving + refcentral - expcentral;
+        var rtotal = uswo + cfolocale + cfointl + lingap + rcentral;
+
+        // Update output fields
+        $('#totaloffering').val(totaloffering);
+        $('#offrefund').val(offrefund);
+        $('#exptotal').val(exptotal);
+        $('#remainder').val(remainder);
+        $('#cfototal').val(cfototal);
+        $('#cfolocale').val(cfolocale);
+        $('#cfointl').val(cfointl);
+        $('#rcentral').val(rcentral);
+        $('#rtotal').val(rtotal);
+        $('#totalrefund').val(totalrefund);
+        $('#totalentry').val(totalentry);
+        $('#totalf1').val(totalf1);
+        var totalf1_words = numToWords(totalf1);
+        var f1admin_words = numToWords(f1admin);
+        var f1local_words = numToWords(f1local);
+        var f1district_words = numToWords(f1district);
+        var f1txgiving_words = numToWords(f1txgiving);
+        var f1lingap_words = numToWords(f1lingap);
+        var f1refund_words = numToWords(f1refund);
+        $('#totalf1_words').val(totalf1_words);
+        $('#f1admin_words').val(f1admin_words);
+        $('#f1local_words').val(f1local_words);
+        $('#f1district_words').val(f1district_words);
+        var inputFields = ["f1admin", "f1local", "f1district", "f1txgiving", "f1lingap", "f1refund", "f1total"];
+var currentIndex = 0;
+var utterance = new SpeechSynthesisUtterance();
+
+document.getElementById("startButton").addEventListener("click", startReading);
+
+function startReading() {
+  if (currentIndex >= inputFields.length) {
+    currentIndex = 0; // Reset the index if all fields have been read
+    return;
+  }
+
+  var currentInput = document.getElementById(inputFields[currentIndex]);
+  utterance.text = currentInput.value;
+  speechSynthesis.speak(utterance);
+
+  utterance.onend = function () {
+    currentIndex++;
+    setTimeout(startReading, 2000); // Delay of 2 seconds before moving to the next input field
+  };
+}
+
+
+      });
+    });
+  </script>
+
+</body>
+
+</html>

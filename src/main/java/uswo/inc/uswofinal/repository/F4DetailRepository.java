@@ -17,4 +17,7 @@ public interface F4DetailRepository extends JpaRepository<F4Detail, Integer> {
     @Query("SELECT f FROM F4Detail f JOIN f.district d WHERE d.district = :districtName")
     List<F4Detail> findByDistrict(String districtName);
     List<F4Detail> findByReported(String wkno);
+
+    @Query("SELECT f FROM F4Detail f JOIN f.district d WHERE d.district = :districtName and f.reported = :wkno")
+    List<F4Detail> findByDistrictReported(String districtName, String wkno);
 }

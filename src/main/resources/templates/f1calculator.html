@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Remittance Encoding</title>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Include Bootstrap's JavaScript after jQuery -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Include jquery.dataTables.min.js after jQuery -->
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/num2words@1.0.2/src/numtowords.min.js"></script>
+
+
+</head>
+<body>
+<table class="table table-striped btn-primary">
+    <tr>
+      <th>F1 Calculator</th>
+    </tr>
+    <tr>
+      <td>Offering: Admin</td>
+      <td><input type="number" name="f1admin" id="f1admin"></td>
+      <td><input type="text" name="f1admin_words" id="f1admin_words"></td>
+    </tr>
+    <tr>
+      <td>Offering: Local</td>
+      <td><input type="number" name="f1local" id="f1local"></td>
+      <td><input type="text" name="f1local_words" id="f1local_words"></td>
+    </tr>
+    <tr>
+      <td>Offering: District</td>
+      <td><input type="number" name="f1district" id="f1district"></td>
+      <td><input type="text" name="f1district_words" id="f1district_words"></td>
+    </tr>
+    <tr>
+      <td>Offering: Thanksgiving</td>
+      <td><input type="number" name="f1txgiving" id="f1txgiving"></td>
+      <td><input type="text" name="f1txgiving_words" id="f1txgiving_words"></td>
+    </tr>
+    <tr>
+      <td>Offering: Lingap</td>
+      <td><input type="number" name="f1lingap" id="f1lingap"></td>
+      <td><input type="text" name="f1lingap_words" id="f1lingap_words"></td>
+    </tr>
+    <tr>
+      <td>Refund</td>
+      <td><input type="number" name="f1refund" id="f1refund"></td>
+      <td><input type="text" name="f1refund_words" id="f1refund_words"></td>
+    </tr>
+    <tr>
+      <td>Total F1</td>
+      <td><input type="number" name="totalf1" id="totalf1"></td>
+      <td><input type="text" name="totalf1_words" id="totalf1_words" width="200"></td>
+    </tr>
+  </table>
+  <script>
+    $(document).ready(function () {
+      // Listen to changes in input fields
+      $('input:not(#lcode, #did, #wkno, #reported, #chkno, #deadline)').on('input', function () {
+        // Get input field values
+       
+
+        var f1admin = $('#f1admin').val() ? parseFloat($('#f1admin').val()) : 0;
+        var f1local = $('#f1local').val() ? parseFloat($('#f1local').val()) : 0;
+        var f1district = $('#f1district').val() ? parseFloat($('#f1district').val()) : 0;
+        var f1txgiving = $('#f1txgiving').val() ? parseFloat($('#f1txgiving').val()) : 0;
+        var f1lingap = $('#f1lingap').val() ? parseFloat($('#f1lingap').val()) : 0;
+        var f1refund = $('#f1refund').val() ? parseFloat($('#f1refund').val()) : 0;
+
+        
+        // Perform calculations
+        var totalentry = entry1 + entry2 + entry3 + entry4 + entry5 + entry6 + entry7 + entry8;
+        var totalf1 = f1admin + f1local + f1district + f1txgiving + f1lingap + f1refund;
+        
+       
+       
+
+        // Update output fields
+        $('#totaloffering').val(totaloffering);
+        $('#offrefund').val(offrefund);
+        $('#exptotal').val(exptotal);
+        $('#remainder').val(remainder);
+        $('#cfototal').val(cfototal);
+        $('#cfolocale').val(cfolocale);
+        $('#cfointl').val(cfointl);
+        $('#rcentral').val(rcentral);
+        $('#rtotal').val(rtotal);
+        $('#totalrefund').val(totalrefund);
+        $('#totalentry').val(totalentry);
+        $('#totalf1').val(totalf1);
+        var totalf1_words = numToWords(totalf1);
+        $('#totalf1_words').val(totalf1_words);
+
+      });
+    });
+  </script>
+</body>
+</html>

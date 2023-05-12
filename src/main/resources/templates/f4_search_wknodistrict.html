@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Remittances</title>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Include Bootstrap's JavaScript after jQuery -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Include jquery.dataTables.min.js after jQuery -->
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</head>
+
+<body>
+  <div th:replace="~{fragments/navbar :: navbar}"></div>
+  <div class="container">
+    <h1 class="text-center my-4">Remittance Search</h1>
+
+    <div class="row">
+      <div class="col-md-6">
+        <form>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search week number ex. 01-2023" aria-label="Search remittance"
+              id="searchInput">
+              
+                <select class="form-control" id="district" name="district" required>
+                  <option value="" selected>Select District</option>
+                  <option th:each="district : ${districts}" th:value="${district.district}" th:text="${district.district}">
+                  </option>
+                </select>
+              
+            <div class="input-group-append">
+              <button class="btn btn-info" type="button" id="searchButton">Search Week Number</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="searchResultsTable"></div>
+
+    <!-- Search Results Modal -->
+    <div class="modal fade" id="searchResultsModal" tabindex="-1" role="dialog"
+      aria-labelledby="searchResultsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable w-75" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="searchResultsModalLabel">Search Results</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="searchResults"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#searchButton").click(function () {
+          var searchText = $("#searchInput").val();
+          var searchDistrict = $("#district").val();
+          $.ajax({
+            url: "/f4/search/districtwkno/" + searchText +"/" + searchDistrict,
+            type: "GET",
+            success: function (result) {
+              $("#searchResultsModal .modal-body").html(result);
+              var resultCopy = $(result).clone();
+              $("#searchResultsTable").html(resultCopy);
+              $("#searchResultsModal").modal("show");
+            },
+            error: function (error) {
+              console.log(error);
+            }
+          });
+        });
+
+        $("#searchResultsModal").on("hidden.bs.modal", function () {
+          $("#searchResultsModal .modal-body").empty();
+        });
+      });
+    </script>
+
+
+
+    <div class="container-fluid" th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+
+</html>

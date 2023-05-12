@@ -1,5 +1,9 @@
 package uswo.inc.uswofinal.model;
 
+import java.math.BigDecimal;
+
+import org.apache.poi.hpsf.Decimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,7 +46,7 @@ public class Wlfr {
     private Double bank_balance;
     
     private Double lfstart;
-    
+    @Transient
     private Double lfremit;
     
     private Double lfappf10;
@@ -53,12 +57,14 @@ public class Wlfr {
     
     private Double cfstart;
     
+    @Transient
     private Double cfremit;
     
     private Double cfappf10;
 
     private Double cfmiscout;
     
+    @Transient
     private Double cfintl;
     
     private Double cf_balance;
