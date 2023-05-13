@@ -48,6 +48,7 @@ public class PythonRunner {
                     break;
                 }
             }
+
             // Get the values of uswo and cfototal
             float uswo = 0.0f;
             float cfototal = 0.0f;
@@ -59,6 +60,36 @@ public class PythonRunner {
             float local = 0.0f;
             String lcode_str = "";
 
+            Row row2 = ws.getRow(row_number);
+            Cell rcentral = row2.getCell(25); // central
+        if (rcentral == null || rcentral.getCellType() == CellType.BLANK
+            || (rcentral.getCellType() == CellType.NUMERIC && rcentral.getNumericCellValue() == 0)) {
+                String sql = "SELECT uswo, cfototal, cfointl, thanksgiving, lingap, rcentral, thdistrict, thlocale FROM f4detail WHERE lcode = ? AND did = ? AND wkno = ?";
+
+                        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                            stmt.setInt(1, lcode);
+                            stmt.setInt(2, did);
+                            stmt.setString(3, wkno2);
+
+                            ResultSet rs = stmt.executeQuery();
+                            if (rs.next()) {
+                                local = rs.getFloat("thlocale"); 
+                                district = rs.getFloat("thdistrict"); 
+                                lingap = rs.getFloat("lingap"); 
+                                f9 = rs.getFloat("thanksgiving");
+                                central = rs.getFloat("rcentral");
+                                uswo = rs.getFloat("uswo");
+                                cfototal = rs.getFloat("cfototal");
+                                cfointl = rs.getFloat("cfointl");
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+
+
+                
+                            
+        }else{
             if (row_number != -1) {
                 Row row = ws.getRow(row_number);
                 Cell cell1 = row.getCell(19);
@@ -84,7 +115,7 @@ public class PythonRunner {
                 }
 
             }
-
+        }
             // Insert record into the database
             PreparedStatement stmt = null;
             PreparedStatement stmt2 = null;
@@ -95,7 +126,7 @@ public class PythonRunner {
                 PreparedStatement selectStmt = conn.prepareStatement(selectSql);
                 selectStmt.setString(1, lcode_str);
                 selectStmt.setInt(2, did);
-                selectStmt.setString(3, wkno);
+                selectStmt.setString(3, wkno2);
                 ResultSet resultSet = selectStmt.executeQuery();
                 resultSet.next();
                 int count = resultSet.getInt(1);
@@ -109,7 +140,7 @@ public class PythonRunner {
                     stmt.setFloat(3, cfointl);
                     stmt.setString(4, lcode_str);
                     stmt.setInt(5, did);
-                    stmt.setString(6, wkno);
+                    stmt.setString(6, wkno2);
                     stmt.executeUpdate();
                     System.out.println("Record updated successfully");
                 } else {
@@ -118,7 +149,7 @@ public class PythonRunner {
                     stmt = conn.prepareStatement(insertSql);
                     stmt.setString(1, lcode_str);
                     stmt.setInt(2, did);
-                    stmt.setString(3, wkno);
+                    stmt.setString(3, wkno2);
                     stmt.setFloat(4, cfototal);
                     stmt.setFloat(5, uswo);
                     stmt.setFloat(6, cfointl);
@@ -145,7 +176,7 @@ public class PythonRunner {
                   stmt1.setFloat(3, local);
                   stmt1.setString(4, lcode_str);
                   stmt1.setInt(5, did);
-                  stmt1.setString(6, wkno);
+                  stmt1.setString(6, wkno2);
                   stmt1.executeUpdate();
                   System.out.println("Record updated successfully");  
                 }else{    
@@ -153,7 +184,7 @@ public class PythonRunner {
                 stmt2 = conn.prepareStatement(sql2);
                 stmt2.setString(1, lcode_str);
                 stmt2.setInt(2, did);
-                stmt2.setString(3, wkno);
+                stmt2.setString(3, wkno2);
                 stmt2.setFloat(4, f9);
                 stmt2.setFloat(5, district);
                 stmt2.setFloat(6, lingap);
