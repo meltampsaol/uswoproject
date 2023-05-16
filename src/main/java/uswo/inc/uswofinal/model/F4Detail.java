@@ -53,8 +53,15 @@ public class F4Detail {
     private District district;
     
     private String wkno;
+    private String chkno;
     private String reported;
    
+    public String getChkno() {
+        return chkno;
+    }
+    public void setChkno(String chkno) {
+        this.chkno = chkno;
+    }
     public BigDecimal getThursday() {
         return thursday;
     }
@@ -235,6 +242,10 @@ public class F4Detail {
     }
     public void setLokal(Lokal lokal) {
         this.lokal = lokal;
+    }
+    public void setLokal(String string) {
+    }
+    public void setDistrict(String string) {
     }
 
     

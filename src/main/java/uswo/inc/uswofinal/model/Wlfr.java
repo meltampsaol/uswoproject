@@ -1,9 +1,5 @@
 package uswo.inc.uswofinal.model;
 
-import java.math.BigDecimal;
-
-import org.apache.poi.hpsf.Decimal;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -73,5 +69,26 @@ public class Wlfr {
 
     private Double resumen;
     
+    @Transient
+    private Double central;
+    @Transient
+    private Double thdistrict;
+    @Transient
+    private Double thlokal;
+    @Transient
+    private Double f9;
+    @Transient
+    private Double f9_balance;
+    @Transient
+    private Double district_balance;
+    @Transient
+    private Double central_balance;
+    @Transient
+    private Double lingap;
+    @Transient  
+    private Double lingap_balance;
+    @Transient
+    private Double lokal_balance;
     
+   
 }

@@ -55,10 +55,10 @@ public class SecurityConfig {
                 .requestMatchers("/wlfr/withdrawal","/wlfr/withdrawal/save","/wlfr/withdrawal/list").permitAll()
                 .requestMatchers("/pasugo/encode-mass","/pasugo/save-mass","/pasugo/search/*","/pasugo/gmbalances").permitAll()
                 .requestMatchers("/home").authenticated()
-                .requestMatchers("/f4/excel-import","/f4/imported-excel","/f4/excel-export","/f4/excel-import-perweek").permitAll()
+                .requestMatchers("/f4/excel-import","/f4/imported-excel","/f4/excel-export","/f4/excel-import-perweek","/f4/save").permitAll()
                 .requestMatchers("/f4/search/lokal","/f4/search/district","/f4/search/lokal/*","/f4/search/district/*","/f4/addrecord").permitAll()
                 .requestMatchers("/f4/search/wkno","/f4/search/wkno/*","/f4/import/perweek","/f4/import/perweek/*","/f4/search/districtwkno","/f4/search/districtwkno/*/*").permitAll()
-                .requestMatchers("/wlfr/**","/wlfr/add","/wlfr/save","/wlfr/search","/wlfr/search/lokal/*").permitAll()
+                .requestMatchers("/wlfr/**","/wlfr/add","/wlfr/addlate","/wlfr/save","/wlfr/savelate","/wlfr/search","/wlfr/search/lokal/*").permitAll()
                 .requestMatchers("/f1calculator").permitAll()
 
                 .and()

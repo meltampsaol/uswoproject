@@ -7,6 +7,8 @@
     <div class="row">
         <div class="col-md-12">
             <h2>WLFR</h2>
+<table class="table text-center">
+<tr><td>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -36,6 +38,45 @@
             <td th:text="${row.resumen}"></td>
         </tr>
     </tbody>
+</table>
+</td>
+</tr>
+<tr><td colspan="10">Balance Forwarding (Central, F9, District, Lingap, Lokal)</td></tr>
+<tr><td colspan="10">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Locale</th>
+            <th>District</th>
+            <th>Week No.</th>
+            <th>F9</th>
+            <th>F9 Balance</th>
+            <th>Central</th>
+            <th>Central Balance</th>
+            <th>District</th>
+            <th>District Balance</th>
+            <th>Lokal</th>
+            <th>Lokal Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="row : ${balfwd}">
+            <td th:text="${row.lokal}"></td>
+            <td th:text="${row.district}"></td>
+            <td th:text="${row.wkno}"></td>
+            <td th:text="${row.f9}"></td>
+            <td th:text="${row.f9_balance}"></td>
+            <td th:text="${row.central}"></td>
+            <td th:text="${row.central_balance}"></td>
+            <td th:text="${row.thdistrict}"></td>
+            <td th:text="${row.district_balance}"></td>
+            <td th:text="${row.thlokal}"></td>
+            <td th:text="${row.lokal_balance}"></td>
+        </tr>
+    </tbody>
+</table>
+</td>
+</tr>
 </table>
 </div>
 </div>

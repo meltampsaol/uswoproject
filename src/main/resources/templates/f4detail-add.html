@@ -19,11 +19,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/num2words@1.0.2/src/numtowords.min.js"></script>
 
-  <style>
-    .modal {
-      z-index: 1050;
-    }
-  </style>
+
  <style>
   .first-set {
 background-color: #58B2AC;
@@ -116,6 +112,15 @@ font-size: 14px;
 padding: 10px;
 margin-right: 20px;
 }
+.total-input {
+  font-weight: bold;
+  font-size: 16px;
+}
+.rtotal {
+  font-weight: bold;
+  font-size: 18px;
+  color:#C55050;
+}
 </style>
 
 </head>
@@ -124,9 +129,9 @@ margin-right: 20px;
   <div th:replace="~{fragments/navbar :: navbar}"></div>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-10">
         <h1>Add Transaction</h1>
-        <form th:action="@{/recordsave}" th:object="${f4detail}" method="post">
+        <form th:action="@{/f4/save}" th:object="${f4detail}" method="post">
           <table class="table table-striped table-responsive" align="left">
             <tr>
               <td>
@@ -239,6 +244,12 @@ margin-right: 20px;
                     </td>
                   </tr>
                   <tr>
+                    <td>Check Number:</td>
+                  <td>
+                    <input type="text" class="form-control" id="chkno" name="chkno" required>
+                  </td>
+                </tr>
+                  <tr>
                     <td>Thursday:</td>
                     <td><input type="number" class="form-control" id="thursday" name="thursday" step="0.01" required>
                     </td>
@@ -292,27 +303,27 @@ margin-right: 20px;
                   </tr>
                   <tr>
                     <td>Expenses Locale</td>
-                    <td><input type="number" name="explocale" id="explocale" step="0.01"></td>
+                    <td><input type="number" class="form-control" name="explocale" id="explocale" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>Expenses District</td>
-                    <td><input type="number" name="expdistrict" id="expdistrict" step="0.01"></td>
+                    <td><input type="number" class="form-control" name="expdistrict" id="expdistrict" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>Expenses Central</td>
-                    <td><input type="number" name="expcentral" id="expcentral" step="0.01"></td>
+                    <td><input type="number" class="form-control" name="expcentral" id="expcentral" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>Refund Locale</td>
-                    <td><input type="number" name="reflocale" id="reflocale" step="0.01"></td>
+                    <td><input type="number" class="form-control" name="reflocale" id="reflocale" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>Refund District</td>
-                    <td><input type="number" name="refdistrict" id="refdistrict" step="0.01"></td>
+                    <td><input type="number" class="form-control" name="refdistrict" id="refdistrict" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>Refund Central</td>
-                    <td><input type="number" name="refcentral" id="refcentral" step="0.01"></td>
+                    <td><input type="number" class="form-control" name="refcentral" id="refcentral" step="0.01"></td>
                   </tr>
                 </table>
               </td>
@@ -320,43 +331,48 @@ margin-right: 20px;
                 <table class="table table-striped btn-info">
                   <tr>
                     <td>USWO</td>
-                    <td><input type="number" name="uswo" id="uswo"></td>
+                    <td><input type="number" class="form-control" name="uswo" id="uswo"></td>
                   </tr>
                   <tr>
                     <td>Total Offering</td>
-                    <td><input type="number" name="totaloffering" id="totaloffering"></td>
+                    <td><input type="number" class="form-control total-input" name="totaloffering" id="totaloffering" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>Total Refund</td>
-                    <td><input type="number" name="totalrefund" id="totalrefund"></td>
+                    <td><input type="number" class="form-control total-input" name="totalrefund" id="totalrefund" step="0.01"></td>
                   </tr>
                   <tr>
+                    <tr>
+                      <td>Total IN</td>
+                      <td><input type="number" class="form-control total-input" name="totalin" id="totalin" step="0.01"></td>
+                    </tr>
+                    <tr>  
                     <td>Total Expenses</td>
-                    <td><input type="number" name="exptotal" id="exptotal"></td>
+                    <td><input type="number" class="form-control total-input" name="exptotal" id="exptotal" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>CFO Total</td>
-                    <td><input type="number" name="cfototal" id="cfototal"></td>
+                    <td><input type="number" class="form-control total-input" name="cfototal" id="cfototal" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>CFO Locale</td>
-                    <td><input type="number" name="cfolocale" id="cfolocale"></td>
+                    <td><input type="number" class="form-control" name="cfolocale" id="cfolocale" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>CFO Intl</td>
-                    <td><input type="number" name="cfointl" id="cfointl"></td>
+                    <td><input type="number" class="form-control" name="cfointl" id="cfointl" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>Remainder</td>
-                    <td><input type="number" name="remainder" id="remainder"></td>
+                    <td><input type="number" class="form-control total-input" name="remainder" id="remainder" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>Total Central</td>
-                    <td><input type="number" name="rcentral" id="rcentral"></td>
+                    <td><input type="number" class="form-control total-input" name="rcentral" id="rcentral" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>Total Remittance</td>
-                    <td><input type="number" name="rtotal" id="rtotal"></td>
+                    <td><input type="number" class="form-control total-input rtotal" name="rtotal" id="rtotal"></td>
                   </tr>
                 </table>
               </td>
@@ -367,38 +383,38 @@ margin-right: 20px;
                   </tr>
                   <tr>
                     <td>Offering: Admin</td>
-                    <td><input type="number" name="f1admin" id="f1admin"></td>
-                    <td><input type="text" name="f1admin_words" id="f1admin_words"></td>
+                    <td><input type="number" class="form-control" name="f1admin" id="f1admin"></td>
+                   
                   </tr>
                   <tr>
                     <td>Offering: Local</td>
-                    <td><input type="number" name="f1local" id="f1local"></td>
-                    <td><input type="text" name="f1local_words" id="f1local_words"></td>
+                    <td><input type="number" class="form-control" name="f1local" id="f1local"></td>
+                    
                   </tr>
                   <tr>
                     <td>Offering: District</td>
-                    <td><input type="number" name="f1district" id="f1district"></td>
-                    <td><input type="text" name="f1district_words" id="f1district_words"></td>
+                    <td><input type="number" class="form-control" name="f1district" id="f1district"></td>
+                    
                   </tr>
                   <tr>
                     <td>Offering: Thanksgiving</td>
-                    <td><input type="number" name="f1txgiving" id="f1txgiving"></td>
-                    <td><input type="text" name="f1txgiving_words" id="f1txgiving_words"></td>
+                    <td><input type="number" class="form-control" name="f1txgiving" id="f1txgiving"></td>
+                   
                   </tr>
                   <tr>
                     <td>Offering: Lingap</td>
-                    <td><input type="number" name="f1lingap" id="f1lingap"></td>
-                    <td><input type="text" name="f1lingap_words" id="f1lingap_words"></td>
+                    <td><input type="number" class="form-control" name="f1lingap" id="f1lingap"></td>
+                   
                   </tr>
                   <tr>
                     <td>Refund</td>
-                    <td><input type="number" name="f1refund" id="f1refund"></td>
-                    <td><input type="text" name="f1refund_words" id="f1refund_words"></td>
+                    <td><input type="number" class="form-control" name="f1refund" id="f1refund"></td>
+                   
                   </tr>
                   <tr>
                     <td>Total F1</td>
-                    <td><input type="number" name="totalf1" id="totalf1"></td>
-                    <td><input type="text" name="totalf1_words" id="totalf1_words" width="200"></td>
+                    <td><input type="number" class="form-control rtotal" name="totalf1" id="totalf1"></td>
+                    
                   </tr>
                   <tr><td colspan="3"><input type="button" value="Read" id="startButton"></td></tr>
                 </table>
@@ -410,46 +426,48 @@ margin-right: 20px;
                   </tr>
                   <tr>
                     <td>Entry 1</td>
-                    <td><input type="number" name="entry1" id="entry1"></td>
+                    <td><input type="number" class="form-control" name="entry1" id="entry1"></td>
                   </tr>
                   <tr>
                     <td>Entry 2</td>
-                    <td><input type="number" name="entry2" id="entry2"></td>
+                    <td><input type="number" class="form-control" name="entry2" id="entry2"></td>
                   </tr>
                   <tr>
                     <td>Entry 3</td>
-                    <td><input type="number" name="entry3" id="entry3"></td>
+                    <td><input type="number" class="form-control" name="entry3" id="entry3"></td>
                   </tr>
                   <tr>
                     <td>Entry 4</td>
-                    <td><input type="number" name="entry4" id="entry4"></td>
+                    <td><input type="number" class="form-control" name="entry4" id="entry4"></td>
                   </tr>
                   <tr>
                     <td>Entry 5</td>
-                    <td><input type="number" name="entry5" id="entry5"></td>
+                    <td><input type="number" class="form-control" name="entry5" id="entry5"></td>
                   </tr>
                   <tr>
                     <td>Entry 6</td>
-                    <td><input type="number" name="entry6" id="entry6"></td>
+                    <td><input type="number" class="form-control" name="entry6" id="entry6"></td>
                   </tr>
                   <tr>
                     <td>Entry 7</td>
-                    <td><input type="number" name="entry7" id="entry7"></td>
+                    <td><input type="number" class="form-control" name="entry7" id="entry7"></td>
                   </tr>
                   <tr>
                     <td>Entry 8</td>
-                    <td><input type="number" name="entry8" id="entry8"></td>
+                    <td><input type="number" class="form-control" name="entry8" id="entry8"></td>
                   </tr>
                   <tr>
                     <td>Total </td>
-                    <td><input type="number" name="totalentry" id="totalentry"></td>
+                    <td><input type="number" class="form-control rtotal" name="totalentry" id="totalentry"></td>
                   </tr>
                 </table>
               </td>
             </tr>
 
             <tr>
-              <td colspan="8" class="text-center">
+              
+              <td><span class="form-control text-center">CFO Remit</span><input type="checkbox" class="form-control text-center" id="computeCheckbox"></td>
+              <td colspan="7" class="text-center">
                 <button type="submit" class="btn btn-primary btn-lg">Add Transaction</button>
               </td>
             </tr>
@@ -510,7 +528,7 @@ margin-right: 20px;
         var explocale = $('#explocale').val() ? parseFloat($('#explocale').val()) : 0;
         var expdistrict = $('#expdistrict').val() ? parseFloat($('#expdistrict').val()) : 0;
         var expcentral = $('#expcentral').val() ? parseFloat($('#expcentral').val()) : 0;
-        var uswo = $('#uswo').val() ? parseFloat($('#uswo').val()) : 0;
+        
 
         var f1admin = $('#f1admin').val() ? parseFloat($('#f1admin').val()) : 0;
         var f1local = $('#f1local').val() ? parseFloat($('#f1local').val()) : 0;
@@ -535,22 +553,21 @@ margin-right: 20px;
         var offrefund = totaloffering + thlocale + thdistrict + thanksgiving + lingap + reflocale + refdistrict + refcentral;
         var exptotal = explocale + expdistrict + expcentral;
         var totalrefund = reflocale + refdistrict + refcentral;
-       
+        var totalin = totalrefund+totaloffering+thlocale+thdistrict+lingap+thanksgiving;
         var remainder = offrefund - exptotal;
-        var cfototal = thlocale * 0.15;
-        var cfolocale = thlocale * 0.10;
-        var cfointl = thlocale * 0.05;
+        
+
+        
+
         var rcentral = totaloffering + thanksgiving + refcentral - expcentral;
-        var rtotal = uswo + cfolocale + cfointl + lingap + rcentral;
+        
 
         // Update output fields
         $('#totaloffering').val(totaloffering);
+        $('#totalin').val(totalin);
         $('#offrefund').val(offrefund);
         $('#exptotal').val(exptotal);
         $('#remainder').val(remainder);
-        $('#cfototal').val(cfototal);
-        $('#cfolocale').val(cfolocale);
-        $('#cfointl').val(cfointl);
         $('#rcentral').val(rcentral);
         $('#rtotal').val(rtotal);
         $('#totalrefund').val(totalrefund);
@@ -563,10 +580,7 @@ margin-right: 20px;
         var f1txgiving_words = numToWords(f1txgiving);
         var f1lingap_words = numToWords(f1lingap);
         var f1refund_words = numToWords(f1refund);
-        $('#totalf1_words').val(totalf1_words);
-        $('#f1admin_words').val(f1admin_words);
-        $('#f1local_words').val(f1local_words);
-        $('#f1district_words').val(f1district_words);
+       
         var inputFields = ["f1admin", "f1local", "f1district", "f1txgiving", "f1lingap", "f1refund", "f1total"];
 var currentIndex = 0;
 var utterance = new SpeechSynthesisUtterance();
@@ -588,6 +602,36 @@ function startReading() {
     setTimeout(startReading, 2000); // Delay of 2 seconds before moving to the next input field
   };
 }
+
+
+  var computeCheckbox = document.getElementById('computeCheckbox');
+  var uswo = $('#uswo').val() ? parseFloat($('#uswo').val()) : 0;
+  
+ 
+  if (computeCheckbox.checked) {
+    // Compute the values
+    
+    var cfototal = (thlocale * 0.15).toFixed(2);
+    var cfolocale = (thlocale * 0.10).toFixed(2);
+    var cfointl = (thlocale * 0.05).toFixed(2);
+    var rtotal = uswo + parseFloat(cfototal) + lingap + rcentral;
+    $('#cfototal').val(parseFloat(cfototal));
+    $('#cfolocale').val(parseFloat(cfolocale)); 
+    $('#cfointl').val(parseFloat(cfointl));
+    $('#rtotal').val(rtotal);
+  } else {
+    // Clear the values
+    $('#cfototal').val(0.00);
+    $('#cfolocale').val(0.00); 
+    $('#cfointl').val(0.00);
+    var rtotal = uswo + lingap + rcentral;
+    $('#rtotal').val(rtotal);
+  }
+
+
+
+
+
 
 
       });

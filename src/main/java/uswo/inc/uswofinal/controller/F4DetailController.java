@@ -1,6 +1,7 @@
 package uswo.inc.uswofinal.controller;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -9,12 +10,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import uswo.inc.uswofinal.mapper.F4DetailRowMapper;
 import uswo.inc.uswofinal.model.District;
 import uswo.inc.uswofinal.model.F4Detail;
 import uswo.inc.uswofinal.model.Lokal;
@@ -25,7 +30,7 @@ import uswo.inc.uswofinal.repository.LokalRepository;
 
 @Controller
 @RequestMapping("/f4")
-public class LocaleDataController {
+public class F4DetailController {
 
    
 
@@ -43,6 +48,12 @@ public class LocaleDataController {
     @Autowired
     F4DetailRepository f4detailRepository;
     
+    private final JdbcTemplate jdbcTemplate;
+    public F4DetailController(F4DetailRepository f4detailRepository, JdbcTemplate jdbcTemplate) {
+        this.f4detailRepository = f4detailRepository;
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     @GetMapping("/excel-import")
     public String importLocaleData(Model model) {
     
@@ -243,6 +254,19 @@ try {
         model.addAttribute("locales", locales);
         return "f4detail-add";
 
-    }    
+    } 
+    @PostMapping("/save")
+    public String saveRemittance(@ModelAttribute("f4detail") F4Detail f4detail, Model model)
+            {
+        
+        f4detailRepository.save(f4detail);
+        String selectSql = "SELECT b.locale, wkno, c.district,uswo,cfolocale,cfointl,lingap,rcentral,rtotal  FROM f4detail a, lokal b, districts c"
+                +
+                " WHERE a.lcode=b.lcode AND a.did=b.did and a.did=c.did;";
+        List<F4Detail> f4List = jdbcTemplate.query(selectSql, new F4DetailRowMapper());
+        model.addAttribute("f4list", f4List);
+        return "F4list";
+
+    }   
 }
 
